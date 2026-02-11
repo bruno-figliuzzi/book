@@ -1,0 +1,233 @@
+@book{schneider,
+  title={Stochastic and integral geometry},
+  author={Schneider, R. and Weil, W.},
+  year={2008},
+  publisher={Springer}
+}
+
+
+@book{matheron,
+  title={Random sets and integral geometry},
+  author={Matheron, G.},
+  volume={1},
+  year={1975},
+  publisher={Wiley New York}
+}
+
+@book{stoyan,
+  title={Stochastic geometry and its applications},
+  author={Chiu, S. N. and Stoyan, D. and Kendall, W. S. and Mecke, J.},
+  year={2013},
+  publisher={John Wiley \& Sons}
+}
+
+
+@book{jeulin,
+  title={Models of random structures},
+  author={Jeulin, D.},
+  publisher={Lecture notes}
+}
+
+@book{soille,
+  title={Morphological image analysis: principles and applications},
+  author={Soille, P.},
+  year={2003},
+  publisher={Springer-Verlag New York, Inc.}
+}
+
+@book{coster,
+  title={Pr{\'e}cis d'analyse d'images},
+  author={Coster, M. and Chermant, J.-L.},
+  year={1985},
+  publisher={Ed. du C. N. R. S.}
+}
+
+
+@article{mecke1980,
+  title={Palm methods for stationary random mosaics},
+  author={Mecke, J.},
+  journal={Combinatorial principles in stochastic geometry},
+  pages={124--132},
+  year={1980},
+  publisher={Armenian Academy of Sciences Publishers Erevan}
+}
+
+@article{moller1989,
+  title={Random tessellations in $\mathbb{R}^d$},
+  author={M{\o}ller, J.},
+  journal={Advances in Applied Probability},
+  pages={37--73},
+  year={1989},
+  publisher={JSTOR}
+}
+
+@book{serra1982,
+  title={Image analysis and mathematical morphology},
+  author={Serra, J.},
+  year={1982},
+  publisher={Academic press}
+}
+
+@article{miles1972b,
+  title={The random division of space},
+  author={Miles, R. E.},
+  journal={Advances in applied probability},
+  pages={243--266},
+  year={1972},
+  publisher={JSTOR}
+}
+
+@article{mecke1995,
+  title={Inequalities for the anisotropic Poisson polytope},
+  author={Mecke, J.},
+  journal={Advances in applied probability},
+  pages={56--62},
+  year={1995},
+  publisher={JSTOR}
+}
+
+@article{moller1992,
+  title={Random Johnson-Mehl tessellations},
+  author={M{\o}ller, J.},
+  journal={Advances in applied probability},
+  pages={814--844},
+  year={1992},
+  publisher={JSTOR}
+}
+
+@book{moller1994,
+  title={Lectures on random Voronoi tessellations},
+  author={M{\o}ller, Jesper},
+  year={1994},
+  publisher={Springer}
+}
+
+@article{johnson,
+  title={Reaction kinetics in processes of nucleation and growth},
+  author={Johnson, W. A. and Mehl, R. F.},
+  journal={Trans. Aime},
+  volume={135},
+  number={8},
+  pages={396--415},
+  year={1939}
+}
+
+
+@article{gilbert,
+  title={Random subdivisions of space into crystals},
+  author={Gilbert, E. N.},
+  journal={The Annals of mathematical statistics},
+  pages={958--972},
+  year={1962},
+  publisher={JSTOR}
+}
+
+
+@article{avrami,
+  title={Kinetics of phase change. {I}. General theory},
+  author={Avrami, M.},
+  journal={The Journal of Chemical Physics},
+  volume={7},
+  number={12},
+  pages={1103--1112},
+  year={1939},
+  publisher={AIP Publishing}
+}
+
+@misc{vtkSim,
+  author =  {Faessel, M.},
+  title =  {VtkSim Software},
+  howpublished = {http://cmm.ensmp.fr/~faessel/vtkSim/demo/}
+}
+
+
+@article{weil1984,
+  title={Densities for stationary random sets and point processes},
+  author={Weil, W. and Wieacker, J. A.},
+  journal={Advances in applied probability},
+  pages={324--346},
+  year={1984},
+  publisher={JSTOR}
+}
+
+@misc{santalo1976,
+  title={Integral geometry and geometric probability. 1976},
+  author={Santal{\'o}, Luis A},
+  publisher={Addison-Wesley, Reading, MA}
+}
+
+@article{miles1976,
+  title={Estimating aggregate and overall characteristics from thick sections by transmission microscopy},
+  author={Miles, R. E.},
+  journal={Journal of Microscopy},
+  volume={107},
+  number={3},
+  pages={227--233},
+  year={1976},
+  publisher={Wiley Online Library}
+}
+
+@article{jean,
+  title={A multiscale microstructure model of carbon black distribution in rubber},
+  author={Jean, A. and Jeulin, D. and Forest, S. and Cantournet, S. and N'Guyen, F.},
+  journal={Journal of microscopy},
+  volume={241},
+  number={3},
+  pages={243--260},
+  year={2011},
+  publisher={Wiley Online Library}
+}
+
+@book{baccelli,
+  title={Stochastic Geometry and Wireless Networks: Volume 1: THEORY},
+  author={Baccelli, F. and Blaszczyszyn, B.},
+  volume={1},
+  year={2009},
+  publisher={Now Publishers Inc}
+}
+
+@article{molchanov1995,
+  title={Statistics of the Boolean model: from the estimation of means to the estimation of distributions},
+  author={Molchanov, I. S.},
+  journal={Advances in applied probability},
+  pages={63--86},
+  year={1995},
+  publisher={JSTOR}
+}
+
+@book{hall,
+  title={Introduction to the theory of coverage processes},
+  author={Hall, P.},
+  volume={188},
+  year={1988},
+  publisher={Wiley New York}
+}
+
+@inproceedings{moreaud,
+  title={Percolation of multi-scale fiber aggregates},
+  author={Jeulin, D. and Moreaud, M.},
+  booktitle={S4G, 6th International Conference Stereology, Spatial Statistics and Stochastic Geometry. Prague},
+  pages={26--29},
+  year={2006}
+}
+
+@book{torquato,
+  title={Random heterogeneous materials: microstructure and macroscopic properties},
+  author={Torquato, S.},
+  volume={16},
+  year={2002},
+  publisher={Springer}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

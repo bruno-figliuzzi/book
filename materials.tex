@@ -1,0 +1,550 @@
+\chapter{Morphological models in materials science}
+
+Most materials encountered in contemporary life and industrial applications are heterogeneous and characterized by complex internal microstructures. These microstructures play a central role in determining their macroscopic physical and mechanical properties~\citep{torquato}. As a result, accurately modeling and reproducing material microstructures is a crucial step toward understanding and predicting material behavior at larger scales.
+
+In this context, the generation of random microstructures that faithfully reproduce the geometrical characteristics of real materials has attracted considerable attention~\citep{capasso, ohser, jeulin2021, torquato, redenbach2009, redenbach2011}. Such synthetic microstructures provide a powerful framework for investigating the physical and mechanical properties of heterogeneous materials through large-scale numerical simulations~\citep{altendorf, peyrega, moreaud, moreaud2012, liebscher2013}. By enabling controlled variations of geometric features, this approach offers valuable insights into the relationship between microstructure and macroscopic material properties, with strong potential for both fundamental research and industrial applications.
+
+This chapter presents selected research topics related to the simulation of material microstructures and, more broadly, to morphological modeling. Section~\ref{materials:s2} focuses on the development of microstructure models for a copper coating produced by the cold spray process, with the aim of investigating how the substrate microstructure influences electrical conduction at the macroscopic scale. We then address in section~\ref{materials:s3} a fundamental issue common to morphological models: once a model has been defined, how can its parameters be selected in a statistically consistent manner? To tackle this problem, we present an approach based on Markov Chain Monte Carlo algorithms, which provides an effective framework for parameter estimation in complex microstructural models. Finally, we discuss in section~\ref{materials:s4} an approach based on the resolution of the Eikonal equation to efficiently generate random tessellations.
+
+\section{Microstructure modelling with morphological models \label{materials:s2}}
+
+We present in this section the development of a morphological model used for studying the electrical characteristics of a bi-phased coating produced through thermal spraying~\citep{guipont2008, jeandin2008, delloro2014}. This coating is specifically designed to shield recent commercial aircraft bodies from lightning strikes by providing a conductive surface that can effectively dissipate electrical charges. To our knowledge, this study represents one of the earliest efforts to model the electrical properties of coldspray deposits based on their microstructure. This research work was carried out in collaboration with Vincent Bortolussi, Michel Jeandin (Centre des mat\'eriaux, Mines Paris), Fran\c cois Willot and Matthieu Faessel (Centre de morphologie math\'ematique, Mines Paris) and was partially funded by a grant from Air Force Office of Scientific Research (AFOSR). It led to several publications related to the morphological model itself~\citep{bortolussi2018} and to its exploitation to study the electric conductivity of coldspray coatings~\citep{bortolussi2020}.
+
+\subsection{Context} 
+
+Modern commercial aircraft are constructed using carbon fiber-reinforced polymers, which provide excellent mechanical properties while being significantly lighter than traditional aluminum alloys. However, the polymer matrix in these materials is generally highly electrically insulating, which poses security concerns in the event of lightning strikes. Advanced aerospace composites are typically fabricated using a matrix of PEEK (Poly-Ether-Ether-Ketone), a thermoplastic polymer that offers good mechanical and thermal properties while being an excellent insulator. To address the need for electrical charge dissipation in the event of lightning strikes, a layer of copper mesh is typically applied to the composite body. Copper is an easily machinable and corrosion-resistant electrical conductor with low electrical resistivity.
+
+\subsection{Experimental data} 
+
+To simplify the manufacturing and assembly of copper meshing, a new coating method was developed, which relies on copper powder being thermally sprayed onto composite parts. Specifically, an adherent and electrically conductive layer is achieved by using a powder mixture containing 80\% volumetric of spherical copper powder (10-35 microns) and 20\% of irregular PEEK particles (35-65 microns). The mixture is applied using the cold-gas dynamic spraying or ``cold spray'' process.
+
+In our work, we relied on microscopic images of the coating to study the resulting microstructure. Prior to observation, the cold spray coatings underwent cross-sectioning and polishing. To do this, the coating samples were cut in two directions: along the spraying path and orthogonal to it. Unfortunately, cutting and polishing caused debonding of the copper particles due to poor mechanical anchorage in the matrix. This resulted in dark holes at the surface. It should be noted that manual polishing can have a significant impact on the debonding phenomenon. To counteract this, the samples were metallized with a layer of Gold-Palladium that was only 2 nm thick, using a Cressington sputter coater. This was a crucial step as the layer modified the color of the PEEK matrix, greatly enhancing the color gradient between phases. To observe the cross-sections, we used a Leica optical microscope at $\times $20 magnification in bright field. The microscope had a resolution of 0.2428 microns per pixel. We selected this observation scale to obtain a representative fraction of copper while also highlighting PEEK interstices.
+
+The microstructure of the cold spray coating can be observed in Fig.~\ref{fig:coldsprayseg}, where yellow copper particles are embedded in a grey PEEK matrix that contains dark footprints. The matrix is made up of irregular PEEK particles that become highly deformed upon high speed impact, resulting in a dense structure with no visible pores at this scale. The copper particles deform only upon impact with each other, resulting in limited plastic strain and forming a network of copper clusters. In typical cold spraying of metal particles onto a metal substrate, chemical bonding and inter-diffusion occur at the interfaces between particles and substrate. However, in our case, optical observation at a larger scale highlights thin PEEK layers are lying between deformed copper particles, as shown in Fig.~\ref{fig:coldsprayseg}. These interstices prevent direct contact between copper particles and are filled with electrically insulating PEEK, allegedly increasing resistivity and thus lowering the conductivity of the coating. Fig.~\ref{fig:inter} is an optical microscope cross-section of the coating microstructure with debonded particles appearing in black. The image comprises 2560 $\times$ 1920 pixels representing a surface area of 620 $\times$ 476 \textmu m$^2$. Fig.~\ref{fig:inter} is a magnified optical microscope cross-section of the coating's microstructure, with the image comprising 2560 $\times$ 1920 pixels representing a surface area of 248 $\times$ 186 \textmu m$^2$.
+
+The first step of our study consisted in developing a segmentation algorithm of the experimental images in order to identify the copper particles within the microstructures as well as the interstices separating these particles. We refer the reader seeking additional details on the segmentation algorithm to the original article~\citep{bortolussi2018}. Segmentation results are displayed in Fig.~\ref{fig:coldsprayseg}. Overall, we performed the segmentation of $K = 13$ large images of the microstructure, and we used these images to compute experimental covariance and granulometry curves that characterize the coating microstructure.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.45\textwidth]{figures/materials/im3c}\hfill
+\includegraphics[width=0.45\textwidth]{figures/materials/im4c}
+\caption{Original image and corresponding segmentation mask.~\label{fig:coldsprayseg}}
+\end{figure}
+
+
+\subsection{Morphological model} 
+
+We present in this section the multi-scale morphological model~\citep{jeulin2012} developed for describing the microstructure geometry. To construct the model, we make the assumption that the microstructure consists of copper spheres embedded in a PEEK matrix, separated by thin PEEK interstices. The covariance, copper fraction, granulometry, and interstice thickness are measured on 2D slices of the coating. Therefore, the parameters of the 3D model need to be inferred from this 2D information. The final two-scale model is based on a two-step simulation process:
+\begin{enumerate}
+\item The first step of the simulation process corresponds to the generation of a Boolean model of spheres with intensity $\theta$. The radii of the spheres follow a Gamma distribution law with parameters $\lambda$ and $a$. This first scale of the model intends to represent the set of copper particles, which form aggregates due to interpenetration. 
+\item The second step involves interstice implantation based on a modified Johnson-Mehl tessellation. This two-scale model provides a representation of the 3D microstructure of the coating based on the 2D information obtained from the slices.
+\end{enumerate}
+
+\paragraph{Aggregates simulation} We assume that the copper particles aggregates can be represented by a Boolean model of spheres and that the distribution of the radii of the spheres is described by a Gamma law. The probability density function of the Gamma law is given by
+\begin{equation}
+p(r, \lambda, a) = \dfrac{r^{a - 1}}{\Gamma(a) \lambda ^a}\exp \bigg (-\frac{r}{\lambda } \bigg ),
+\end{equation}
+where $\Gamma $ denotes the Gamma function. The average radius of the typical sphere is $a \lambda$. Its variance is $a \lambda^2$. The average surface of the typical grain is
+\begin{equation}
+S_v = \int_{0}^{+ \infty } \dfrac{4 \pi r^{a + 1}}{\Gamma(a) \lambda ^a}\exp \bigg (-\frac{r}{\lambda } \bigg ) \mathrm{d}r = 4\pi \lambda ^2 a(a + 1).
+\end{equation}
+Similarly, its average volume is 
+\begin{equation}
+V_v = \int_{0}^{+ \infty } \dfrac{4 \pi r^{a + 2}}{3 \Gamma(a) \lambda ^a}\exp \bigg (-\frac{r}{\lambda } \bigg ) \mathrm{d}r = \dfrac{4 \pi }{3} \lambda ^3 a(a + 1)(a + 2).
+\end{equation}
+To determine the 3D parameters of the model using 2D measurements, we use the stereological formulae
+\begin{equation}
+\theta_3V_v=\theta_2\bar{A}, \quad \theta_3S_v=\frac{4}{\pi}\theta_2\bar{L},
+\end{equation}
+where $\bar{A}$ is the mean area of the sliced spheres, $\bar{L}$ their perimeter, $\theta_3$ the 3-dimensional intensity parameter and $\theta_2$ the intensity of the disk process on sections. We need to relate the 2D measurements to the parameters of the Boolean model. To that end, we rely on Miles' formulae~\citep{miles1972b, stoyan, schneider}, discussed in chapter~\ref{chap:models}:
+\begin{equation}
+A_a = 1-e^{(-\theta_2\bar{A})}, \quad L_a = \theta_2\bar{L}(1-A_a),
+\end{equation}
+where $A_a$ is the mean surface fraction of copper on segmented images and $L_a$ is the mean perimeter of the copper phase on segmented images divided by the total surface. Using Miles' formulae in conjunction with stereological formulae~\citep{stoyan, schneider}, we find, for the Boolean model
+\begin{equation}
+\mathcal{A}_a = 1 - \exp(-\theta V_v), \quad \mathcal{L}_a = \theta \dfrac{\pi }{4} S_v \exp(- \theta V_v).
+\label{eqn:miles}
+\end{equation}
+
+Overall, there are three unknowns in the model, namely the intensity $\theta $ of the Boolean model and the parameters $a$ and $\lambda $ of the Gamma distribution. Hence, we can express all parameters as functions of $a$. Using~(\ref{eqn:miles}), we find
+\begin{equation}
+	\theta = - \dfrac{3}{4\pi \lambda ^3 a(a + 1)(a + 2)}\ln ( 1 - \mathcal{A}_a),
+	\label{eqn:final}
+\end{equation}
+and
+\begin{equation}
+	\lambda = - \dfrac{3 \pi }{4 (a + 2)  \mathcal{L}_a} ( 1 - \mathcal{A}_a) \ln ( 1 - \mathcal{A}_a).
+\end{equation}
+
+To determine the parameters of the stochastic model, we rely on a maximum likehood approach to find the parameters that minimize the least-square distance between the covariance of the simulated microstructure and the covariance that is measured on the available experimental dataset. However $\mathcal{L}_a $ is highly influenced by interconnection between particles. As many particles remain in contact due to interstices segmentation, computing $\theta$ only from $\lambda $ and $a$ provides a more robust algorithm.
+
+\paragraph{Interstices implantation} To simulate the interstices between the particles of the same aggregate, we use a random Johnson-Mehl tessellations restricted to each aggregate, or connected component of the first scale of the microstructure. For each connected aggregate $\mathcal{A}$ of the first scale of the simulation, we consider $n$ germs and we simulate a random number $\zeta _n$ according to an exponential law with some mean $k$, which will parameterize the thickness of the boundary between cells. The cells of the tessellation are then defined by
+\begin{equation}
+C_i = \bigg \{y \in \mathcal{A}, \forall j \neq i, t_i + \dfrac{\| x_i - y \|_G }{v} + \zeta_i \leq t_j + \dfrac{\| x_j - y \|_G }{v}\bigg \}.
+\end{equation}
+In this relation, $\| \cdot \|_G$ denotes the geodesic distance with respect to the realization of the Boolean model and $t_i$ is the implantation time of the $i$-th grain. With this definition, we note that some points of the aggregates do not belong to any class of the Johnson-Mehl tessellation. We consider that these points form the interstices between the grains of the microstructure. 
+
+A significant question remains, which is how to select the initial germs of the tessellation and the germination times. While selecting the germs, our aim is to preserve the geometrical shape of the grains of the microstructure. Hence, we seek to set the germs in the center of connected components to simulate a granulary microstructure. To the end, we rely on the \textit{h-maxima}~\citep{serra1982} of the distance function to generate the germs. The \textit{h-maxima} of the distance function form connected components.  For each component, we select its barycentre to be the location of a germ. The threshold for the \textit{h-maxima} is selected after an optimization procedure that aims at minimizing the distance between the granulometries. For each germ $n$, we denote by $d_n$ the value of the Euclidean distance function at the location of the germ. The germination time associated to germ $n$ is defined to be
+\begin{equation}
+t_n = (\max_{m} d_m) - d_n.
+\end{equation}
+With this choice of germination time, the cells border of bigger spheres are kept close from the edges of the spheres and we are able to preserve the geometrical shape of the grains constituting the microstructure.
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.45\textwidth]{figures/materials/MultiFocus001.png}
+\includegraphics[width=0.45\textwidth]{figures/materials/MultiFocus0021.png}
+\caption{Optical microscope cross-section of the coating (2560 $\times $ 1920 pixels representing a surface area of 248 $\times $ 186 \textmu  m$^2$). \label{fig:inter}}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.9\textwidth]{figures/materials/simulation.png}
+\caption{Simulation of the microstructure with the optimized parameters. \label{fig:coldspray_simulation}}
+\end{figure}	
+			
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.8\textwidth]{figures/materials/cov_gr.png}
+\caption{Simulated and experimental microstructures comparisons between covariances (a) and granulometries (b)\label{fig:rescovgran}.}
+\end{figure}
+
+\subsection{Results and discussions}
+
+To assess the relevance of the proposed stochastic model, we compared several morphological descriptors between experimental and simulated microstructures. These descriptors include the covariance function, the granulometry, and the interstice thickness distribution. The combined use of covariance and granulometry is common in morphological modeling, as the granulometry characterizes object size distributions while the covariance provides second-order statistics related to spatial organization and scale superposition. The interstice thickness distribution is a key feature specific to the present study. Owing to the strong electrical resistivity contrast between copper and PEEK, even small variations in interstice size can significantly affect the macroscopic electrical conductivity of the coating.  
+
+\begin{table}[h!]
+\centering
+\caption{Model parameters.}
+\label{tab:model_parameters}
+\begin{tabular}{ccccccc}
+\hline
+$A_a$ & $\theta$ ($\mu$m$^{-3}$) & $\lambda$ ($\mu$m) & $a$ & $k$ ($\mu$m) & $h$ ($\mu$m) & $p$ \\
+\hline
+63\% & $4.8 \times 10^{-3}$ & 2.3 & 0.8 & 1.2 & 7.26 & 0.5 \\
+\hline
+\end{tabular}
+\end{table}
+
+Figure~\ref{fig:coldspray_simulation} presents a two-dimensional slice of a simulated microstructure obtained using parameters estimated through the maximum likelihood procedure. The corresponding parameter values are reported in Table~\ref{tab:model_parameters}, where $A_a$ denotes the copper surface fraction measured on segmented images, $\theta$ the intensity of the Poisson point process, $\lambda$ and $a$ the parameters of the Gamma distribution governing particle radii, $h$ the threshold used to extract distance-function maxima, and $p$ the proportion of selected maxima.  
+
+Comparisons between experimental and simulated covariances and granulometries are shown in Fig.\ref{fig:rescovgran}. We can note that a small discrepancy, on the order of $0.01$, appears in the covariance for distances between 10~$\mu$m and 40~$\mu$m. This difference is attributed to the presence of a few relatively large polymer-rich regions devoid of copper particles, which can be observed in Fig.~\ref{fig:inter}.
+
+\subsection{Conclusion}
+
+In this section, we developed a two-scale stochastic morphological model to describe the three-dimensional microstructure of cold spray copper-PEEK coatings from two-dimensional experimental observations. The model combines a Boolean model of spheres with Gamma-distributed radii to represent copper particle aggregates, and a modified Johnson-Mehl tessellation to account for the thin PEEK interstices separating particles within aggregates. Model parameters were inferred from stereological relations and optimized by matching covariance and granulometry descriptors measured on segmented experimental images.
+
+Comparisons between simulated and experimental microstructures show good agreement in terms of covariance and granulometry, indicating that the proposed model successfully captures both the spatial organization and the size distribution of copper particles. The inclusion of interstice implantation proves essential for reproducing realistic microstructural features that strongly influence electrical transport properties. This morphological framework therefore provides a consistent and physically grounded basis for subsequent numerical simulations of the effective electrical conductivity of cold spray coatings.
+
+\section{Parameters estimation in morphological models \label{materials:s3}}
+
+We presented in the previous section a morphological model designed to reproduce the microstructure of cold-spray-deposited materials from experimental imaging data. Morphological models typically rely on a set of parameters, denoted by $\Theta$, which must be carefully selected to ensure consistency with experimental observations. A common strategy for determining these parameters consists in minimizing an objective function, usually defined as a measure of discrepancy between quantities obtained from numerical simulations and those measured experimentally. Numerous approaches have been proposed in the literature to address this optimization problem.
+
+A classical technique involves minimizing the objective function using a gradient descent algorithm. Gradient descent methods are first-order iterative optimization algorithms that aim to locate a local minimum of a differentiable function by iteratively moving in the direction of the negative gradient in parameter space. While these algorithms are highly effective for strongly convex problems, their application to morphological models raises several difficulties. First, the gradient of the objective function is often analytically intractable and must be approximated using finite-difference schemes. This approximation requires at least $D + 1$ evaluations of the objective function, where $D$ denotes the dimension of the parameter space, and is further affected by the intrinsic statistical variability of morphological models, which typically leads to noisy gradient estimates. Second, the objective function is generally non-convex, so gradient-based methods are prone to converging to local minima.
+
+Several alternatives to gradient descent have been proposed in the literature. In particular, in~\citep{wang2015, wang2017, wang2018, figliuzzi2016}, the authors advocate the use of the Nelder-Mead algorithm, a heuristic optimization method for locating extrema of an objective function in a multidimensional space. As a direct search method based solely on iterative evaluations of the objective function, it is well suited to situations in which gradient information is unavailable or unreliable.
+
+In this section, we address the relatively underexplored problem of parameter estimation for morphological models. We introduce an approach based on a Bayesian formulation of the problem, originally proposed in~\citep{figliuzzi2021}. This framework yields a posterior distribution for the model parameters conditioned on the experimental observations. Samples from this posterior distribution are generated using a Markov Chain Monte Carlo (MCMC) algorithm. Compared to deterministic optimization methods, this approach offers several advantages: in particular, MCMC sampling provides a faithful representation of the posterior distribution, enables the identification of correlations between model parameters, and allows for a quantitative assessment of their respective influences.
+
+
+\subsection{Problem statement}
+
+Let us consider a set of previously segmented experimental images of a material's microstructure, which we denote as the observations $\mathcal{O}$. The geometry of the microstructure can be characterized by computing several statistical features, including the covariance, the granulometry, or the granulometry of the complementary image.  
+
+The covariance of a random set $A$ was defined in Chapter~\ref{chap:models} as the function $C_A$ on $\mathbb{R}^d \times \mathbb{R}^d$ given by
+\begin{equation}
+C_A(x, x + h) = P(x \in A, x + h \in A),
+\end{equation}
+where $h \in \mathbb{R}^d$.  
+\label{def:covariance}  
+For a stationary random set, the covariance depends only on the displacement $h$:
+\begin{equation}
+C_A(x, x + h) = C_A(h).
+\end{equation}
+
+Next, we consider the granulometry of the microstructure. Let $K$ be a convex set, and let $(K_{\lambda}, \lambda > 0)$ denote a family of scaled structuring elements, where $K_{\lambda} = \lambda K$. For any closed set $A \subset \mathbb{R}^d$, the operator
+\begin{equation}
+\Phi_{\lambda}(A) = (A \ominus \check{K_{\lambda}}) \oplus K_{\lambda},
+\end{equation}
+defines a granulometry, where $\ominus$ denotes morphological erosion and $\oplus$ denotes morphological dilation.  
+
+The granulometry obtained by openings characterizes the size distribution of the elements of $A$. Specifically, for distinct values of $\lambda$, one can record the volume fraction of the residual set
+$$
+A \backslash \Phi_{\lambda}(A),
+$$
+to quantify the size distribution. In this work, granulometry measurements are computed both on the set $A$ and on its complement $A^c$.  
+
+In the remainder of this section, we denote by $m_\mathcal{O}$ the statistical measurements derived from the observations and by $m_\Theta$ those obtained from simulated microstructures. The model parameters $\Theta$ are typically chosen to minimize the discrepancy between $m_\mathcal{O}$ and $m_\Theta$. This parameter estimation can be formulated as the following constrained optimization problem:
+\begin{equation}
+\hat{\Theta} := \arg \min_{\Theta} \| m_\mathcal{O} - m_\Theta \|_2^2 \quad \text{subject to } \Theta \in \mathcal{D},
+\label{eqn:problem}
+\end{equation}
+where $\mathcal{D}$ denotes the set of admissible model parameters.
+
+	
+\subsection{Bayesian formulation}
+
+Starting from measurements obtained from a morphological model and from experimental observations of the studied microstructure, we use a Bayesian approach to determine the parameters of the model. The likelihood that the observations were obtained with the set of parameters $\Theta $ can be defined as follows:
+\begin{equation}
+p(\mathcal{O}|\Theta ) = \dfrac{1}{\sqrt{2 \pi |\Lambda| }}\exp (-\frac{1}{2}(m_\mathcal{O} - m_\Theta )^T \Lambda^{-1} (m_\mathcal{O} - m_\Theta )),
+\label{eqn:likelihood}
+\end{equation}
+In Eq.~(\ref{eqn:likelihood}), we usually consider a diagonal covariance matrix $\Lambda $ and we assign a weight to the parameters corresponding to their respective importance. The arbitrary choice of a Gaussian distribution is motivated by its simplicity, but other distributions could potentially be considered for the likelihood.
+
+We resort to physical considerations to define a prior distribution on the parameters $\Theta $. Usually, we are able to define a range of variation for all parameters of the model based on their physical validity: 
+\begin{equation}
+\Theta _{\min } \preceq \Theta \preceq \Theta _{\max },
+\end{equation}
+where $\preceq $ is a component-wise inequality. We simply consider a uniform distribution between the lower and the upper bound for each parameter as prior distribution:
+\begin{equation}
+p(\Theta ) := \mathcal{U}_{\Theta _{\min }, \Theta _{\max }}.
+\end{equation} 
+
+Thanks to Bayes formula, we obtain an expression for the posterior distribution of the parameters $\Theta $ knowing the observations:
+\begin{equation}
+p(\Theta |\mathcal{O})p(\mathcal{O}) = p(\mathcal{O}|\Theta )p(\Theta ).
+\end{equation}
+Since the (unknown) probability law for the observation is independent from $\Theta $, the posterior distribution is proportional to the product of the likelihood and of the prior distribution:
+\begin{equation}
+p(\Theta |\mathcal{O}) \propto p(\mathcal{O}|\Theta )p(\Theta ).
+\end{equation}
+The problem of the model parameterization becomes the determination of a set of parameters maximizing the posterior probability $p(\Theta |\mathcal{O})$:
+\begin{equation}
+\hat{\Theta } = \text{argmax}_\Theta p(\Theta |\mathcal{O}).
+\label{eqn:posterior}
+\end{equation}
+
+
+\subsection{Sampling from the posterior distribution}
+
+A question now arises, which is how to solve the optimization problem from Eq.~(\ref{eqn:posterior}) in practice? An obvious solution could be to use a gradient ascent algorithm to find local maxima in the parameters space. In this section, we propose a distinct approach consisting in using a Monte Carlo Markov Chains (MCMC) algorithm to generate samples from the posterior distribution~\citep{robert, andrieu2003}. This approach offers several benefits compared to gradient ascent. Computing the gradient of the measurements with respect to the parameters is often challenging due to two primary factors. Firstly, there is usually no readily available analytical formula to calculate the gradient. Secondly, the function $m_\Theta$ is a stochastic function dependent on the parameter set $\Theta$, making it difficult to estimate the gradient using a finite difference scheme. Moreover, the MCMC approach possesses an additional advantage as it enables the generation of samples that accurately represent the posterior distribution. This capability allows for the capture of noteworthy characteristics of the microstructure, including parameter correlations and characteristic ranges of parameter variation.
+The algorithm that we propose works as follows:
+\begin{itemize}
+\item \textit{Initialization:} At initialization, we first generate a set of parameters from the prior distribution:
+\begin{equation}
+\Theta _1 \sim \mathcal{U}_{\Theta _{\min }, \Theta _{\max }}.
+\end{equation}
+\item \textit{$n$-th iteration:} At each iteration, we repeat the following steps:
+\begin{enumerate}
+\item \textit{Parameters sampling} we generate a set of parameters $\hat{\Theta }$ from the current state $\Theta _n$ according to a proposal distribution $q$:
+\begin{equation}
+\hat{\Theta } \sim q(\hat{\Theta }|\Theta _n)
+\end{equation}
+\item \textit{Simulation} We compute a simulation of the morphological model with this set of parameters, and perform measurements on the computed microstructure. The measurements $m_{\hat{\Theta }}$ are used to compute the posterior distribution, up to the constant factor $p(\mathcal{O})$:
+\begin{equation}
+p(\hat{\Theta } |\mathcal{O}) \propto p(\mathcal{O}|\hat{\Theta } )p(\hat{\Theta } ).
+\end{equation}
+\item \textit{Accept/reject step} We compute the so-called Hastings ratio $r$, defined by:
+\begin{equation}
+r = \min \bigg (1, \dfrac{p(\hat{\Theta } |\mathcal{O})q(\Theta _n|\hat{\Theta })}{p(\Theta _n|\mathcal{O})q(\hat{\Theta }|\Theta _n)} \bigg )
+\end{equation}
+Noteworthy, the Hastings ratio $r$ is independent of the quantity $p(\mathcal{O})$. The new set of parameters $\hat{\Theta }$ is accepted or rejected with probability $r$:
+\begin{equation}
+\Theta _{n + 1} = \left \{ 
+   \begin{array}{ll}
+ 
+    \hat{\Theta } & \text{ if } u < r \\
+ 
+    \Theta _n & \text{otherwise}
+ 
+   \end{array}
+\right.
+\end{equation}
+where $u$ is a random variable sampled from the uniform distribution $\mathcal{U}(0, 1)$.
+\end{enumerate}
+\end{itemize}
+
+
+\subsection{Numerical experiments}
+
+\subsubsection{Experiments on synthesized random sets}
+
+To illustrate our methodology, we consider two examples of microstructures generated with morphological models. Our objective is to recover the parameterization of these models from statistical measurements conducted on realizations of the models. To that end, for each example, we generate a set of $N = 10$ random microstructures in a domain of size $30$  by $30$ in $\mathbb{R}^2$.
+\begin{itemize}
+\item The first model corresponds to a Boolean model of disks with constant radii $R = 0.5$ and with intensity $\theta = 0.45$. 
+\item The second model corresponds to a Cox-Boolean model of disks corresponding to a two scales microstructure, with the first scale consisting in exclusion zones that remain empty of any inclusions, modeled by a Boolean model of disk with constant radii $R_e = 1$ and intensity $\theta_e = 0.1$. The second scale simulates inclusions located in the complementary of the exclusion zones. The inclusions are described by a Boolean model of disks with intensity $\theta = 0.45$ and radii sampled according to a normal distribution with mean $R = 0.5$ and standard deviation $0.1$.
+\end{itemize}
+Realizations of both morphological models are displayed in Fig.~\ref{fig:microstructures}. To obtain a set of measurements $m_\mathcal{O}$ for each morphological model, we averaged the covariance, the granulometry and the granulometry of the complementary as computed on $10$ model realizations.
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.6]{figures/materials/img1.png} \quad 
+\includegraphics[scale=0.6]{figures/materials/img2.png}
+\caption[Sample of the microstructure generated with the Boolean model of disks and with the Cox-Boolean model.]{Sample of the microstructure generated with the Boolean model of disks (left) and with the Cox-Boolean model (right)~\label{fig:microstructures}.}
+\end{figure}
+
+The upper and lower bounds for the parameters used to define the prior distribution are indicated in table~\ref{tab:params1} for the Boolean model and in table~\ref{tab:params2} for the Cox-Boolean model. We consider the same diagonal covariance matrix $\Lambda $ in the likelihood function~(\ref{eqn:likelihood}) for both morphological models. To put more emphasis on the correlations at the smallest scales, we employ the following expression for the diagonal coefficients of $\Lambda $:
+\begin{equation}
+\Lambda_{n, n} = \lambda \bigg( 1 + \dfrac{1}{n}\bigg)^{-1},
+\end{equation}
+where $\lambda = 0.1$. Next, we initialize the Metropolis-Hastings algorithm by sampling a first set of parameters $\Theta _1 := (\theta _1, R_1)$ from the prior distribution. At each step of the algorithm, the proposal distribution for each parameter is the truncated normal distribution:
+\begin{equation}
+q(\theta | \theta_n) = \mathcal{N}_{tr}(\theta_n, \sigma_{\theta}, \theta_{min}, \theta_{max}),
+\end{equation}
+where $\theta_{min}$ (resp. $\theta_{max}$) is the minimal (resp. maximal) possible value of the parameter as established for defining the prior distribution, and the standard deviation $\sigma$ is set to:
+\begin{equation}
+\sigma _{\theta } = \dfrac{\theta_{max} - \theta_{min}}{\Delta }.
+\end{equation}
+We fix $\Delta = 20$ to get an acceptation rate of $0.3$ in the algorithm. 
+
+\begin{figure}[p]
+\begin{subfigure}[b]{\textwidth}
+\centering
+\includegraphics[width=0.4\textwidth]{figures/materials/cov1.png}
+\caption{Covariance}
+\end{subfigure}\\
+\begin{subfigure}[b]{\textwidth}
+\centering
+\includegraphics[width=0.4\textwidth]{figures/materials/gr1.png}
+\includegraphics[width=0.4\textwidth]{figures/materials/comp1.png}
+\caption[Granulometry measurements of the microstructure and of the complementary.]{Granulometry measurements of the microstructure (left) and of the complementary (right)}
+\end{subfigure}
+\caption[Comparison between the experimental measurements and the measurements obtained with simulations conducted with the MAP parameters identified by the MCMC algorithm for the Boolean model of disks.]{Comparison between the experimental measurements and the measurements obtained with simulations conducted with the MAP parameters identified by the MCMC algorithm for the Boolean model of disks~\label{fig:measurements1}.}
+\end{figure}
+
+\begin{figure}[p]
+\begin{subfigure}[b]{\textwidth}
+\centering
+\includegraphics[width=0.4\textwidth]{figures/materials/cov2.png}
+\caption{Covariance}
+\end{subfigure}\\
+\begin{subfigure}[b]{\textwidth}
+\centering
+\includegraphics[width=0.4\textwidth]{figures/materials/gr2.png}
+\includegraphics[width=0.4\textwidth]{figures/materials/comp2.png}
+\caption{Granulometry measurements of the microstructure (left) and of the complementary (right)}
+\end{subfigure}
+\caption[Comparison between the experimental measurements and the measurements obtained with simulations conducted with the MAP parameters identified by the MCMC algorithm for the Cox-Boolean model of disks.]{Comparison between the experimental measurements and the measurements obtained with simulations conducted with the MAP parameters identified by the MCMC algorithm for the Cox-Boolean model of disks. \label{fig:measurements2}}
+\end{figure}
+
+We stop the algorithm after $500$ iterations, and we discard the first $100$ parameters sampled by the algorithm, as they remain highly dependent on the initial conditions. Finally, we estimate the set of optimal parameters for the microstructure by considering the maximal a posteriori (MAP) value found for the sampled parameters:
+\begin{equation}
+\hat{\Theta } := \arg \max _{n = 100, \dots, 500 } p(\Theta _n|\mathcal{O}).
+\end{equation}
+
+\paragraph{Results and discussion}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=0.48\textwidth]{mcmc/scatterplot1.png} \quad
+\includegraphics[width=0.48\textwidth]{mcmc/scatterplot2.png}
+\caption[Scatterplot of the parameters $1/R^2$ and $\theta $ sampled by the Metropolis-Hastings algorithm for the Boolean model of disks and for the Cox-Boolean model.]{Scatterplot of the parameters $1/R^2$ and $\theta $ sampled by the Metropolis-Hastings algorithm for the Boolean model of disks (left) and for the Cox-Boolean model (right). The color intensity of each point corresponds to the frequency of the corresponding parameters within the samples. \label{fig:scatterplot}}
+\end{figure}
+
+
+The optimal set of parameters $\hat{\Theta } $ found by the Metropolis-Hastings algorithm are displayed in Tab.~\ref{tab:params1} for the Boolean model of disks, along with the standard deviation of the sampled parameters, and in Tab.~\ref{tab:params2} for the Cox-Boolean model. The standard deviation provides valuable information about the sensitivity of the parameters: if a parameter has experienced only minor variations throughout the iterations of the algorithm, it implies that when this parameter deviates from its optimal value, there is a substantial deviation from the targeted measurements. In other words, even small changes in the parameter can have a significant impact on the agreement between the predicted measurements and the desired outcome. Overall, we can note that there is a good agreement between the parameters identified by the algorithm and the ones corresponding to the experimental microstructure. A comparison between the measurements as conducted on the target microstructures simulated with both morphological models and as obtained with the optimal set of parameters $\hat{\Theta }$ is displayed in Fig.~\ref{fig:measurements1} and~\ref{fig:measurements2}. Again, we note a fairly good agreement between the measurements.
+
+\begin{table}
+\centering
+\begin{tabular}{l|ll}
+          & $\theta $ $[L^{-1}]$  & $R$ $[L]$  \\
+\hline
+Target    & 0.45      & 0.5  \\
+$\hat{\Theta } $   & 0.44 $\pm $ 0.05      & 0.52 $\pm $ 0.025 \\
+Min. Val. & 0.2       & 0.15 \\
+Max. val. & 0.9       & 1.05
+\end{tabular}
+\caption{Optimal parameters found by the Metropolis-Hastings algorithm for the Boolean model of disks.~\label{tab:params1}}
+\end{table}
+
+
+\begin{table}
+\centering
+\begin{tabular}{l|llll}
+          & $\theta_e $ $[L^{-1}]$ & $R_e$ $[L]$& $\theta $ $[L^{-1}]$& $R$  \\
+\hline
+Target    & 0.1 & 1. & 0.45  & 0.5  \\
+$\hat{\Theta } $ & 0.13 &  0.85  & 0.45  & 0.5 \\
+Std. Dev. & 0.03 &  0.25 & 0.05 & 0.04 \\
+Min. Val. & 0.05  & 0.5  & 0.2 & 0.15 \\
+Max. val. & 0.2  & 2. & 0.9 & 1.05\\
+\end{tabular}
+\caption{Optimal parameters found by the Metropolis-Hastings algorithm for the Cox-Boolean model of disks.~\label{tab:params2}}
+\end{table}
+
+Fig.~\ref{fig:scatterplot} displays a scatterplot of the parameters sampled by the Metropolis-Hastings algorithm for both morphological models. Interestingly, we note that the parameters $\theta $ and $R$ sampled by the algorithm are strongly correlated in the case of the Boolean model of disks. We performed a linear regression between the parameters $\theta $ and $1/R^2$, to find a coefficient of determination equal to $0.81$. For a Boolean model of disks, the volume fraction $v$ is known to be given by
+\begin{equation}
+v = 1 - \exp (\pi R^2 \theta ).
+\end{equation}
+This leads to the linear relationship
+\begin{equation}
+\dfrac{1}{R^2} = -\dfrac{\pi }{\log (1 - v)}\theta .
+\label{eqn:corr}
+\end{equation}
+The covariance measurements are highly sensitive to the volume fraction. Hence, by construction, the Metropolis-Hastings will usually select a set of parameters that allows to obtain a volume fraction similar to the one measured on the experimental samples. As evidenced in Fig.~\ref{fig:scatterplot} , the parameters are indeed distributed around a straight line. For the Cox-Boolean model, we note that the parameters $\theta $ and $R$ sampled by the algorithm remain correlated, but the correlation is less obvious than for the Boolean model. A linear regression performed between the parameters $\theta $ and $1/R^2$ yields a coefficient of determination equal to $0.51$. Due to the presence of exclusion zones in the microstructure, Eq.~(\ref{eqn:corr}) is not valid anymore, which explains this reduced correlation.
+
+\subsubsection{Experiments on experimental materials}
+
+In this section, we demonstrate the application of our proposed optimization approach to investigate an experimental microstructure. The microstructure under examination consists of pigments embedded in a matrix, forming a colloid film. These pigments possess an elongated ellipsoidal shape similar to that of a needle. To capture the microstructure for analysis, a dataset of experimental images was acquired using transmission electron microscopy (TEM) imaging. Figure~\ref{fig:needles} provides an illustrative example of one such TEM image. The analysis of the experimental TEM images reveals a noticeable tendency of the pigments to aggregate within the microstructure, resulting in the formation of clusters. These clusters exhibit a characteristic size that significantly exceeds the individual pigment size.
+
+To describe the microstructure, we use a two-scale model as follows:
+\begin{itemize}
+\item The first scale of the simulation describes the pigments aggregates through a Boolean model of inclusion spheres characterized by two parameters, namely the intensity $\theta _i$ of the Poisson point $\mathcal{P}$ process used to construct the Boolean model and the radii $R_i$ of the spheres. 
+\item The second scale of the model simulates the pigments within the aggregates using a Boolean model of ellipsoids whose largest semi-axis follows a normal law with mean $L$ and standard deviation $\sigma_L$, and whose smallest semi-axes follow  a normal law with mean $l$ and standard deviation $\sigma_l$. A hardcore distance $h$ is introduced in the underlying point process. Ellipsoids are implanted at locations sampled from a Poisson point process with intensity $\theta $ restricted to the set constituted by the spheres constitutive of the first scale of the model. Ellipsoids belonging to the same inclusion sphere share the same orientation, sampled uniformly from Euler's angles.
+\end{itemize}
+
+\begin{figure}[p]
+\centering
+\begin{subfigure}[b]{\textwidth}
+\centering
+\includegraphics[width=0.4\textwidth]{figures/materials/Needles_cov.png}
+\caption{Covariance}
+\end{subfigure}\\
+\begin{subfigure}[b]{\textwidth}
+\centering
+\includegraphics[width=0.4\textwidth]{figures/materials/Needles_gr.png}
+\includegraphics[width=0.4\textwidth]{figures/materials/Needles_gr_comp.png}
+\caption{Granulometry measurements}
+\end{subfigure}
+\caption[Comparison between the covariance and the granulometries as obtained on the experimental TEM images and on the simulated TEM images for the "needles" microstructure.]{Comparison between the covariance and the granulometries as obtained on the experimental TEM images (dashed lines) and on the simulated TEM images for the "needles" microstructure~\citep{figliuzzi2021}. \label{fig:measurements3}}
+\end{figure}
+
+
+\begin{figure}[p]
+\centering
+\includegraphics[scale=0.6]{figures/materials/microstructure.png}
+\caption[Needles microstructure: experimental TEM image and binary image simulated with the morphological model using the optimal set of parameters identified by the Bayesian approach.]{Needles microstructure: experimental TEM image (left) and binary image simulated with the morphological model using the optimal set of parameters identified by the Bayesian approach~\label{fig:needles}~\citep{figliuzzi2021}.}
+\end{figure}
+
+\begin{table}[!ht]
+\centering
+\begin{tabular}{l|c|c|c|c|c|c|c|r}
+$\theta_i$ (\textmu m$^{-3}$) & $R_i$ (\textmu m) & $\theta $ (\textmu m$^{-3}$) & $L$ (\textmu m) & $l$ (\textmu m) &$h$ (\textmu m)\\
+\hline
+0.56 & 0.54 & 45. & 0.56 $\pm$ 0.08 & 0.07 $\pm$ 0.01 & 0.2 \\
+
+\end{tabular}
+\caption{Optimal parameters for the "needles" microstructure. \label{tab:params3}}
+\end{table}
+
+The description of the microstructure model requires eight parameters. These parameters include the intensity $\theta_i$ of the Poisson point process for the aggregates, their radius $R_i$, the lengths of the semi-axes $L$ and $l$ of the pigments, along with their corresponding standard variations $\sigma_L$ and $\sigma_l$, the intensity $\theta$ of the point process used for the pigments and the hardcore distance $h$.
+
+To determine the model parameters, we employ the Bayesian approach explained in the preceding section. We initiate the Metropolis-Hastings algorithm by setting $\lambda$ to $1$ during the simulation, and we terminate the algorithm after 200 iterations. Similar to before, we estimate the optimal parameter set for the microstructure by selecting the sample that exhibits the highest posterior probability among all the sampled parameters. Throughout the MCMC run, we generate TEM images of the microstructure by first creating a 3D sample of the model, then extracting a thick slice from the 3D volume that matches the thickness of the experimental slices used for obtaining the TEM images, and finally projecting the thick slice onto a single plane. An illustrative example of the microstructure generated using this approach is presented in Figure~\ref{fig:needles}. Covariance and granulometry measurements are subsequently performed on both the experimental and simulated TEM images.
+
+The optimal set of parameters $\hat{\Theta}$ determined by the Metropolis-Hastings algorithm for the morphological model is shown in Table~\ref{tab:params3}. A comparison is presented in Figure~\ref{fig:measurements3} between the measurements conducted on the experimental microstructure and those obtained using the optimal set of parameters. We observe that the optimal parameter set enables us to achieve a good agreement between the experimental measurements and the measurements performed on simulations of the morphological models.
+
+
+\subsection{Conclusion}
+
+In this section, we presented a Bayesian approach for determining the parameters of morphological models of microstructure using measurements obtained from experimental microstructure images. Through various examples, we demonstrated  that this approach effectively identifies the optimal parameters for different morphological models and detects potential correlations among the model parameters. Our proposed methodology offers several advantages compared to other parameter determination approaches. Specifically, it eliminates the need for computing the gradient of the model with respect to the parameters and provides a sequence of parameter samples, enabling the quantification of the parameters sensitivity and the identification of potential correlations between them.
+
+\section{Eikonal based tessellations \label{materials:s4}}
+
+We present in this section a research work that establishes a link between the Johnson-Mehl and Vorono\"i tessellation models and the Eikonal equation on a domain. A direct incentive for this study was the development of efficient algorithms for generating the tessellations used to simulate the interstices of the coldspray microstructure considered in section~\ref{materials:s2}. We base the writing of this section on the article~\citep{figliuzzi2019} published in 2019 in Image Analysis \& Stereology and related to this research study. The analogy established between the Vorono\"i tessellation and the Eikonal equation has two direct applications: the generation of images of the tessellation in an efficient manner, and the generation of tessellations with rough boundaries.
+
+\subsection{Eikonal equation}
+
+The Eikonal equation describes the propagation of a wave on an open domain $\Omega$ through the non-linear partial differential equation:
+\begin{equation}
+\forall x \in \Omega, \quad \nabla t (x) =\dfrac{1}{u(x)}.
+\label{eqn:eikonal_random}
+\end{equation}
+In Eq.~(\ref{eqn:eikonal_random}), $\nabla$ denotes the gradient operator, and $t(x)$ and $u(x)$ represent the first arrival time of the wave at point $x$ and the velocity of the wave at location $x$, respectively.
+
+In order to compute the image of a Johnson-Mehl tessellation on a domain $\Omega$, let us consider the specific version of the Eikonal equation. Given a Poisson point process $\mathcal{P}$ with realizations $(x_i)_{i = 1, \dots , N}$ and corresponding germination times $(\tau_i)_{i = 1, \dots, N}$, we consider the problem:
+\begin{equation}
+\left\{
+\begin{array}{l}
+\nabla t (x) =\dfrac{1}{u(x)}\\
+t(x_i) = \tau_i, \forall i = 1, .., N.
+\end{array}
+\right.
+\label{eqn:eikonal2_random}
+\end{equation}
+If the velocity $u(x)$ is constant, then we can use the following proposition (see~\citep{sethian1996}):
+
+\begin{proposition}
+On the domain $\Omega$, the solution $t$ of problem~(\ref{eqn:eikonal2_random}) satisfies, for all $x \in \Omega$,
+\begin{equation}
+t(x) = \inf_{i = 1, \dots, N}(t_i + ||x - x_i||^2).
+\end{equation}
+\label{prop:eikonal_jm}
+\end{proposition}
+Proposition~\ref{prop:eikonal_jm} states that solving the Eikonal equation is an efficient way to compute the Johnson-Mehl distance on a grid of points, as it precisely matches the distance used for constructing the Johnson-Mehl tessellation. Efficient algorithms are available for this task, including the fast marching algorithm described in the next section~\citep{sethian1996, dejnozkova2003}.
+
+
+\subsection{Fast marching algorithm}
+
+The fast marching (FM) algorithm compute the arrival times in the domain iteratively by following the propagation of the waves coming from the germs. Here, we present a slightly adapted version of the fast marching algorithm that keeps track of the labels of the initial germs during the propagation, in order to facilitate the generation of the Johnson-Mehl tessellation. We restrict ourselves to the $2D$ framework to keep notations simple. We initialize the algorithm as follows:
+\begin{enumerate}
+\item We initialize the map of \emph{arrival times} by setting the arrival at each voxel $x_i$ equal to $t_i = \infty$, except if the considered voxel contains a germ from $\mathcal{P}$. In this case, the arrival time at $x_i$ is set to be the germination time $\tau_j$.
+\item We initialize a map of \emph{labels} that keeps tracks of the wave that has arrived at each location first. We affect the label $j$ to the voxels $x_i$ containing one of the germs $(g_j)_{1 \leq j \leq N}$ are associated the label $j$. We affect the label $0$ to the other voxels.
+\item Finally, we group all voxels containing one of the germ in a set referred to as the \emph{narrow band}. 
+\end{enumerate}
+At each iteration, we extract the voxel $(X, Y)$ of the narrow band with smallest arrival time and we affect it to the \textit{frozen set}. Next, we compute the arrival times of the wave at all neighboring voxels and we add these voxels to the narrow band. At each neighbor location $(x, y)$ of $(X, Y)$, we compute the arrival time by solving Eikonal equation
+\begin{equation}
+||\nabla T|| (x, y) u(x, y) = 1.
+\end{equation}
+The main difficulty at this point is to propose a discretization for the gradient term. Following the work \citep{sethian1996}, we discretize Eikonal equation in the following manner
+\begin{equation}
+\begin{split}
+(t_{x, y} - \min (t_{x, y + 1}, t_{x, y - 1}))^2 + \\
+(t_{x, y} - \min (t_{x + 1, y}, t_{x - 1, y}))^2 = \dfrac{1}{u(x, y)^2}
+\end{split}
+\label{eqn:quadratic}
+\end{equation}
+
+In Eq.~(\ref{eqn:quadratic}), the use of the $\min$ operator ensures that the information propagates from the already computed neighbors, which is essential for the stability of the fast marching method. Equation~(\ref{eqn:quadratic}) is quadratic in $ t_{x,y} $ and admits two solutions. To respect the causality principle, we select the largest solution of~(\ref{eqn:quadratic}). This choice guarantees that the wave propagates forward in time and maintains the consistency of the numerical scheme.
+
+Once the arrival time $t(x, y)$ has been computed, we can encounter two distinct situations:
+\begin{itemize}
+\item When the neighbor point $(x, y)$ is in the narrow band, it means that it has already been affected an arrival time $t^{old}(x, y)$. If $t(x, y) < t_{old}(x, y)$, then we affect the arrival time $t(x, y)$ to $(x, y)$ as well as the label of point $(X, Y)$. On the contrary, if $t(x, y) > t_{old}(x, y)$, the label and the arrival time at $(x, y)$ remain unchanged.
+\item When the neighbor point $(x, y)$ is not in the narrow band, we affect to it the arrival time $t(x, y)$ as well as the label of $(X, Y)$, and we add it to the narrow band.
+\end{itemize} 
+
+At each iteration of the algorithm, it is necessary to extract the element of the narrow band with the smallest arrival time. To sort the elements of the narrow band in an efficient manner, we use a binary heap to store them. We refer the reader interested by more details on the fast marching algorithm implementation to the original articles~\citep{malladi1995, sethian1996, sethian1999}.
+
+\subsection{Applications}
+
+We describe in this section two potential applications of the proposed approach for generating a tessellation: the first application describes a computationally efficient method for generating an image of a Vorono\"i or Johnson-Mehl tessellation from a set of germs. The second application is related to the generation of tessellation with rough boundaries that it is made possible by the use of Eikonal equation. 
+
+\subsubsection{Generation of images from vectorial simulations}
+
+For materials engineering applications, it is often necessary to simulate images of a generated Vorono\"i or Johnson-Mehl tessellation. In practice, the tessellation is entirely characterized by the location of its germs and by the corresponding implantation times in the case of the Johnson-Mehl tessellation. The image generation is achieved by discretizing the domain $\Omega$ and by evaluating the implicit functions associated with the tessellation's cells at each voxel location. However, this approach can be computationally expensive, particularly when high resolution is required. If we denote the number of voxels used to discretize $\Omega$ as $P$, the average number of Poisson points in $\mathcal{P}$ is proportional to $P$. As a result, the image generation algorithm's complexity is $O(P^2)$, which can represent a significant amount of computation when using this method for a vectorial simulation. By contrast, using the approach based on the Eikonal equation yields a complexity in $O(N \log N)$, which is particularly appealing for large values of $N$.
+
+\begin{figure}[p]
+\centering
+\includegraphics[scale=0.35]{figures/materials/Mosaic0.png}\\
+\includegraphics[scale=0.35]{figures/materials/Mosaic1.png}\quad 
+\includegraphics[scale=0.35]{figures/materials/Field1.png}\\
+\includegraphics[scale=0.35]{figures/materials/Mosaic2.png}\quad
+\includegraphics[scale=0.35]{figures/materials/Field2.png}\\
+\includegraphics[scale=0.35]{figures/materials/Mosaic3.png}\quad
+\includegraphics[scale=0.35]{figures/materials/Field3.png}
+\caption[Rough Vorono\"i tessellations and corresponding local velocity field.]{Rough Vorono\"i tessellations (left) and corresponding local velocity field (right). The tessellations were generated with the same set of germs $\mathcal{P}$ on a $50 \times 50$ domain, discretized on a $500 \times 500$ regular grid. The local velocity fields are realizations of Vorono\"i tessellations with respective intensities $\theta = 0$, $\theta = 0.1$, $\theta = 1$ and $\theta = 10$. \label{fig:rough}}
+\end{figure}
+
+\subsubsection{Tessellation with rough boundaries}
+
+We have considered so far a constant velocity field $u$ in the Eikonal equation~(\ref{eqn:eikonal2_random}) for constructing the Johnson-Mehl tessellation. However, when using the Eikonal equation to build the mosaic, it is possible to use any velocity fields on the domain $\Omega $, as long as $u(x) > 0$ for all $x \in \Omega $. This observation opens the way to the development of tessellation models that cannot be directly obtained with classical approaches including the Vorono\"i and the Johnson-Mehl tessellations described previously. A potential application is for instance the generation of tessellations of space with rough boundaries between adjacent cells. 
+
+Let $\mathcal{P}$ be the realization of a marked point process with intensity $\theta $ on an open domain $\Omega $, for which the marks are drawn according to the uniform distribution $\mathcal{U}([0, L])$ on an interval $[0, L] \subset \mathbb{R}_+$. The points in $\mathcal{P}$ as well as their respective marks allow to compute a Johnson-Mehl tessellation on the domain $\Omega $ by solving problem~(\ref{eqn:eikonal2_random}). We construct a random velocity field $u$ on domain $\Omega $ by 
+\begin{enumerate}
+\item computing a Vorono\"i tessellation of $\Omega $ based upon a Poisson point process $\mathcal{P}_v$ with intensity $\theta _v$, and
+\item setting a random velocity drawn according to some distribution $\mathcal{D}$ in each cell of the Vorono\"i tessellation.
+\end{enumerate}
+By solving the problem 
+\begin{equation}
+\left\{
+\begin{array}{l}
+\nabla t (x) =\dfrac{1}{u(x)}\\
+t(x_i) = \tau_i, \forall i = 1, .., N
+\end{array}
+\right.
+\label{eqn:eikonal3_random}
+\end{equation}
+we obtain a tessellation of the domain $\Omega $ ressembling the Johnson-Mehl tessellation generated by solving~(\ref{eqn:eikonal2_random}), but with rough boundaries between adjacent cells. It is worth noting that the roughness observed at the boundaries is closely linked to the characteristic length of the fluctuations in the velocity field. This characteristic length is dependent on the intensity of the Vorono\"i tessellation, denoted by $\theta_v$, which is used to compute the velocity field. A larger value of $\theta_v$ results in a greater number of smaller Vorono\"i cells, leading to velocity variations over shorter distances. As a result, the generated Johnson-Mehl tessellation displays boundaries with a high concentration of roughness patterns with relatively small amplitudes. In contrast, Johnson-Mehl tessellations generated from velocity fields constructed with a smaller value of $\theta_v$ exhibit boundaries with a lower density of roughness patterns with larger amplitudes. In the original article~\citep{figliuzzi2019}, we developed a multi-scale tortuosity descriptor, which is able to characterize the tortuosity of the boundary between two adjacent cells by iteratively computing the tortuosity of smoothened versions of the boundary. This descriptor allowed us to establish a direct correlation between the value of $\theta_v$ and the tortuosity of the boundaries at distinct scales. We refer the reader interested by additional details to the original article~\citep{figliuzzi2019}.
+
+To illustrate our algorithm, we present in figure~\ref{fig:rough} simulations of Vorono\"i tessellations with rough boundaries computed with different values of velocity parameter $\theta_v$. In this figure, we generated four distinct Vorono\"i tessellations on a domain with size $50 \times 50$ discretized on a $500 \times 500$ regular grid. To generate the tessellation, we started from the same realization of a Poisson point process $\mathcal{P}$ with intensity $\theta = 5\times 10^{-2}$. We generated a random velocity field for each one of the tessellations by first constructing a Vorono\"i tessellation of the domain, and then selecting a random velocity drawn from the uniform distribution $\mathcal{U}$ on the interval $[0.2, 1.8]$ for each cell of the tessellation. The characteristic length $\lambda_v$ of the velocity variation can be related to the intensity $\theta _v $ of the point process used to construct the germs of the tessellation through the relationship~\cite{}
+$$
+\lambda_v \simeq \sqrt{\dfrac{1}{\theta _v}}.
+$$
+We note that when $\lambda_v$ is small, it leads to the obtaining of small roughness patterns at the cell boundaries. Conversely, large values of $\lambda_v$ lead to larger sizes of roughness pattern. The proposed method therefore allows to control, at least qualitatively, the amplitude and the size of the roughness patterns observed at the boundaries.
+
+\subsection{Conclusion}
+
+In this section, we established a direct connection between Johnson-Mehl and Voronoï tessellations and the Eikonal equation, showing that the construction of such tessellations can be reformulated as a wave propagation problem. This interpretation provides both theoretical insight and practical advantages. In particular, solving the Eikonal equation with appropriate initial conditions enables an efficient computation of tessellations through the fast marching algorithm, significantly reducing computational complexity compared to classical voxel-wise evaluation methods.
+
+Beyond computational efficiency, the Eikonal framework also offers increased modeling flexibility. By introducing spatially varying velocity fields, we demonstrated that it is possible to generate tessellations with controlled boundary roughness, extending classical Voronoï and Johnson-Mehl models. The characteristic length of the velocity fluctuations directly governs the amplitude and scale of boundary irregularities, providing a simple and intuitive way to tune geometric complexity.
+
+Overall, the Eikonal-based formulation constitutes a powerful and versatile approach for the simulation of tessellated microstructures, with direct applications to morphological modeling and materials science.

@@ -1,0 +1,1571 @@
+\chapter{Morphological models \label{chap:models}}
+
+\section{Introduction \label{models:s1}}
+
+The study of heterogeneous materials, ranging from porous media and composite structures to polycrystalline aggregates, relies heavily on understanding their complex internal microstructures. These microstructures, often characterized by intricate spatial arrangements of phases, grains, or inclusions, play a pivotal role in determining the macroscopic physical properties of materials. However, the sheer complexity and variability of real-world microstructures pose significant challenges for their direct analysis and simulation.
+To address these challenges, morphological models provide a robust mathematical framework for describing, analyzing, and simulating the geometry of heterogeneous media. Rooted in stochastic geometry and mathematical morphology, these models offer a powerful toolkit for capturing the essential features of microstructures, such as connectivity, size distribution, and spatial correlations, while accounting for their inherent randomness.
+This chapter explores the foundational concepts of morphological models, with a focus on their application to materials science. We begin by introducing the core principles of mathematical morphology, including dilation, erosion, opening, and closing operations, which serve as the building blocks for analyzing geometric structures. We then extend these concepts to a probabilistic framework, where random sets and point processes enable the modeling of microstructures as stochastic realizations. Special attention is given to germ-grain models, such as the Boolean model, and random tessellations, including Voronoi and Johnson-Mehl tessellations, which are widely used to simulate realistic material microstructures.
+Beyond theoretical developments, this chapter also addresses practical aspects of morphological modeling, such as parameter estimation and statistical analysis. We discuss methods for inferring model parameters from experimental data, including the use of covariance functions, granulometries, and stereological techniques. These tools are essential for bridging the gap between theoretical models and real-world applications, enabling the generation of synthetic microstructures that faithfully reproduce the geometric characteristics of observed materials.
+
+\section{Basic facts from mathematical morphology}
+
+Mathematical morphology is a theory for the analysis and processing of geometrical structures. It is most commonly applied to digital images, but it can be employed as well on graphs, surface meshes, solids, and many other spatial structures. Random sets theory makes an extensive use of the concepts of mathematical morphology. It is therefore natural to start this introduction with some concepts of mathematical morphology.
+
+\subsection{Dilation and erosion}
+
+The basic idea behind mathematical morphology is to analyze a set $A$ of some topological space $E$ by probing it with a compact set $K$ referred to as structuring element. Hence, mathematical morphology makes extensive use of classical operators of set theory, including for instance union or intersection. We first introduce the two basics bricks of mathematical morphology, namely erosion and dilation.
+
+\begin{definition}
+Let $A$ be a closed set in $E$. The dilated of the set $A$ by the structuring element $K$ is the set
+\begin{equation}
+D^K(A) = \{x \in E | K_x \cap A \ \neq \emptyset \},
+\end{equation}
+where $K_x$ is the translated of the compact $K$ at $x \in E$.
+Similarly, the eroded of the set $A$ by the structuring element $K$ is the set
+\begin{equation}
+E^K(A) = \{x \in E  | K_x \subset A \}.
+\end{equation}
+\end{definition}
+Dilation and erosion are dual operators with respect to the complement, in the sense that dilating the set $A$ by the structuring element $K$ is equivalent to erode $A^c$ by $K$.
+
+We assume now that $E$ is the euclidean space $\mathbb{R}^d$ of dimension $d$. The vectorial space structure of $\mathbb{R}^d$ allows us to define new operations on $\mathcal{P}(\mathbb{R}^d)$, namely the Minkowski addition and substraction. 
+\begin{definition}
+Let $A$ and $B$ be subsets of $\mathbb{R}^d$. The Minkowski addition is defined by
+\begin{equation}
+A \oplus B = \{a + b, a \in A, b \in B \}.
+\end{equation}
+\end{definition}
+The Minkowski addition is an associative and commutative operation. Note that $(\mathcal{P}(\mathbb{R}^d), \oplus )$ is an abelian semi-group, whose neutral element is $\{0\}$.
+
+We introduce some notations at this point. Let $x$ be a point of $\mathbb{R}^d$. We denote by $A_x$ the set $A$ translated at point $x$:
+\begin{equation}
+A_x = A \oplus \{x\}.
+\end{equation}
+Similarly, we denote by $\check{B}$ the symetric set of $B \in \mathcal{P}(E)$ defined by
+\begin{equation}
+\check{B} = \{-x, x \in B\}.
+\end{equation}
+\begin{definition}
+Using these notations, we can define the Minkowski substraction by duality. Let $A$ and $B$ be subsets of $E$. The Minkowski substraction is defined by
+\begin{equation}
+A \ominus B = (A^c \oplus B)^c = \cap_{x \in B}A_x.
+\end{equation}
+\end{definition}
+We can also express the classical dilation and erosion operators of mathematical morphology as functions of the Minkowski addition and substraction respectively. 
+\begin{definition}
+Let $A$ and $B$ be subsets of $\mathbb{R}^d$. The erosion of $A$ by $B$ yields the set
+\begin{equation}
+\{x \in E, B_x \in A \} = A \ominus \check{B}.
+\end{equation}
+Similarly, we can check by duality that the dilation of $A$ by $B$ yields the set
+\begin{equation}
+\{x \in E, B_x \cap A  \neq \o \} = A \oplus \check{B}. 
+\end{equation}
+\end{definition}
+\begin{proposition}
+Let $A, B \in \mathcal{P}(\mathbb{R}^d)$ be subsets of $\mathbb{R}^d$, and $K$, $K_1$, $K_2$ be compact sets of $\mathcal{K}(\mathbb{R}^d)$. Then, we have
+\begin{equation}
+(A \ominus \check{K}_1) \ominus \check{K}_2 = A \ominus (\check{K}_1 \oplus \check{K}_2),
+\label{eqn:ominus1}
+\end{equation}
+\begin{equation}
+(A \cap B) \ominus \check{K} = (A \ominus \check{K}) \cap (B \ominus \check{K}),
+\label{eqn:ominus2}
+\end{equation}
+and
+\begin{equation}
+A \oplus (\check{K}_1 \cup \check{K}_2) = (A \oplus \check{K}_1) \cup (A \oplus \check{K}_2).
+\label{eqn:ominus3}
+\end{equation}
+\end{proposition}
+\begin{proof}
+To prove~(\ref{eqn:ominus1}), we first note that, by definition,
+$$
+A \ominus \check{K}_1 = (A^c \oplus \check{K}_1)^c
+$$
+using the definition of the Minkowski subtraction. Therefore, we have:
+\begin{eqnarray*}
+(A \ominus \check{K}_1) \ominus \check{K}_2 & = & (A^c \oplus \check{K}_1)^c \ominus \check{K}_2 \\
+ & = & ((A^c \oplus \check{K}_1) \oplus \check{K}_2)^c \quad \text{(def. of Minkowski subtraction)}\\
+ & = & (A^c \oplus (\check{K}_1 \oplus \check{K}_2))^c \quad \text{(associativity of Minkowski addition)}\\
+ & = & A \ominus (\check{K}_1 \oplus \check{K}_2)\quad \text{(def. of Minkowski subtraction)} 
+\end{eqnarray*}
+The relations~(\ref{eqn:ominus2}) and~(\ref{eqn:ominus3}) follow immediately from the definition of Minkowski addition and subtraction.
+\end{proof}
+
+\begin{proposition}[Minkowski operations and convexity]
+Let $A \in \mathcal{P}(\mathbb{R}^d)$ be a subset of $\mathbb{R}^d$, and $K$ be a compact set of $\mathcal{K}(\mathbb{R}^d)$. Then :
+\begin{enumerate}
+\item If $A$ is convex, then $A \ominus \check{K}$ is convex.
+\item If $A$ is convex and $K$ is convex, then $A \oplus \check{K}$ is convex.
+\end{enumerate}
+In other words, Minkowski subtraction preserves convexity for any compact $K$ and Minkowski addition preserves convexity if $K$ is convex.  
+\end{proposition}
+
+\begin{proof}
+We address each part separately.
+\begin{enumerate}
+\item {Convexity of $A \ominus \check{K}$:}  Let $x_1, x_2 \in A \ominus \check{K}$ and $\lambda \in [0,1]$. We want to show that
+$$
+x_\lambda := \lambda x_1 + (1-\lambda)x_2 \in A \ominus \check{K}.
+$$
+By definition of Minkowski subtraction, for all $k \in \check{K}$ we have
+$$
+x_1 + k \in A, \quad x_2 + k \in A.
+$$
+Since $A$ is convex, it follows that
+$$
+\lambda(x_1 + k) + (1-\lambda)(x_2 + k) = (\lambda x_1 + (1-\lambda)x_2) + k = x_\lambda + k \in A.
+$$
+As this holds for all $k \in \check{K}$, we conclude that
+$$
+x_\lambda \in A \ominus \check{K}.
+$$
+Hence, $A \ominus \check{K}$ is convex.
+
+\item Convexity of $A \oplus \check{K}$:
+
+Recall the definition of Minkowski addition:
+$$
+A \oplus \check{K} = \{ a + k : a \in A, k \in \check{K} \}.
+$$
+Let $a_1 + k_1, a_2 + k_2 \in A \oplus \check{K}$ and $\lambda \in [0,1]$. Consider the convex combination:
+$$
+\lambda (a_1 + k_1) + (1-\lambda)(a_2 + k_2) = (\lambda a_1 + (1-\lambda) a_2) + (\lambda k_1 + (1-\lambda) k_2).
+$$
+Since $A$ is convex, we have $\lambda a_1 + (1-\lambda) a_2 \in A$. Thus, the convex combination belongs to $A \oplus \check{K}$ if and only if
+$$
+\lambda k_1 + (1-\lambda) k_2 \in \check{K}.
+$$
+In other words, $A \oplus \check{K}$ is convex if $\check{K}$ itself is convex.  
+\end{enumerate}
+\end{proof}
+
+
+\subsection{Opening and closing}
+
+By combining erosion and dilation, we can define two new morphological operators. Let $A, B \in \mathcal{P}(E)$ be subsets of $E$. The \textit{closing} $A^B$ and the \textit{opening} $A_B$ of the set $A$ by $B$ are defined as follows:
+\begin{equation}
+A^B = (A \oplus \check{B}) \ominus B,
+\end{equation}
+and
+\begin{equation}
+A_B = (A \ominus \check{B}) \oplus B.
+\end{equation}
+The opening and closing operators are widely used in mathematical morphology. These operator can for instance be used to perform image denoising and are the fundamental bricks upon which builds most of the theory.
+\begin{figure}[p]
+    \centering
+
+    % (a) Original material
+    \begin{subfigure}[b]{0.6\textwidth}
+        \centering
+        \includegraphics[scale=0.35]{figures/random/material.png}
+        \caption{Segmented microstructure simulated with VtkSim~\cite{vtksim}.}
+    \end{subfigure}
+
+    \vspace{0.5cm}
+
+    % (b) Erosion
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[scale=0.35]{figures/random/erosion.png}
+        \caption{Erosion}
+    \end{subfigure}
+    \hfill
+    % (c) Dilation
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[scale=0.35]{figures/random/dilation.png}
+        \caption{Dilation}
+    \end{subfigure}
+
+    \vspace{0.5cm}
+
+    % (d) Opening
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[scale=0.35]{figures/random/erosion.png}
+        \caption{Opening}
+    \end{subfigure}
+    \hfill
+    % (e) Closing
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[scale=0.35]{figures/random/dilation.png}
+        \caption{Closing}
+    \end{subfigure}
+
+    \caption{Morphological operations applied to a segmented microstructure using a disk of radius one pixel. Erosion removes the smallest components, while dilation expands them.}
+    \label{fig:morphology}
+\end{figure}
+
+\subsection{Granulometry}
+
+A first application of openings and closings related to the description of random sets are the granulometry operators. Intuitively, a granulometry by closing (resp. by opening) is a family of closings (resp. openings) of increasing sizes, which allows us to characterize the size distribution of the connected components of any random set. 
+
+\begin{definition} More formally, a granulometry is a family of set operators $\Phi_{\lambda}$ depending on a positive parameter $\lambda$ satisfying the following properties:
+\begin{itemize}
+\item For all $A$ in $\mathcal{F}(E)$, $\Phi_{\lambda }(A) \subset A$: $\Phi_{\lambda } $ is anti-extensive.
+\item If $A \subset B$, then $\Phi_{\lambda }(A) \subset \Phi_{\lambda }(B)$: $\Phi_{\lambda } $ is increasing.
+\item $\Phi_{\lambda } \circ \Phi_{\mu } = \Phi_{\mu } \circ \Phi_{\lambda } = \Phi _{\max(\mu, \lambda )}$
+\end{itemize}
+\end{definition}
+The axiomatic of granulometries was first formulated by Matheron in~\cite{matheron}. Note that an immediate consequence of the last point of the definition is that $\Phi_{\lambda}$ is necessarily an idempotent operator, in the sense that $\Phi _{\lambda } \circ \Phi _{\lambda } = \Phi _{\lambda }$.
+
+As stated above, the axiomatic of granulometries remains very general. In practice, we will often consider granulometries relying on a familly of openings. Let $K$ be a convex set. We consider the family $\{K_{\lambda}, \lambda > 0 \}$, where $K_{\lambda } = \lambda K$. The operator
+\begin{equation}
+\Phi_{\lambda}(A) = (A \ominus \check{K_{\lambda}}) \oplus K_{\lambda},
+\end{equation}
+defined for all closed set $A$ of $\mathcal{F}(E)$, is a granulometry. For a random set $A$, a granulometry by openings describes the size distribution of the elements of $A$ by opening by convex sets.
+
+In a similar manner, we can define a granulometry by closing. To that end, we consider the operator
+\begin{equation}
+\Phi_{\lambda}(A) = (A \oplus \check{K_{\lambda}}) \ominus K_{\lambda},
+\end{equation}
+defined for all closed set $A$ of $\mathcal{F}(E)$. A granulometry by closing describes the size distribution of the elements of $A$ by closing by convex sets.\\
+
+
+\section{Probabilistic approach and Choquet capacity\label{s1}}
+
+Concepts of mathematical morphology prove very convenient to study random sets. In particular, it is of interest to translate some compact set $K$ in an observation window to analyse a random closed set $A$ of $\mathbb{R}^n$. Two elementary events can occur: 
+\begin{itemize}
+\item if $K \cap A = \emptyset$, the structuring element $K$ is disjoint from $A$;
+\item otherwise, if $K \cap A \neq \emptyset$, the structuring element $K$ hits the set $A$.
+\end{itemize}
+The random closed set $A$ is completely characterized by the functional $T(K)$ defined for all compact sets $K$ by
+\begin{equation}
+T(K) = P\{A \cap K \neq \emptyset \} = 1 - P\{K \cap A^c\} = 1 - Q(K)
+\end{equation}
+$T(K)$ is called the Choquet capacity of the random closed set $A$. Note that the Choquet capacity is closely related to dilation and erosion operators. For all compact set $K \subset \mathbb{R}^n$, we have indeed
+\begin{equation}
+T(K) = P \{K \cap A \neq \emptyset \} = P\{x \in A \oplus \check{K}\}
+\end{equation}
+\begin{proposition}
+The Choquet capacity is related to the Minkowski operators by the following equation :
+\begin{equation}
+Q(K) = P \{K \subset A^c \} = P\{x \in A^c \ominus \check{K}\}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+By definition, the functional $Q(K)$ is the probability that the compact set $K$ is entirely contained in the complement of $A$:
+$$
+Q(K) := P\{ K \subset A^c \}.
+$$
+Recall the definition of Minkowski subtraction (erosion) of a set $B$ by a compact set $K$:
+$$
+B \ominus \check{K} := \{ x \in \mathbb{R}^n : x + \check{K} \subset B \}.
+$$
+Let us apply this definition with $B = A^c$. Then, for any $x \in \mathbb{R}^n$,
+$$
+x \in A^c \ominus \check{K} \quad \Longleftrightarrow \quad x + \check{K} \subset A^c.
+$$
+Now, notice that $\check{K} = \{ -k : k \in K \}$. If we translate $\check{K}$ by $x$, we get
+$$
+x + \check{K} = \{ x - k : k \in K \}.
+$$
+Therefore, the event
+$$
+\{ x \in A^c \ominus \check{K} \}
+$$
+is exactly the event that ``the translated version of $K$ by $x$ lies entirely in $A^c$``, which is equivalent (up to translation) to $K \subset A^c$. Hence, taking probabilities, we obtain
+$$
+Q(K) = P\{ K \subset A^c \} = P\{ x \in A^c \ominus \check{K} \}.
+$$
+This shows that the erosion of $A^c$ by $\check{K}$ describes exactly the event that $K$ is contained in $A^c$, and thus
+$$
+Q(K) = P\{ x \in A^c \ominus \check{K} \}.
+$$
+\end{proof}
+
+The structuring element $K$ can be a single point $\{x\}$ of $\mathbb{R}^n$ or any compact set of $\mathbb{R}^n$. However, we have to insist on the fact that the choice of structuring element is fundamental. Each compact set $K$ indeed brings its own information on the studied set $A$. For instance, if one chooses $K$ to be a single point, the choquet capacity yieds
+\begin{equation}
+T(\{x\}) = P \{\{x\} \cap A \neq \emptyset \} = P\{x \in A \},
+\end{equation}
+which is the \textit{spatial law} of the set $A$. Similarly, if one chooses $K$ to be the set $\{x, x + h\}$, the choquet capacity allows to calculate the \textit{covariance} of the random closed set.
+\begin{equation}
+T(\{x, x + h\}) = P\{x \in A , x + h \in A \}.
+\end{equation}
+
+\subsection{Covariance}
+
+The covariance is a - if not \textit{the} - fundamental tool to describe spatial arrangement in a random closed set.
+\begin{definition}The covariance of a random set $A \subset \mathbb{R}^n$ is the function $C_A$ defined on $\mathbb{R}^n \times \mathbb{R}^n$ by
+\begin{equation}
+C_A(x, x + h) = P\{x \in A, x + h \in A \},
+\end{equation}
+where $h$ is some vector of $\mathbb{R}^n$.
+\label{def:covariance}
+\end{definition}
+The covariance of the set $A$ at a given point $x$ and for a distance $h$ is the probability that $x$ and $x + h$ both belong to $A$. Note that for a stationary random set, the covariance is a function of the distance $h$ only:
+\begin{equation}
+C_A(x, x + h) = C_A(h).
+\end{equation}
+If in addition the set $A$ is ergodic, meaning that its spatial averages over a single realization are representative of ensemble averages over many realizations, the covariance $C(h)$ can be estimated from the volume fraction of $A \cap A_{-h}$ as
+\begin{equation}
+C_A(h) = P\{x \in  A \cap A_{-h} \} = V(A \cap A_{-h}) = V(A \ominus \check{h}),
+\label{eqn:ergodicity}
+\end{equation}
+where $h$ is the set $\{x, x + h\}$. In practice, this allows the covariance to be computed from a single experimental sample of the random set using equation~(\ref{eqn:ergodicity}), rather than requiring multiple realizations.\\
+
+The covariance $C_A$ provides useful information about the spatial arrangement of the random set $A$. In particular, it accounts for the presence of several scales in the studied set or for periodicity. Note that by definition, $C_A(0)$ simply corresponds to the volumic fraction of the set $A$. For any orientation, the covariance $C(h)$ reaches a sill at the distance or range $h_{\infty}$. At this distance, events $\{x \in A \}$ and $\{x + h_{\infty} \}$ are independent and we have
+\begin{equation}
+C_A(h_{\infty}) = p^2.
+\end{equation}
+These considerations enable us to define a normalized version of the covariance that remains between $0$ and $1$:
+\begin{equation}
+\gamma (h) = \dfrac{C(h) - p^2}{p(1 - p)}.
+\end{equation}
+For an ergodic experimental sample, the covariance can be estimated with relation~(\ref{eqn:ergodicity}). An alternative approach is to use the Fourier transform:
+\begin{proposition}
+Let $A$ be a subset of $\mathbb{R}^d$. Then, the covariance of $A$ is 
+\begin{equation}
+C_A(h) = \dfrac{1}{(2\pi)^n}\int_{\mathbb{R^n}}|\hat{f}(\xi )|^2\exp (i \xi h) d\xi.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Let $A \subset \mathbb{R}^n$ be a random closed set. Define its indicator function
+$$
+f(x) := \mathbf{1}_A(x) = 
+\begin{cases}
+1, & x \in A,\\
+0, & x \notin A.
+\end{cases}
+$$
+By definition, the covariance of $A$ at a lag $h$ is
+$$
+C_A(h) = \mathbb{E}[f(x) f(x+h)].
+$$
+Consider the Fourier transform of $f$, denoted by
+$$
+\hat{f}(\xi) = \int_{\mathbb{R}^n} f(x) e^{-i \xi \cdot x} \, dx.
+$$
+Recall the convolution theorem: for two functions $f$ and $g$,
+$$
+\mathcal{F}[f * g] = \hat{f} \, \hat{g}, \quad \text{and} \quad f * g(x) = \int_{\mathbb{R}^n} f(y) g(x-y) \, dy.
+$$
+The covariance can be expressed as a convolution:
+$$
+C_A(h) = \int_{\mathbb{R}^n} f(x) f(x+h) \, dx = (f * f^\dagger)(h),
+$$
+where $f^\dagger(x) := f(-x)$ is the reflection of $f$. Applying the Fourier transform, we have
+$$
+\mathcal{F}[C_A](\xi) = \mathcal{F}[f * f^\dagger](\xi) = \hat{f}(\xi) \, \overline{\hat{f}(\xi)} = |\hat{f}(\xi)|^2,
+$$
+where the overline denotes complex conjugation. Finally, applying the inverse Fourier transform gives
+$$
+C_A(h) = \frac{1}{(2\pi)^n} \int_{\mathbb{R}^n} |\hat{f}(\xi)|^2 e^{i \xi \cdot h} \, d\xi.
+$$
+
+\end{proof}
+
+
+The covariance of a random set $A$ generally depends on the orientation of the vector $h$. The \textit{isotropised covariance} is defined to be 
+\begin{equation}
+\bar{C}(h) = \int_{S_{d-1}}C(h\mathbf{u})U(d\mathbf{u}),
+\end{equation}
+where $\mathbf{u}$ is an unitary vector and $U(d \mathbf{u})$ denotes the uniform distribution on the unit sphere $S_{d - 1}$.\\
+
+Some features of the covariance can easily be expressed analytically. A fundamental example is given by its first derivative.
+
+\begin{proposition} Let $A$ be a random set on $\mathbb{R}^d$. Then, the first derivative of the covariance is
+\begin{equation}
+\dfrac{d}{dh}C_{A}(h \mathbf{u}) = - \lim _{h \rightarrow 0} \nu_{d-1}((K \cap K_{r\mathbf{u}})|_{\mathbf{u}^{\perp}}),
+\label{eqn:covariancederivative}
+\end{equation}
+where $\nu_{d-1}$ is the Lebesgue measure on $\mathbb{R}^{d-1}$ and $\mathbf{u}$ is some unit vector. $(K \cap K_{r\mathbf{u}})|_{u\perp }$ denotes the projection of $ (K \cap K_{r\mathbf{u}})$ on the hyperplane that has $\mathbf{u}$ as normal vector. 
+\end{proposition}
+\begin{proof}
+Let $A \subset \mathbb{R}^d$ be a random closed set with covariance
+$$
+C_A(h \mathbf{u}) = P\{ x \in A, x + h\mathbf{u} \in A \},
+$$
+where $\mathbf{u}$ is a unit vector in $\mathbb{R}^d$.
+The proof proceeds in four subsequent steps:
+\begin{enumerate}
+\item \textit{Covariance in terms of volume fractions:}
+
+For a compact observation window $K \subset \mathbb{R}^d$, the covariance along the direction $\mathbf{u}$ can be expressed as
+$$
+C_A(h \mathbf{u}) = V(A \cap A_{h \mathbf{u}}),
+$$
+where $A_{h \mathbf{u}}$ denotes the translation of $A$ by $h \mathbf{u}$. This follows from ergodicity, as in equation~(\ref{eqn:ergodicity}).  
+
+\item \textit{Difference quotient:}
+
+The derivative of the covariance in the direction $\mathbf{u}$ is formally
+$$
+\frac{d}{dh} C_A(h \mathbf{u}) = \lim_{\Delta h \to 0} \frac{C_A((h+\Delta h)\mathbf{u}) - C_A(h\mathbf{u})}{\Delta h}.
+$$
+
+Substituting the volume fraction expression, we get
+$$
+\frac{d}{dh} C_A(h \mathbf{u}) = \lim_{\Delta h \to 0} \frac{V(A \cap A_{(h+\Delta h)\mathbf{u}}) - V(A \cap A_{h \mathbf{u}})}{\Delta h}.
+$$
+\item \textit{Geometric interpretation for $h \to 0$:} 
+
+For small $\Delta h$, the difference
+$$
+V(A \cap A_{h \mathbf{u}}) - V(A \cap A_{(h+\Delta h) \mathbf{u}})
+$$
+corresponds to the volume of the ``boundary layer`` of thickness $\Delta h$ where $A$ and $A_{h\mathbf{u}}$ stop overlapping. By classical results in geometric measure theory (Steiner formula and Crofton formula, see section~\ref{s1.4}), this volume is approximately
+$$
+\Delta h \cdot \nu_{d-1}\big( (A \cap A_{h\mathbf{u}})|_{\mathbf{u}^{\perp}} \big) + o(\Delta h),
+$$
+where $\nu_{d-1}$ is the $(d-1)$-dimensional Lebesgue measure on the hyperplane orthogonal to $\mathbf{u}$, and $(A \cap A_{h\mathbf{u}})|_{\mathbf{u}^{\perp}}$ is the orthogonal projection of $A \cap A_{h\mathbf{u}}$ onto that hyperplane.
+
+\item \textit{Taking the limit:}  
+
+Dividing by $\Delta h$ and taking the limit $\Delta h \to 0$, we obtain
+$$
+\frac{d}{dh} C_A(h \mathbf{u}) = - \nu_{d-1}\big( (A \cap A_{h\mathbf{u}})|_{\mathbf{u}^{\perp}} \big).
+$$
+Finally, evaluating at $h \to 0$, the derivative of the covariance at zero lag is
+$$
+\frac{d}{dh} C_A(h \mathbf{u})\Big|_{h=0} = - \lim_{h \to 0} \nu_{d-1}\big( (K \cap K_{h\mathbf{u}})|_{\mathbf{u}^{\perp}} \big),
+$$
+where $K$ is the compact observation window. Thus, the first derivative of the covariance along the direction $\mathbf{u}$ is given by the negative $(d-1)$-dimensional measure of the projection of the overlap region onto the hyperplane perpendicular to $\mathbf{u}$, which proves equation~\eqref{eqn:covariancederivative}.
+\end{enumerate}
+\end{proof}
+When $d = 3$, for the isotropic case, equation~(\ref{eqn:covariancederivative}) simply yields
+\begin{equation}
+\dfrac{dC_{A}}{dh}(0) = - S(A),
+\end{equation}
+where $S(A)$ is the surface area of the set $A$ in $\mathbb{R}^3$. Similarly, when $d = 2$, equation~(\ref{eqn:covariancederivative}) yields
+\begin{equation}
+\dfrac{dC_{A}}{dh}(0) = -\mathcal{P}(A),
+\end{equation}
+where $\mathcal{P}(A)$ is the length of the perimeter of $A$ in $\mathbb{R}^2$.
+
+\section{Measurements on random sets \label{s1.4}}
+
+Starting from a material image, it is possible to measure a very large number of parameters. It is, however, essential that these parameters be meaningful with respect to the physics and the geometry of the material. Two families of parameters are usually considered, namely \textit{metric} and \textit{topological} parameters. Intuitively, if we consider inclusions embedded in a matrix, one may be interested in the volume fraction of inclusions. This parameter is metric, in the sense that it is obtained directly through measurement. Conversely, one may also be interested in the number of included particles. This parameter is topological, as it is obtained by counting.
+
+In practice, strict limitations are imposed on admissible measurements. First, one generally requires the measurement to be invariant under isometries. This ensures that a measurement performed on a set $X$ does not depend on its location or orientation in space. A \textit{homogeneity} condition must also be satisfied: if the same set $X$ is observed at different scales, the measurement should scale accordingly. This condition yields, for a measurement $W$ that is homogeneous of degree $k$,
+\begin{equation}
+W(\lambda X) = \lambda^{k} W(X),
+\end{equation}
+where $\lambda > 0$.
+
+An additional requirement is \textit{additivity}. In mathematical terms, this condition is expressed through the relation
+\begin{equation}
+W(X) + W(Y) = W(X \cup Y) + W(X \cap Y),
+\end{equation}
+whenever the union $X \cup Y$ is admissible. Finally, the measurement should be \textit{continuous}: small deformations of the measured set must not result in large variations of the measured value.
+
+Finite unions of convex sets play a key role in stochastic geometry. Much of the geometric theory of random sets is built upon results obtained for convex sets and their extensions to finite unions of convex sets. A fundamental result states that all measurements satisfying the conditions listed above can be expressed as linear combinations of a finite number of basic functionals, known as Minkowski functionals. We discuss this result in greater depth in the following sections.
+
+\subsection{Minkowski functionals and intrinsic volumes \label{sub:s1}}
+
+\begin{definition}
+A subset $C$ of $\mathbb{R}^d$ is said to be convex if, for every pair of points $x,y \in C$ and every $c \in [0,1]$, we have
+\begin{equation}
+cx + (1-c)y \in C.
+\end{equation}
+\end{definition}
+
+Affine linear subspaces provide archetypal examples of convex sets. An affine linear subspace $L$ of dimension $k$ in $\mathbb{R}^d$ is a translation of a $k$-dimensional linear subspace and can be characterized as the solution set of $d-k$ independent affine equations. Such subspaces are commonly referred to as \textit{$k$-flats} or \textit{$k$-planes}.
+
+\begin{definition}
+A \textit{convex body} is a compact, convex subset of $\mathbb{R}^d$. We denote by $\mathcal{C}(\mathbb{R}^d)$ the family of all convex bodies in $\mathbb{R}^d$.
+\end{definition}
+
+\begin{definition}
+A \textit{convex body functional} is a functional $h$ defined on $\mathcal{C}(\mathbb{R}^d)$ that assigns a real value $h(C)$ to each $C \in \mathcal{C}(\mathbb{R}^d)$. Such a functional is said to be:
+\begin{itemize}
+\item isometry-invariant if $h(\mathcal{G}C) = h(C)$ for every isometry $\mathcal{G}$;
+\item monotone if $C_1 \subset C_2$ implies $h(C_1) \le h(C_2)$;
+\item $C$-additive if, for all $C_1,C_2 \in \mathcal{C}(\mathbb{R}^d)$ such that $C_1 \cup C_2$ is convex, we have
+\begin{equation}
+h(C_1) + h(C_2) = h(C_1 \cup C_2) + h(C_1 \cap C_2).
+\end{equation}
+\end{itemize}
+\end{definition}
+
+A fundamental theorem of integral geometry states that all convex body functional that are isometry-invariant, monotone and $C-$additive can be expressed as linear combinations of the Minkowski functionals $W_d$. The Minkowski functionals are isometry-invariant, monotone, $C$-additive convex body functionals, defined directly on $ \mathcal{C}(\mathbb{R}^d)$ by the formula
+\begin{equation}
+W_k(C) = \dfrac{b_d}{b_{d - k}} \int _{\mathbb{L}_k} \mu_{d - k}(C|_{E^{\perp }}) U_{k}(dE).
+\label{eqn:minkowski}
+\end{equation}
+In this expression, $b_k$ denotes is the volume of the unit ball in $\mathbb{R}^k$. $\mu_{k}$ is the $k$-dimensional Lebesgue measure. $\mathbb{L}_k$ is the set of all $k$-subspaces, $C|_{E^{\perp }}$ is the orthogonal projection of the convex body $C$ on $E^\perp $, $E^\perp $ is the $(d-k)$-subspace orthogonal to $E \in \mathbb{L}_k$, and $U_{k}$ is the uniform probability distribution on $\mathbb{L}_k$.\\\\
+$\forall d > 0$, for $k = 0$, equation~(\ref{eqn:minkowski}) becomes 
+\begin{equation}
+W_0(C) = \int _{\mathbb{L}_0} \mu_{d}(C|_{E^{\perp }}) U_{0}(dE) = \mu_{d}(C).
+\end{equation}
+Hence, $W_0(C)$ is equal to the volume $\mu_d(C)$.\\
+Similarly, $\forall d > 0$, for $k = d$, we find
+\begin{equation}
+W_d(C) = b_d
+\end{equation}
+
+\begin{theorem}[Hadwiger's characterization theorem]
+Every non-negative, isometry-invariant, monotone, and $C$-additive convex body functional $h$ on $\mathcal{C}(\mathbb{R}^d)$ can be written uniquely as a linear combination of the Minkowski functionals:
+\begin{equation}
+h(C) = \sum_{k=0}^{d} a_k W_k(C), \quad \forall C \in \mathcal{C}(\mathbb{R}^d),
+\end{equation}
+where the coefficients $a_k$ are real constants.
+\end{theorem}
+
+
+In dimensions $d=1,2,3$, the Minkowski functionals admit the following explicit interpretations:
+\begin{center}
+\begin{tabular}{l|c}
+\hline \\
+\textbf{d = 1} & $\quad W_{0}(C) = \mathcal{L}(C)$,  $\quad W_{1}(C) = 2$\\\\
+\textbf{d = 2} & $\quad W_{0}(C) = \mathcal{A}(C)$,  $\quad W_{1}(C) = \dfrac{L(C)}{2}$, \\
+& $\quad W_{2}(C) = \pi $\\\\
+\textbf{d = 3} & $\quad W_{0}(C) = \mathcal{V}(C)$,  $\quad W_{1}(C) = \dfrac{S(C)}{3}$,  \\
+ &  $\quad W_{2}(C) = \dfrac{M(C)}{3}$, $\quad W_{3}(C) = \dfrac{4 \pi}{3}$,\\\\
+ \hline 
+\end{tabular}
+\end{center}
+
+Here $\mathcal{L}(C)$, $\mathcal{A}(C)$, and $\mathcal{V}(C)$ denote the length, area, and volume of $C$ in dimensions $1$, $2$, and $3$, respectively. The quantity $L(C)$ denotes the boundary length in two dimensions, $S(C)$ the surface area in three dimensions, and $M(C)$ the integral of mean curvature, defined by
+\begin{equation}
+M(C) = \int_{\partial C} m(x), dS,
+\end{equation}
+where $m(x)$ is the mean curvature at $x \in \partial C$.
+
+Some authors prefer to work with an equivalent family of functionals known as \textit{intrinsic volumes}. The intrinsic volumes $V_k$, $k=0,\dots,d$, are related to the Minkowski functionals by
+\begin{equation}
+b_{d-k} V_k(C) = \binom{d}{k} W_{d-k}(C).
+\end{equation}
+In dimensions $d=1,2,3$, the intrinsic volumes take the following form:
+
+\begin{center}
+\begin{tabular}{l|c}
+\hline \\
+\textbf{d = 1} & $\quad V_{0}(C) = 1$,  $\quad V_{1}(C) = \mathcal{L}(C)$\\\\
+\textbf{d = 2} & $\quad V_{0}(C) = 1$,  $\quad V_{1}(C) = \dfrac{L(C)}{2}$, \\
+& $\quad V_{2}(C) = \mathcal{A}(C) $\\\\
+\textbf{d = 3} & $\quad V_{0}(C) = 1$,  $\quad V_{1}(C) = \dfrac{M(C)}{\pi}$,  \\
+ &  $\quad V_{2}(C) = \dfrac{S(C)}{2}$, $\quad W_{3}(C) = \mathcal{V}(C)$.\\\\
+ \hline 
+\end{tabular}
+\end{center}
+
+\subsection{Steiner formulae \label{sub:s2}}
+
+Convex geometry is closely related to mathematical morphology. In particular, Steiner formulae provide a powerful tool for expressing the volume of a convex body dilated by a ball of radius $r>0$ in terms of its Minkowski functionals.
+
+\begin{definition}
+Let $A \subset \mathbb{R}^d$. The parallel set of $A$ at distance $r$ is defined as
+\begin{equation}
+A_{\oplus r} = A \oplus B(0,r).
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Steiner formula]
+Let $C \in \mathcal{C}(\mathbb{R}^d)$ and $r>0$. Then
+\begin{equation}
+\mu_d(C \oplus B(0,r)) = \sum_{k=0}^{d} \binom{d}{k} W_k(C) r^{d-k}.
+\label{eqn:steiner}
+\end{equation}
+Equivalently, in terms of intrinsic volumes,
+\begin{equation}
+\mu_d(C \oplus B(0,r)) = \sum_{k=0}^{d} b_{d-k} V_k(C) r^{d-k}.
+\end{equation}
+\end{theorem}
+
+\subsection{Stereology and Crofton formulae \label{sub:s3}}
+
+In many experimental situations, observations are obtained from images that provide only a two-dimensional representation of an inherently three-dimensional microstructure. This is notably the case in materials science, where micrographs or polished sections reveal planar cuts through a bulk material. As a consequence, one is often required to estimate geometric or topological characteristics defined in $\mathbb{R}^3$ from measurements performed in $\mathbb{R}^2$.
+
+A parameter is said to be \textit{stereological} if it can be inferred from lower-dimensional observations in an unbiased manner, that is, if its expected value can be recovered from measurements performed on sections, projections, or intersections of the structure with lower-dimensional subspaces. Stereology thus provides a rigorous mathematical framework for linking measurements across dimensions.
+
+A cornerstone of stereological theory is given by the Crofton formulae. These results relate intrinsic volumes of a convex body to mean values of intrinsic volumes of its intersections with affine subspaces of complementary dimension. In essence, Crofton formulae express global geometric quantities in terms of averages of simpler measurements performed on lower-dimensional sections.
+
+Let $C \subset \mathbb{R}^d$ be a convex body, and let $A(d,k)$ denote the space of all $k$-dimensional affine subspaces of $\mathbb{R}^d$, endowed with the motion-invariant Haar measure $\nu_{d,k}$. For $k = 0,1,\dots,d-1$, the Crofton formula states that the intrinsic volume $V_{d-k}(C)$ can be expressed as
+\begin{equation}
+V_{d-k}(C)
+= c_{d,k} \int_{A(d,k)} V_0(C \cap E)\, \nu_{d,k}(dE),
+\end{equation}
+where $V_0$ denotes the Euler characteristic and $c_{d,k}$ is a dimension-dependent normalization constant. In other words, intrinsic volumes can be obtained by averaging topological characteristics of intersections of $C$ with randomly oriented affine subspaces.
+
+More generally, Crofton-type relations take the form
+\begin{equation}
+\int_{A(d,k)} V_j(C \cap E)\, \nu_{d,k}(dE)
+= c_{d,k,j}\, V_{j+d-k}(C),
+\end{equation}
+for suitable constants $c_{d,k,j}$ and admissible indices $j$. These identities show that quantities such as lengths, areas, surface areas, or Euler characteristics measured on planar sections carry precise quantitative information about the three-dimensional geometry of the object.
+
+In the practically important case $d=3$, many classical stereological relations follow directly from Crofton formulae. For instance, the volume fraction of a phase equals the expected area fraction observed on planar sections, the surface area density is related to the mean boundary length per unit area, and curvature-related quantities can be estimated from intersection counts with test lines or planes. Crofton formulae therefore constitute the theoretical foundation of a large class of stereological estimators used in practice. When combined with assumptions such as stationarity and ergodicity of the underlying random set, they allow intrinsic volumes of random microstructures to be estimated reliably from a finite number of lower-dimensional observations. For comprehensive treatments of stereology and Crofton formulae, we refer the reader to the monographs by Stoyan, Kendall, and Mecke, and by Schneider and Weil.
+
+
+\section{Point processes \label{s1.5}}
+
+We present in this section the general theory of random point processes. A  random point process $\mathcal{P}$ is a collection of random points. Point processes can be considered as the basic ingredients of stochastic geometry. A particular role is played by Poisson point processes in the $d$-dimensional space $\mathbb{R}^d$. In section~\ref{point:s1}, we introduce a general framework for the study of point processes. We study more specifically Poisson point processes in section~\ref{point:s2}. Marked point processes are then discussed in section~\ref{point:s3}. 
+
+\subsection{General theory  \label{point:s1}}
+Let us first introduce a general framework for the study of point processes on locally compact topological spaces. The results of this section are technical and we will only state the most relevant ones, often without proof. We refer the reader to the reference textbooks of Weil and Schneider~\cite{schneider} and Stoyan \textit{et al.}~\cite{stoyan} for a more extensive presentation.
+
+\subsubsection{Random point processes as counting measures}
+
+Let $E$ be a locally compact space with a countable topological basis. We denote by $\mathcal{B}(E)$ the Borel $\sigma $-algebra of $E$. Let $M(E)$ be the set of all locally finite measures defined on $E$. Recall that a measure $\eta $ is said to be locally finite if for all compact $C$ in $\mathcal{K}(E)$, $\eta(C) < \infty$. For all borelian set $A$ in $\mathcal{B}(E)$, we define the evaluation map
+\begin{equation}
+\Phi_A:M \rightarrow \mathbb{R} \cup \{ \infty \}.
+\end{equation}
+When equipped with the $\sigma$-algebra $\mathcal{M}$ generated by all evaluation maps $\{\Phi_A, A \in \mathcal{B}(E) \}$, $M(E)$  forms a measurable space.\\
+
+A class of measures of particular interest for the study of point processes is provided by the counting measures.
+
+\begin{definition}
+A counting measure on $E$ is a measure $\eta $ in $M(E)$ such that for all borelian set $A$ in $\mathcal{B}(A)$, $\eta(A) \in \mathbb{N} \cup \{\infty \}$.  We denote by $N(E)$ the set of all counting measures on $E$.
+\end{definition}
+
+It can be shown that $N(E)$ is a measurable subset of $(M(E), \mathcal{M})$~\cite{schneider}. We denote by $\mathcal{N}$ the corresponding $\sigma$-algebra. A fundamental example of counting measure is given by locally finite sums of Dirac measures:
+\begin{equation}
+\eta = \sum_{k = 1}^{n}\delta_{x_k}.
+\end{equation}
+Another example is given by random Poisson counting measures. For all borelien set $A$ of $\mathbb{R}^d$, a random Poisson counting measure follows a Poisson distribution given by
+\begin{equation}
+\eta (A) = \dfrac{\Theta(A)^k}{k!}\exp (-\Theta (A)),
+\label{eq:pdistr}
+\end{equation}
+where $\Theta $ is some(real) measure on the $\sigma$-algebra $\mathcal{B}(\mathbb{R}^d)$.\\
+
+Point processes can be apprehended either as random sets of discrete points or as random counting measures giving the number of points contained in any domain of $E$. For a counting measure $\eta \in N(E)$, the support $\text{supp } \eta$ is the smallest closed set $A$ in $E$ such that $\eta(E/A) = 0$. The mapping $\eta \rightarrow \text{supp } \eta$ identifies a random measure to its corresponding point process. As alluded to earlier, the set of all locally finite measures on $E$ can be equipped with a $\sigma$-algebra. This consideration enables us to define a probability law on $M(E)$.
+
+\begin{definition}
+A random measure $X$ on $E$ is a measurable map from some probability space $\{\Omega, A, \mathbb{P}\}$ into the measurable space $\{M(E), \mathcal{M} \}$. The image measure $\mathbb{P}_X$ is the distribution of $X$. 
+\end{definition}
+
+For a random measure $X$ which is almost surely concentrated on $N(E)$, since $N(E)$ is a measurable subset of $M(E)$, $\text{supp } X$ is a random point process on $E$. Its distribution is defined for all $Y \in \mathcal{N}$ by the probabilities
+\begin{equation}
+P(Y) = \mathbb{P} \{ X \in Y \} = \mathcal{P} \{ \omega \in \Omega , X(\omega ) \in Y \}.
+\end{equation}
+The finite-dimensional distributions are of particular interest. They are defined for any family  $\{B_1, B_2, .., B_k \}$ of bounded Borel sets of $E$ to be the probabilities
+\begin{equation}
+\mathbb{P} \{ X(B_1) = n_1, .., X(B_k) = n_k \},
+\end{equation}
+where $n_1, .., n_k$ are positive integers.
+
+\subsubsection{Intensity measure}
+
+From now on, we will assume $E$ to be the $d$-dimensional Euclidean space $\mathbb{R}^d$.
+\begin{definition}
+The intensity of the random measure $X$ is the measure on $\mathbb{R}^d$ defined for all borelian set $A$ in $\mathcal{B}(\mathbb{R}^d)$ by
+\begin{equation}
+\Theta(A) = \mathbb{E}[X(A)].
+\end{equation}
+\end{definition}
+The intensity measure of a random point process can be seen as the equivalent of the mean of a real-valued random variable. It is of interest to consider the particular case of a stationary point process. A point process is said to be stationary if its distribution is invariant by translation. Hence, for any configuration $Y$ in $\mathcal{N}$ and for $x \in \mathbb{R}^d$, we have
+$$
+\mathbb{P}\{X \in Y \} = \mathbb{P}\{X + x \in Y \}.
+$$
+For a stationary point process, the intensity measure is necessarily translation-invariant. It implies that 
+\begin{equation}
+\theta(B) = \lambda \mu _D (B),
+\end{equation}
+where $\mu _D$ is the d-dimensional Lebesgue measure on $\mathbb{R}^d$ and $\lambda $ some positive real number.
+
+We conclude this section by stating the Campbell theorem, a fundamental result in the theory of random measures and point processes. It shows that expectations of random integrals with respect to a random measure are completely determined by the intensity measure. As a consequence, many first-order properties of stochastic models driven by random measures can be computed by replacing the random measure with its deterministic intensity. This theorem plays a central role in the study of Poisson random measures, stochastic geometry, and spatial stochastic models.
+
+\begin{theorem}
+Let $X$ be a random measure on $E$ with intensity measure $\Theta $, and let $f:E \rightarrow \mathbb{R}$ be a non-negative, measurable function. Then, we have
+\begin{equation}
+\mathbb{E} \bigg [\int _E fdX \bigg ] = \int_E fd\Theta .
+\end{equation}
+\end{theorem}
+\begin{proof}
+Let $X$ be a random measure on $E$ with intensity measure $\Theta$, that is,
+$$
+\Theta(A) = \mathbb{E}[X(A)] \quad \text{for all measurable } A \subset E.
+$$
+
+\textit{Step 1.} Assume first that $f = \mathbf{1}_A$ for some measurable set $A \subset E$. Then
+$$
+\int_E f \, dX = X(A),
+$$
+and therefore
+$$
+\mathbb{E}\!\left[\int_E f \, dX\right]
+= \mathbb{E}[X(A)]
+= \Theta(A)
+= \int_E f \, d\Theta.
+$$
+
+\textit{Step 2.} Let $f$ be a non-negative simple function, i.e.
+$$
+f = \sum_{i=1}^n a_i \mathbf{1}_{A_i},
+$$
+where $a_i \ge 0$ and the $A_i$'s are measurable and disjoint. By linearity of the integral,
+$$
+\int_E f \, dX = \sum_{i=1}^n a_i X(A_i).
+$$
+Taking expectations and using Step~1,
+$$
+\mathbb{E}\!\left[\int_E f \, dX\right]
+= \sum_{i=1}^n a_i \mathbb{E}[X(A_i)]
+= \sum_{i=1}^n a_i \Theta(A_i)
+= \int_E f \, d\Theta.
+$$
+
+\textit{Step 3.} Let $f$ be a non-negative measurable function. There exists an increasing sequence of non-negative simple functions $(f_n)_{n \ge 1}$ such that
+$$
+f_n \uparrow f \quad \text{pointwise}.
+$$
+By the monotone convergence theorem,
+$$
+\int_E f_n \, dX \uparrow \int_E f \, dX \quad \text{a.s.}
+$$
+and
+$$
+\int_E f_n \, d\Theta \uparrow \int_E f \, d\Theta.
+$$
+Applying the monotone convergence theorem to expectations,
+$$
+\mathbb{E}\!\left[\int_E f \, dX\right]
+= \lim_{n \to \infty} \mathbb{E}\!\left[\int_E f_n \, dX\right]
+= \lim_{n \to \infty} \int_E f_n \, d\Theta
+= \int_E f \, d\Theta.
+$$
+\end{proof}
+
+\subsection{Poisson point process~\label{point:s2}}
+
+\subsubsection{Definition and characterization}
+
+\begin{definition} Let $\theta $ be a locally finite measure on $\mathbb{R}^d$. A Poisson point process on $\mathbb{R}^d$ is a point process such that the number $N(K)$ of points contained in any compact $K$ of $\mathbb{R}^d$ is a Poisson random variable with parameter $\theta (K)$:
+\begin{equation}
+P\{N(K) = k \} = p_k(K) = \dfrac{\theta (K)^k}{k!}\exp (-\theta (K)),
+\end{equation}
+where the intensity $\theta $ is defined by
+\begin{equation}
+\theta (K) = \int_K \theta (dx).
+\end{equation}
+\label{def:ppp}
+\end{definition}
+\begin{proposition} The probability generating function $G_K(s)$ of the random variable $N(K)$ is
+\begin{equation}
+G_K(s) = \sum_{k = 0}^{+\infty } p_k(K) s^k = \exp [\theta (K)(s - 1)].
+\end{equation}
+\end{proposition}
+\begin{proof}
+By definition, the probability generating function of $N(K)$ is
+$$
+G_K(s) = \mathbb{E}[s^{N(K)}] = \sum_{k=0}^{+\infty} p_k(K)\, s^k.
+$$
+Using the expression of $p_k(K)$ for a Poisson random variable with parameter $\theta(K)$, we obtain
+$$
+G_K(s)
+= \sum_{k=0}^{+\infty} \frac{\theta(K)^k}{k!} e^{-\theta(K)} s^k
+= e^{-\theta(K)} \sum_{k=0}^{+\infty} \frac{(\theta(K)s)^k}{k!}.
+$$
+Recognizing the exponential series, we have
+$$
+\sum_{k=0}^{+\infty} \frac{(\theta(K)s)^k}{k!}
+= \exp\!\big(\theta(K)s\big).
+$$
+Therefore,
+$$
+G_K(s)
+= e^{-\theta(K)} \exp\!\big(\theta(K)s\big)
+= \exp\!\big(\theta(K)(s-1)\big),
+$$
+which proves the result.
+\end{proof}
+
+An important consequence of definition~\ref{def:ppp} is that for any family $\{K_i,  i \in I\}$ of disjoint compact sets, the random variables $N(K_i)$ are independant. This property is referred to as \textit{complete independance}. In many practical situations, the measure $\theta $ is proportional to the Lebesgue measure on the $\sigma$-algebra of $\mathbb{R}^d$. In this case, the Poisson point process is said to be \textit{stationary} and the number $N(K)$ of points contained in a given compact $K$ is
+\begin{equation}
+P\{N(K) = k \} = \dfrac{(\theta \mu _d (K))^k}{k!}\exp (-\theta \mu _d(K)),
+\end{equation}
+$\mu _d$ being the Lebesgue measure of $\mathbb{R}^d$.\\
+
+A Poisson point process is easily characterized by its Choquet capacity, as demonstrated below in proposition~\ref{prop:choquet}.
+
+\begin{proposition}The Choquet capacity $T(K)$ of a Poisson point process is
+\begin{equation}
+T(K) = 1 - P\{N(K) = 0\} = 1 - \exp(-\theta(K)).
+\end{equation}
+If the process is stationary, the Choquet capacity becomes
+\begin{equation}
+T(K) = 1 - \exp(-\theta \mu_d(K)).
+\end{equation}
+\label{prop:choquet}
+\end{proposition}
+
+\begin{proof}
+By definition, the Choquet capacity $T(K)$ of a Poisson point process is the probability that $K$ intersects at least one point of the process. According to definition~\ref{def:ppp}, we have
+\begin{equation}
+P\{N(K) > 0 \} = 1 - P\{N(K) = 0 \} = 1 - \exp(-\theta(K)).\\
+\end{equation}
+\end{proof}
+
+For a stationary Poisson point process $X$, the intensity can easily be estimated from some experimental dataset by
+\begin{equation}
+\bar{\theta } = \dfrac{X(W)}{\mu_d(W)},
+\end{equation}
+where $W$ denotes the observation window in $\mathbb{R}^d$. As the size of the window increases, we have $\bar{\theta } \rightarrow \theta $. 
+
+\begin{proposition}
+If $\mathcal{P}_1$, ... $\mathcal{P}_n$ are n independant Poisson point processes $\mathcal{P}_k$ with respective intensities $\theta _1$, .., $\theta_n$, then the union set $\mathcal{P} = \cup_{k = 0}^{n}\mathcal{P}_k$ is a Poisson point process of intensity $\theta = \sum_{k = 1}^{n} \theta_k$.
+\end{proposition}
+\begin{proof}
+Let $K \subset \mathbb{R}^d$ be a compact set. For each $k=1,\dots,n$, denote by
+$$
+N_k(K)
+$$
+the number of points of the Poisson point process $\mathcal{P}_k$ contained in $K$.  
+Since the point processes $\mathcal{P}_1,\dots,\mathcal{P}_n$ are independent, the random variables
+$$
+N_1(K),\dots,N_n(K)
+$$
+are independent Poisson random variables with respective parameters $\theta_1(K),\dots,\theta_n(K)$.
+
+The number of points of the union process
+$$
+\mathcal{P} = \bigcup_{k=1}^n \mathcal{P}_k
+$$
+contained in $K$ is
+$$
+N(K) = \sum_{k=1}^n N_k(K).
+$$
+The probability generating function of $N(K)$ is therefore
+$$
+G_K(s) = \mathbb{E}[s^{N(K)}]
+= \prod_{k=1}^n \mathbb{E}[s^{N_k(K)}],
+$$
+where we used the independence of the processes. By Proposition~\ref{def:ppp}, the probability generating function of $N_k(K)$ is
+$$
+\mathbb{E}[s^{N_k(K)}]
+= \exp\!\big(\theta_k(K)(s-1)\big).
+$$
+Hence,
+$$
+G_K(s)
+= \prod_{k=1}^n \exp\!\big(\theta_k(K)(s-1)\big)
+= \exp\!\bigg(\sum_{k=1}^n \theta_k(K)(s-1)\bigg)
+= \exp\!\big(\theta(K)(s-1)\big),
+$$
+where
+$$
+\theta(K) = \sum_{k=1}^n \theta_k(K).
+$$
+This is the probability generating function of a Poisson random variable with parameter $\theta(K)$.  
+Therefore, for every compact set $K \subset \mathbb{R}^d$, the random variable $N(K)$ is Poisson distributed with parameter $\theta(K)$, and the union process $\mathcal{P}$ is a Poisson point process with intensity measure
+$$
+\theta = \sum_{k=1}^n \theta_k.
+$$
+\end{proof}
+
+\begin{proposition}[Nearest-neighbor distance distribution] Let $X$ be a stationary Poisson point process. We define the nearest-neighbor distance distribution function $\Delta $ to be the distribution of the random distance from a typical point $x$ of $X$  to the nearest other point in the process. Since $X$ is stationary, without lost of generality, it suffices to consider the case where the typical point $x$ is the origin $0$. Then, the probability distribution of $\Delta $ satisfies
+$$
+\mathbb{P}\{\Delta \leq r \} = 1 - e^{-\theta r^d \mu_d(B^d)},
+$$
+where $\mu_d(B^d)$ is the Lebesgue measure of the unit ball in $\mathbb{R}^d$.
+\end{proposition}
+\begin{proof}
+Let $X$ be a stationary Poisson point process on $\mathbb{R}^d$ with constant intensity $\theta$. 
+By stationarity, we may assume without loss of generality that the typical point is located at the origin $0$.
+
+The event $\{\Delta > r\}$ means that there is no other point of the process within distance $r$ from the origin. 
+Equivalently,
+$$
+\{\Delta > r\} = \{ X(B_r^d \setminus \{0\}) = 0 \},
+$$
+where $B_r^d$ denotes the ball of radius $r$ centered at the origin. 
+Since the Poisson point process is simple, the probability of having another point exactly at the origin is zero, and we may write
+$$
+\mathbb{P}\{\Delta > r\} = \mathbb{P}\{ X(B_r^d) = 0 \}.
+$$
+
+Because $X$ is a Poisson point process, the number of points in $B_r^d$ follows a Poisson distribution with parameter
+$$
+\theta \, \mu_d(B_r^d),
+$$
+where $\mu_d(B_r^d)$ is the Lebesgue measure of $B_r^d$. Hence,
+$$
+\mathbb{P}\{ X(B_r^d) = 0 \}
+= \exp\!\big(-\theta \mu_d(B_r^d)\big).
+$$
+
+Since $\mu_d(B_r^d) = r^d \mu_d(B^d)$, where $B^d$ is the unit ball in $\mathbb{R}^d$, we obtain
+$$
+\mathbb{P}\{\Delta > r\}
+= \exp\!\big(-\theta r^d \mu_d(B^d)\big).
+$$
+Therefore,
+$$
+\mathbb{P}\{\Delta \le r\}
+= 1 - \mathbb{P}\{\Delta > r\}
+= 1 - \exp\!\big(-\theta r^d \mu_d(B^d)\big),
+$$
+which proves the result.
+\end{proof}
+
+
+\subsubsection{Simulation of a stationary Poisson point process}
+
+We describe in this paragraph the practical implementation of a stationary Poisson point process in a domain $\mathcal{D} \subset \mathbb{R}^d$. 
+The simulation is carried out in two steps:
+\begin{itemize}
+\item First, one generates a Poisson random variable that determines the number of points located in the domain $\mathcal{D}$.
+\item Second, the corresponding number of points is sampled independently and uniformly over $\mathcal{D}$.
+\end{itemize}
+Poisson random variables can be generated from uniform random variables. In particular, if $U$ is a random variable uniformly distributed on $[0,1]$, then the random variable $-\ln(U)$ follows an exponential distribution, which can be used as a building block in standard algorithms for simulating Poisson random variables.
+
+The second step of the simulation consists in generating points uniformly distributed in the domain $\mathcal{D}$. It is straightforward to simulate a random point uniformly distributed in the unit cube $[0,1]^d$. For hypercubic domains, one may therefore generate points in $[0,1]^d$ and then apply an appropriate translation and scaling to obtain points uniformly distributed in the desired domain. For more general domains, uniform sampling can be achieved using rejection sampling or approximation techniques:
+\begin{itemize}
+\item Rejection sampling consists in enclosing $\mathcal{D}$ within a rectangular domain $\mathcal{R}$. Independent uniform points are generated in $\mathcal{R}$ until a point falls inside $\mathcal{D}$; this procedure is repeated until the required number of points in $\mathcal{D}$ is obtained. 
+\item Approximation methods consist in replacing the domain $\mathcal{D}$ by a finite union of simple sets, such as open hypercubes, that approximate $\mathcal{D}$ and from which uniform sampling is straightforward.
+\end{itemize} 
+
+
+\subsubsection{Cox-Poisson point processes}
+
+\begin{definition} Let $\theta $ be a locally random finite measure on $\mathbb{R}^n$. A Cox-Poisson point process on $\mathbb{R}^n$ is a point process such that the number $N(K)$ of points contained in any compact $K$ of $\mathbb{R}^n$ is a Poisson random variable with parameter $\theta (K)$:
+\begin{equation}
+P\{N(K) = k \} = p_k(K) = \dfrac{\theta (K)^k}{k!}\exp (-\theta (K)),
+\end{equation}
+where the intensity $\theta $ is the random variable defined by
+\begin{equation}
+\theta (K) = \int_K \theta (dx).
+\end{equation}
+\end{definition}
+
+Cox-Poisson point processes are an extension of Poisson point processes in the sense that for these processes, the intensity $\theta $ is a random variable.\\
+
+A fundamental example of Cox point processes are Poisson point processes restricted to some random closed set. Let $A$ be a random closed set of $\mathbb{R}^n$, an $\lambda > 0$. The measure
+\begin{equation}
+\theta(K) = \int_K \theta 1_{A}(x) dx ,
+\end{equation}
+where $1_A$ is the indicative function of the set $A$ defines a Cox-Poisson point process. This Cox-Poisson point process can be seen as the restriction of a stationary Poisson point process of intensity $\theta $ to the random closed set $A$. Such point processes are often used in stochastic geometry to construct multiscale models. We refer the reader interested by these models to the paper of Jeulin~\cite{jeulin}.
+
+\subsubsection{Hard-core point processes}
+
+A hard-core point process is a point process for which the points cannot lie closer than a specified distance $D$. Let $\mathcal{P}$ be an homogeneous Poisson point process with intensity $\theta $. We can obtain a hard-core point process by thinning. Thinning consists in deleting points from the point process according to some rules. In practice, for some domain $\Omega $, we first generate the Poisson variable $N$ that indicates the number of points implanted in the domain. Then, we generate the points of the process sequentially. The thinning procedure occurs at each step of the simulation when a new point is added. If the nearest point is closer than the hard-core distance $D$, then the new implanted point is deleted.\\
+
+Hard-core point processes are widely used in practical applications to model repulsion phenomena. 
+
+\subsection{Marked point processes ~\label{point:s3}}
+
+A marked point process is a point process for which a characteristic is attached to each point. The notion of marked point process is fundamental in stochastic geometry and is used in many applications. We will subsequently use marked point processes to study the general Boolean model in section~\ref{s6}. 
+
+In mathematical terms, a marked point process on $\mathbb{R}^d$ is a random sequence $\{(x_n, m_n) \}$ where the points $x_n$ constitute a point process (unmarked) called the ground process and the $m_n$ are the marks corresponding to the respective points. A marked point process can also be seen as a point process on $\mathbb{R^d} \times \mathcal{M}$, where $\mathcal{M}$ is a locally compact space with countable base. This lead to the rigorous definition
+\begin{definition}
+A marked point process in $\mathbb{R}^d$ with mark space $M$ is a simple point process $X$ in $\mathbb{R}^d \times \mathcal{M}$ with intensity measure $\theta $ satisfying $\theta(C \times \mathcal{M}) < \infty $ for all compact set $C$ in $\mathcal{K}(\mathbb{R}^d)$.
+\end{definition}
+
+The marks can be continuous or discrete variables. A marked point process is said to be stationary if its ground process is stationary. Similarly, a marked Poisson point process is simply a marked point process whose ground process is Poisson.
+
+\begin{definition}
+The intensity measure of a marked point process $X$ on $\mathbb{R}^d \times \mathcal{M}$ is
+\begin{equation}
+\theta (B \times L) = \mathbb{E} (X(B \times L)),
+\end{equation}
+where $B$ is a Borel set of $\mathbb{R}^d$ and $L$ a measurable set of $\mathcal{M}$.
+\end{definition}
+Intuitively, $\theta(B \times L)$ is the mean number of points in $B$ that have their mark in $L$. The Campbell formula can be generalized to the case of marked point processes. Hence, let $X$ denote a marked point process on $\mathbb{R}^d \times M$. Then, we have 
+\begin{equation}
+\mathbb{E} \bigg \{\sum_{(x, m) \in X} f(x, m) \bigg  \} = \int f(x, m) d\Theta(x, m)
+\end{equation}
+for any non-negative function $f$.
+
+It can be shown (see for instance~\cite{schneider}) that the intensity of a marked point process can be decomposed in the following manner
+\begin{equation}
+d\Theta(x, m) = d\theta (x) dM_x(m),
+\end{equation}
+where $\theta $ is the intensity measure of the ground point process and $M_x$ is a probability measure on $\mathcal{M}$. We interpret $M_x$ as the mark distribution of a point at location $x$.\\ 
+
+For a stationary marked point process, for all subsets $L$ of $\mathcal{M}$, $\Theta (. \times L)$ is a translation-invariant measure, so that, for all Borelien set $B$ in $\mathcal{B}(\mathbb{R}^d)$:
+\begin{equation}
+\Theta(B \times L) = \theta_L \mu_d(B),
+\end{equation}
+where $\mu_d$ is the Lebesgue measure on $\mathbb{R}$. The quantity $\theta_L$ is the intensity of $\mathcal{P}$ with respect to L, and can be interpreted as the mean number of points of $\mathcal{P}$ per unit volume with marks in $L$. Obviously, if $L = \mathcal{M}$, we have $\theta_L = \theta$, where $\theta $ is the intensity of the ground point process.
+
+\paragraph{Example} Let $X$ be a Poisson point process in the plane $\mathbb{R}^2$ with intensity $\theta $. To each point $x_n \in X$, we associate a random mark $m_n$ drawn from the uniform law on $[0, 1]$. All marks are drawn independently. $\{(x_n, m_n)_{x_n \in X}\}$ is a marked point process. The mark space $\mathcal{M}$ is the $\sigma $-algebra $([0, 1], \mathcal{B}([0, 1])$.
+
+
+\section{Germ-grain processes \label{s6}}
+
+\subsection{Definition and first properties}
+
+\begin{definition}
+Let $\Psi = \{x_n; A_n \}$ be a marked point process, where the points $x_n$ lie in $\mathbb{R}^d$ and the marks $A_n$ are random compact subsets of $\mathbb{R}^d$. A germ-grain model can be defined from $\Psi $ by considering the union
+\begin{equation}
+A = \cup_{n = 1}^{\infty} (A_n \oplus x_n).
+\end{equation}
+The points $x_n$ are called the germs of the process and the compact sets $A_n$ the grains of the germ-grain model. 
+\end{definition}
+In this section, we will restrict ourselves to the study of the Boolean model. The Boolean model is an archetypal example of germ-grain process. It is a grain model which is obtained by implanting independant random primary grains $A'$ on the germs $\{x_{k}\}$ of a Poisson points process $\mathcal{P}$ with intensity $\theta $. Note that primary grains can possibly overlap. The resulting set $A$ is
+\begin{equation}
+A = \cup _{x_k \in \mathcal{P}} A'_{x_k},
+\end{equation}
+where $A'_{x_k}$ denotes the translated of the primary grain $A'$ at point $x_k$:
+\begin{equation}
+A'_{x_k} = A' \oplus x_k = \{x_k + y, y \in A'\}.
+\end{equation}
+Any shape can be used for the primary grains $A'$, including convex, non-convex or even non connected sets. In the literature, $A'$ is commonly referred to as the typical grain of the model.
+
+\begin{definition}
+A Boolean model is said to be stationary if the intensity of its germ process is stationary. 
+\end{definition}
+
+\subsubsection{First properties}
+
+\begin{lemma}
+Let $K$ be a compact set of $\mathbb{R}^n$ and $A$ a Boolean model with primary grain $A'$ and with intensity $\theta$. The number $N(K)$ of primary grains hit by $K$ follows a Poisson distribution of parameter $\mathbb{E}\{\theta(\check{A}\oplus K) \}$:
+\begin{equation}
+P\{N = n\} = \dfrac{\mathbb{E}\{\theta(\check{A'}\oplus K)\}^n}{n!}\exp (-\mathbb{E}\{\theta(\check{A'}\oplus K) \}
+\label{eqn:poisson}
+\end{equation}
+\label{lemma:poisson}
+\end{lemma}
+\begin{proof}
+We denote by $\mathcal{P}$ the germ process associated to $A$. We can produce a thinned point process $\mathcal{P}_K$ out of $\mathcal{P}$ by deleting all points $x_n$ from $\mathcal{P}$ such that
+$A'_{x_n} \cap K = \emptyset $. Whether or not a given germ $x_n$ is deleted by this procedure is independant of thinning of other germs. As a consequence, $\mathcal{P}_K$ is an inhomogeneous Poisson point process.\\
+We denote by $\theta_K$ the intensity of the thinned process $\mathcal{P}_K$. We have
+$$
+\theta_K(x) = \theta \hspace{1mm} \mathbb{P} \{A_x \cap K \neq \emptyset \}.
+$$
+The total number of points of $\mathcal{P}_K$ has a Poisson distribution with mean
+$$
+\bar{N}_K = \theta \int_{\mathbb{R}^d} \mathbb{P} \{A_x \cap K \neq \emptyset \} dx.
+$$
+Since $\mathbb{P} \{A_x \cap K \neq \emptyset \} = \mathbb{P} \{x \in \check{A}_x \oplus K \}$, we have
+$$
+\bar{N}_K = \theta \int_{\mathbb{R}^d} \mathbb{P} \{x \in \check{A}_x \oplus K \} \mathrm{d}x = \theta \mathbb{E}(\mu (\check{A}' \oplus K)),
+$$
+where $\mu $ is the Lebesgues measure on $\mathbb{R}^3$. 
+This establishes formula~\ref{eqn:poisson}.
+\end{proof}
+Lemma~\ref{lemma:poisson} guarantees that the number of primary grains in any bounded window remains almost surely finite as long as $\mathbb{E}[\theta(A')] < \infty$. We can easily calculate the Choquet capacity of the boolean model to find
+\begin{equation}
+T(K) = 1 - \exp (- \mathbb{E}\{\theta(\check{A'}\oplus K) \} )
+\label{choquet}
+\end{equation}
+for any compact set $K$ in $\mathcal{K}(E)$. For the stationnary case, the Choquet capacity becomes
+\begin{equation}
+T(K) = 1 - \exp (- \theta \bar{\mu}(\check{A'}\oplus K) ),
+\label{choquet_stat}
+\end{equation}
+where $\bar{\mu}(\check{A'}\oplus K)$ denotes the average Lebesgue measure (i.e the average volume) of a primary grain $A'$ dilated by the compact set $K$.\\
+
+We can determine the spatial law of the Boolean model by considering the Choquet capacity for the structuring element $\{x\}$. For the stationnary case, according to~\ref{choquet}, we find
+\begin{equation}
+q = P\{x \in A^c \} = \exp (- \theta \bar{\mu }(\check{A'})).
+\end{equation}
+Note that we can easily express the Choquet capacity as a function of $q$. Hence, we have
+\begin{equation}
+T(K) = 1 - q^{\dfrac{\bar{\mu } (A' \oplus \check{K})}{\bar{\mu }(A')}},
+\end{equation}
+where we have used the relation $A' \oplus \check{K} = - \check{A}' \oplus K$.\\
+
+Using equation~\ref{choquet}, it is also possible to calculate the covariance of the Boolean model. Recall that the covariance is defined as a function of vector $h$ of $\mathbb{R}^3$ by
+\begin{equation}
+C(h) = P\{x \in A, x + h \in A\}.
+\end{equation}
+$C(h)$ is exactly the Choquet capacity for the structuring element $l_h = \{x\} \cup \{x + h\}$. Thus, we find
+\begin{equation}
+C(h) = 1 - \exp (- \mathbb{E}\{\theta(\check{A}\oplus l_h) \} ).
+\end{equation}
+For the stationnary case, the covariance yields
+\begin{equation}
+C(h) = 1 - \exp (- \theta \bar{\mu}(\check{A}\oplus l_h) ).
+\end{equation}
+
+\begin{proposition}
+If $A$ is a Boolean model with typical grain $A'$ and intensity $\theta $, the covariance of $A$ is given by
+\begin{equation}
+C(h) = 2p - 1 + (1 - p)^2 \exp (\theta \mathbb{E}(\gamma_{A'}(h))),
+\label{eqn:covariance}
+\end{equation}
+where $\gamma_{A'}(h) = \bar{\mu } (A' \cap A'_{-h})$ is the geometrical covariogram of $A'$ and $p = 1 - q$.  
+\end{proposition}
+
+\begin{proof}
+From the probabilistic definition of the covariance, we find 
+\begin{eqnarray}
+C(h) & = & P \{ 0 \in A \cap A_{-h} \} \\
+	& = & 1 - P \{0 \notin A \} + P \{0 \notin A_{-h} \} - P\{0 \notin A \cup A_{-h} \}\\
+	& = & 2p - 1 + P \{0 \notin A \cup A_{-h} \}
+\end{eqnarray}
+In addition, we have
+\begin{eqnarray}
+P \{0 \notin A \cup A_{-h} \} & = & \exp(- \theta \bar{\mu }(A \cup A_{-h})) \\
+ & = & (1 - p)^2\exp(- \theta \bar{\mu }(A \cap A_{-h})),
+\end{eqnarray}
+since $\bar{\mu }(A \cup A_{-h}) = \bar{\mu }(A) +  \bar{\mu }(A_{-h}) - \bar{\mu }(A \cap A_{-h})$. This establishes formula~(\ref{eqn:covariance}).
+
+\end{proof}
+
+\subsubsection{Examples}
+
+To illustrate the use of formula~\eqref{eqn:covariance}, we now consider explicit examples of typical grains $A'$ for which the geometrical covariogram $\gamma_{A'}(h)$ can be computed analytically. These examples provide concrete expressions for the covariance function $C(h)$ of the Boolean model and highlight how the shape and size of the grains influence spatial correlations in the model. We first examine the case of circular disks in $\mathbb{R}^2$, followed by spherical grains in $\mathbb{R}^3$.
+
+\begin{proposition}
+The geometrical covariogram of a disk with constant radius $R$ in $\mathbb{R}^2$ is 
+\begin{equation}
+\gamma (R) = 2R^2 \bigg ( \arccos \bigg( \dfrac{h}{2R}\bigg ) - \dfrac{h}{2R} \sqrt{1 - \bigg( \dfrac{h}{2R} \bigg )^2 } \bigg ).
+\end{equation}
+\end{proposition}
+\begin{proof}
+The geometrical covariogram $\gamma(h)$ of a set $A \subset \mathbb{R}^2$ is defined as the area of the intersection of $A$ with its translation by a vector of length $h$:
+$$
+\gamma(h) = \mu_2\big(A \cap (A + \mathbf{v})\big), \quad \|\mathbf{v}\| = h,
+$$
+where $\mu_2$ denotes the Lebesgue measure in $\mathbb{R}^2$. 
+
+Let $A$ be a disk of radius $R$. By rotational symmetry, the intersection area depends only on the distance $h$ between the centers. 
+When $h \ge 2R$, the disks do not intersect, so $\gamma(h) = 0$. 
+For $0 \le h \le 2R$, the intersection forms a symmetric lens-shaped region.
+
+The area of the lens formed by two circles of radius $R$ with centers separated by $h$ is given by the standard formula:
+$$
+\mu_2\big(A \cap (A + \mathbf{v})\big)
+= 2 R^2 \arccos \left(\frac{h}{2R}\right) - \frac{h}{2} \sqrt{4R^2 - h^2}.
+$$
+Factoring the expression slightly differently, we can write
+$$
+\frac{h}{2} \sqrt{4R^2 - h^2} = 2 R^2 \frac{h}{2R} \sqrt{1 - \left(\frac{h}{2R}\right)^2 }.
+$$
+Substituting this into the previous formula, we obtain
+$$
+\gamma(h) = 2 R^2 \left[ \arccos \left(\frac{h}{2R}\right) - \frac{h}{2R} \sqrt{1 - \left(\frac{h}{2R}\right)^2 } \right],
+$$
+which proves the proposition.
+\end{proof}
+
+\begin{proposition}
+The geometrical covariogram of a sphere with constant radius $R$ in $\mathbb{R}^3$ is 
+\begin{equation}
+\gamma (R) = \dfrac{4\pi R^3}{3} \bigg( 1 - \dfrac{3h}{4R} + \dfrac{h^3}{16 R^3} \bigg ).
+\end{equation}
+\end{proposition}
+\begin{proof}
+The geometrical covariogram $\gamma(h)$ of a set $A \subset \mathbb{R}^3$ is defined as the volume of the intersection of $A$ with its translation by a vector of length $h$:
+$$
+\gamma(h) = \mu_3\big(A \cap (A + \mathbf{v})\big), \quad \|\mathbf{v}\| = h,
+$$
+where $\mu_3$ denotes the Lebesgue measure in $\mathbb{R}^3$. 
+
+Let $A$ be a sphere of radius $R$ centered at the origin. By rotational symmetry, the intersection volume depends only on the distance $h$ between the centers. 
+If $h \ge 2R$, the spheres do not intersect, so $\gamma(h) = 0$. 
+For $0 \le h \le 2R$, the intersection forms a lens-shaped region (a spherical cap union).
+
+The volume of intersection can be computed by integrating the areas of circular slices perpendicular to the line connecting the centers. 
+If we place the centers along the $x$-axis at $0$ and $h$, the intersection along $x \in [\frac{h}{2} - R, R]$ has circular cross-section of radius $\sqrt{R^2 - x^2}$. 
+The resulting volume formula is well-known (see, e.g., standard formulas for spherical caps):
+$$
+\gamma(h) = \frac{4\pi R^3}{3} \left( 1 - \frac{3h}{4R} + \frac{h^3}{16 R^3} \right).
+$$
+
+Hence, the geometrical covariogram of a sphere of radius $R$ in $\mathbb{R}^3$ is given by the stated expression.
+\end{proof}
+
+\subsection{Practical implementation}
+
+Simulations of random structures are generally performed on a grid of points (i.e 2D or 3D images), using primary grains based on combination of pixels. One can however rely on a completely different approach based upon level sets and implicit functions. In this approach, primary grains are described by implicit functions, which are real valued functions defined in the ambient space. The level sets of an implicit function $\Phi $ are described by an equation of the form $\Phi(x,y,z) = c$, for some constant $c$. A surface is described as a level set of the function $\Phi $, most commonly the set of points for which $\Phi(x,y,z) = 0$. In this case, the points for which $\Phi(x,y,z) < 0$ correspond to the interior of the primary grain associated to the implicit function, the points for which $\Phi(x,y,z) > 0$ to its complementary and the level set  $\Phi(x,y,z) = 0$ to the boundary of the primary grain. We can use any primary grain, whatever its shape, as long as we can represent it using an implicit function.
+
+In the implicit function approach, complete simulations are generated using Boolean combinations of primary implicit functions: the union and the intersection of two objects $A_1$ and $A_2$ are defined to yield the minimum and the maximum, respectively, of their corresponding implicit functions. Thus, we have
+$$
+\Phi(A_1 \cup A_2) = \min \{\Phi(A_1),  \Phi(A_2) \}
+$$
+and
+$$
+\Phi(A_1 \cap A_2) = \max \{\Phi(A_1),  \Phi(A_2) \}.
+$$
+Similarly, the complementary $A^c$ of set $A$ is defined to be the opposite function
+$$
+\Phi(A^c) = - \Phi(A).
+$$
+Overall, using implicit functions to perform the simulation allows us to build complex combinations of simulations that we could not process with a pixel based method. Furthermore, vectorial simulations do not require a large amount of computer resources.
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.4]{figures/random/boolean.png}
+\caption{3D Realization of a Boolean model of spheres with constant radius $R$ and intensity $\theta $, realized with the software vtkSim~\cite{vtkSim}. The parameters of the model are $\theta = 5 \times 10 ^{-2}$ and $R = 1 $. }
+\end{figure}
+
+\subsection{Statistical analysis for the Boolean model}
+
+In this section, we discuss statistical analysis for the Boolean model. For simplicity's sake, we restrict ourselves to the 2D and 3D cases. Our main objective is to determine the parameters of a Boolean model such as its intensity $\theta $ or its mean intrinsic volumes.
+
+\subsubsection{Method of densities}
+
+The method of densities (or intensities) was developed by Weil in 1984~\cite{weil1984} and Santal\'o~\cite{santalo} to recover the parameters of a Boolean from a given dataset. The main idea of the method is stated in proposition~\ref{prop:densities} below.
+
+\begin{proposition}
+Let $A$ be some random closed set in $\mathbb{R}^d$. The density of the $k^{th}$ intrinsic volume in $\mathbb{R}^d$ can be estimated from the dataset by relation
+\begin{equation}
+v_k = \lim_{r \rightarrow \infty }  \dfrac{\mathbb{E} \{V_k(A \cap B(0, r))\}}{\mu_d(B(0,r))}.
+\end{equation}
+\label{prop:densities}
+\end{proposition}
+
+We recall that for $d = 2$, the intrinsic volumes are given by
+\begin{eqnarray}
+A_A & = & v_2, \\
+L_A & = & 2v_1,\\
+N_A & = & v_0. \\
+\end{eqnarray}
+where $A_A$ and $L_A$ are the mean area and perimeter of the typical grain, respectively. $N_A$ is called specific connectivity number.
+For $d = 3$, the intrinsic volumes are given by
+\begin{eqnarray}
+V_V & = & v_3, \\
+S_V & = & 2v_2, \\
+M_V & = & \pi v_1, \\
+N_V & = & v_0, \\
+\end{eqnarray}
+where $S_V, M_V$ and $N_V$ are the surface area, the specific mean curvature and the specific connectivity number, respectively.\\
+
+For models with convex grains, it is possible to relate the mean values of the intrinsic volumes of the typical grain to measurements conducted on the global dataset through Miles' formulae~\cite{miles1976}. For $d = 2$, Miles' formulae yield
+\begin{eqnarray}
+A_A  & = & p = 1 - \exp(-\theta \bar{A}), \\
+L_A  & = &\theta (1 - p) \bar{S} = \theta \exp(-\theta \bar{V},\\
+N_A & = & \theta(1 - p) \bigg(1 - \dfrac{\theta \bar{L}^2}{4 \pi} \bigg).
+\end{eqnarray}
+For $d = 3$, Miles' formulae yield
+\begin{eqnarray}
+V_V  & = & p = 1 - \exp(-\theta \bar{V}), \\
+S_V  & = &\theta (1 - p) \bar{S} = \theta \exp(-\theta \bar{V},\\
+M_V  & = &\theta (1 - p) \bar{S} \bigg(\bar{M} - \dfrac{\pi ^2 \theta \bar{S}^2}{32} \bigg),\\
+N_V & = & \theta(1 - p) \bigg(1 - \dfrac{\theta \bar{M} \bar{S}}{4 \pi} +  \dfrac{\pi \theta ^2 \bar{S}^3}{384} \bigg).
+\end{eqnarray}
+Hence, when estimates of the densities are given, the intensities of the Boolean model can easily be found. We refer the reader interested by a proof of Miles' formulae to the original paper of Miles~\cite{miles1976} and to the book of Schneider and Weil~\cite{schneider}. \\
+
+We can illustrate the methodology for a Boolean model of disks with unknown constant radius $R$ and intensity $\theta $. We suppose that we dispose of a dataset, from which we can estimate a fraction area $A_A$ and a perimeter $L_A$. The area of the typical grain is constant and yields $\bar{A} = \pi R^2$. Similarly, the perimeter of the typical grain yields $\bar{L} = 2\pi R$. Therefore, Miles' formulae yield
+\begin{eqnarray}
+A_A  & = & 1 - \exp(-\theta \pi R^2), \\
+L_A  & = &\theta (1 - A_A)2\pi R.
+\end{eqnarray}
+We can easily solve to find $R$ and $\theta $.
+
+\subsubsection{Minimum contrast method}
+
+The minimum contrast is another statistical method which can be employed to perform parameter identification for germ-grain models. It consists in trying to determine the parameters that minimize the distance between some characteristic function measured on the dataset and the corresponding function obtained either from its theoretical expression or from random realization of the model. For Boolean models, covariance is classicaly used in this purpose, often in combination with granulometry curves. Usually, the graim-germ models are not traceable analytically, and we have to rely on numerical methods to perform the optimization. Nelder-Mead and Levenberg-Marcquart algorithms are often used in this purpose~\cite{jean}. ADD REF TO CHAP 2 HERE.
+
+\subsubsection{Stereological mean-value formulae}
+
+In many practical situation, we want to study the microstructure of a 3D material through 2D images that correspond to a slice of the material or to a thick section. Hence, we are left with the following question: how to relate the 2D measurements to intrinsic properties of the material?\\
+
+Let $A_v$ be a spatial stationary grain-germ process in $\mathbb{R}^3$. We assume that the grains are convex. We consider the intersection of $A_a$ of $A_v$ with an arbitrary plane $P$:
+\begin{equation}
+A_a = A_v \cap P.
+\end{equation}
+We denote $(x_1, x_2, x_3)$ an orthonormal system of coordinates in $\mathbb{R}^3$ such that $x_1 \in P$ and $x_2 \in P$. For $r > 0$, we consider the disk
+$$
+c_r = \{x = (x_1,x_2), x_1^2 + x_2^2 < r \}. 
+$$
+The number of grains hitting $c_r$ is necessarily the same for $A_v$ and $A_a$. Hence, using Steiner's formula, we find
+\begin{equation}
+\theta_v \bigg(\bar{V} + \dfrac{\pi \bar{S} r}{4} + \pi \bar{b}r^2\bigg ) = \theta_a \bigg (\bar{A} + \bar{L}r + \pi r^2 \bigg ).
+\end{equation}
+This equation must be valid for all $r > 0$, which proves proposition~\ref{prop:stereology}. 
+\begin{proposition}
+\label{prop:stereology} The mean value characteristics of $A_v$ and $A_a$ are related through relations
+\begin{eqnarray}
+\theta_v \bar{V} &=& \theta_a \bar{A}\\
+\theta_v \dfrac{\pi \bar{S} }{4} &=& \theta_a\bar{L} \\
+\theta_v \bar{b} &=&  \theta_a.
+\end{eqnarray}
+\end{proposition}
+
+\paragraph{Example} Let us consider a stationary Boolean model of spheres in $\mathbb{R}^3$ with unknown intensity $\theta_v$ and constant radius $R$. The grains are balls of radius $R$. Experimental observations consist of planar sections of the material. The intersection of the three-dimensional Boolean model with an arbitrary plane $P$ yields a two-dimensional Boolean model of disks, denoted by $A_a$.
+
+For a sphere of radius $R$, the intrinsic volumes are given by
+$$
+\bar{V} = \frac{4}{3}\pi R^3, \qquad
+\bar{S} = 4\pi R^2, \qquad
+\bar{b} = 1.
+$$
+From Proposition~\ref{prop:stereology}, the mean value characteristics of the three-dimensional and planar models satisfy
+$$
+\theta_v \bar{V} = \theta_a \bar{A}, \qquad
+\theta_v \frac{\pi \bar{S}}{4} = \theta_a \bar{L}, \qquad
+\theta_v \bar{b} = \theta_a.
+$$
+Since $\bar{b}=1$, the last relation implies $\theta_a = \theta_v$. Substituting the expressions of $\bar{V}$ and $\bar{S}$ into the first two relations yields
+$$
+\bar{A} = \frac{4}{3}\pi R^3,
+\qquad
+\bar{L} = \pi^2 R^2.
+$$
+
+The planar model $A_a$ is therefore a Boolean model of disks with intensity $\theta_a$ and mean area $\bar{A}$. Its area fraction $A_A$ and perimeter density $L_A$ satisfy
+$$
+A_A = 1 - \exp(-\theta_a \bar{A}),
+\qquad
+L_A = \theta_a \bar{L}\exp(-\theta_a \bar{A}).
+$$
+From the first equation we obtain
+$$
+\theta_a \bar{A} = -\ln(1-A_A).
+$$
+Substituting this relation into the expression of $L_A$ gives
+$$
+L_A = \theta_a \bar{L}(1-A_A).
+$$
+
+Replacing $\bar{A}$ and $\bar{L}$ by their expressions leads to the system
+$$
+-\ln(1-A_A) = \theta_v \frac{4}{3}\pi R^3,
+$$
+and
+$$
+L_A = \theta_v \pi^2 R^2 (1-A_A).
+$$
+Dividing the second equation by the first yields
+$$
+\frac{L_A}{1-A_A} = \frac{3\pi}{4R}\bigl(-\ln(1-A_A)\bigr),
+$$
+from which the radius is obtained as
+$$
+R = \frac{3\pi}{4}\,
+\frac{(1-A_A)\ln\!\left(\frac{1}{1-A_A}\right)}{L_A}.
+$$
+Finally, substituting this expression of $R$ into the first equation gives the intensity
+$$
+\theta_v = \frac{-\ln(1-A_A)}{\frac{4}{3}\pi R^3}.
+$$
+
+Hence, the parameters $\theta$ and $R$ of the three-dimensional Boolean model of spheres are uniquely determined from the planar measurements $A_A$ and $L_A$.
+
+
+
+\subsection{Notes}
+
+The Boolean model is an archetypal model of stochastic geometry. Reference textbooks on this topic include Matheron~\cite{matheron}, Serra~\cite{serra1982}, Stoyan, Kendall and Mecke~\cite{stoyan} and Baccelli and Blaszczyszyn~\cite{baccelli}. We also refer the reader to the lecture notes of Jeulin~\cite{jeulin}. For an extensive presentation, we refer the reader to the book of Schneider and Weil~\cite{schneider}.
+ 
+Regarding statistical analysis for the Boolean model, we refer the reader to the papers of Weil~\cite{weil1984} and Molchanov~\cite{molchanov1995}. Miles' formulae were derived by Miles in 1976~\cite{miles1976}. An introduction can be found in the book of Stoyan, Kendall and Mecke~\cite{stoyan}. This topic is discussed more thoroughly in the book of Schneider and Weil~\cite{schneider}.
+
+Another topic of interest regarding the Boolean model is percolation. This topic has been studied extensively over the years. We refer the reader interested by this the percolation proerties of the Boolean model to the papers of Hall~\cite{hall} and Jeulin and Moreaud~\cite{moreaud}, and to the book of Torquato~\cite{torquato}.
+
+In materials engineering, the Boolean model has been employed to simulate a wide range of microstructures. Various examples of the application of the Boolean model in materials science are described in the paper~\cite{hermann} of Hermann. In 1992, Quenec'h \textit{et al.} used the Boolean model to study the growth of WC grains in WC-Co cermets~\cite{quenec}. In 2001, Jeulin et \textit{al.} relied on Poisson polyhedra to simulate the microsctructure of needle-shaped gypsum crystal grains~\cite{jeulin1}. In 2003, Capasso studied the application of the Boolean model to the description of crystallisation in metals and polymers. More recently, Jean et \textit{al.} simulated the microstructure of rubbers by considering a multiscale Cox-Boolean model~\cite{jean}. Using a random walk based model, Altendorf and Jeulin developed a stochastic model for simulating 3D fiber structures~\cite{altendorf}. Pereyga \textit{et al.} relied on a Boolean model of random cylinders to model a random fibrous network~\cite{peyrega}.
+
+\section{Random Tessellations}
+
+A \textit{tessellation} or \textit{mosaic} is a division of the $d-$dimensional Euclidean space $\mathbb{R}^d$ into polyhedra. Such geometrical patterns can be observed in many natural situations, as shown in figure~\ref{fig:polycristal}. Hence, random tessellation models have been widely used in physics, materials science and chemistry.
+
+\subsection{General introduction \label{s1}}
+
+\begin{definition} A tessellation in $\mathbb{R}^d$ is a countable system $\mathcal{T}$ of subsets satisfying the following conditions:
+\begin{itemize}
+\item $\mathcal{T} \in \mathcal{F}_{lf}(\mathbb{R}^d)$, meaning that $\mathcal{T}$ is a locally finite system of nonempty closed sets.
+\item The sets $K \in \mathcal{T}$ are compact, convex and have interior points.
+\item The sets of $\mathcal{T}$ cover the space,
+\begin{equation}
+\cup_{K \in \mathcal{T}} K = \mathbb{R}^d
+\end{equation}
+\item If K and K' are two sets of $\mathcal{T}$ then their interiors are disjoint.
+\end{itemize}
+We denote by $\mathbb{T}$ the set of all tessellations. 
+\label{def:mosaic}
+\end{definition}
+The faces of a cell $\mathcal{C}$ of the tessellation are the intersections of $\mathcal{C}$ with its supporting hyperplanes. A $k-$face is a face of dimension $k$. Among all possible $k-$faces, the $0-$faces, or vertices, and the $1-$faces, or edges, are of particular interest. The $d-1$ dimensional faces of a $d-$dimensional polytope will be referred to as its facets.\\
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.7]{figures/random/polycristal.png}
+\caption{Steel polycristal microstructure \label{fig:polycristal}}
+\end{center}
+\end{figure}
+ 
+ 
+\begin{proposition}
+The cells of a tessellation $\mathcal{T}$ are convex polytopes.
+\end{proposition}
+
+\begin{proof}
+Let $m$ be a mosaic and $C \in m$. Since $m$ is locally finite, there are only a finite number of cells, say $C_1, C_2, .., C_m \in m\{C \}$ that intersect $C$. Since a mosaic covers the whole space $\mathbb{R}^d$, the boundary $C$ of $C$ is found to be
+$$
+C = \cup_{i = 1}^{m} (C_i \cap C).
+$$
+By definition, for each $i$ between $0$ and $m$, the relative interiors of $C$ and $C_i$ are disjoint. Therefore, the convex bodies $C$ and $C_i$ can be separated by a hyperplane $H_i$. More precisely, there exists an hyperplane $H_i$ such that the closed halfspaces $H_i^+$ and $H_i^-$ bounded by $H_i$ satisfy $C \subset H_i^+$ and $C_i \subset H_i^-$. Note that this is only true because we are considering convex bodies. As a consequence, we have
+$$
+C \subset \cap_{i = 1}^{m} H_i^+.
+$$
+Reciprocally, let $x$ be in $\cap_{i = 1}^{m} H_i^+$. We suppose that $x \notin C$. Let $y$ be an interior point of $C$. Necessarily, $y \in \cap_{i = 1}^{m} H_i^+$. The line segment with end points $x$ and $y$ obviously contains a boundary point $x'$ of the cell $C$. On the one hand, since $x \neq x'$, $x' \in  \cap_{i = 1}^{m} H_i^+$. On the other hand, $x' \in C_j$ for some $j \in \{1, .., m\}$. This leads to a contradiction. Therefore, if $x$ is in $\cap_{i = 1}^{m} H_i^+$, then $x$ is necessarily in $C$. We have demonstrated that
+$$
+C = \cap_{i = 1}^{m} H_i^+.
+$$
+Being compact and the finite intersection of closed halfspace, $C$ is necessarily a convex polytope. 
+
+\end{proof}
+
+
+\subsubsection{General study }
+
+The general study of tessellations is rather technical, and falls beyond the scope of this introductory material. Therefore, in this chapter, we will only try to point out the general ideas behind the theory. We refer the reader interested by a more comprehensive study of general tessellation to the literature.
+
+A fruitful idea to study general tessellations is to rely on the stochastic structures induced by the tessellation on the ambient space. For instance, if we consider a tessellation of the plane $\mathbb{R}^2$, the edges of the tessellation can be seen as a segment process. A $d-$dimensional tessellation $\mathcal{T}$ also induces point processes in $\mathbb{R}^d$. For instance, the set of vertices of $\mathcal{T}$, the set of edges midpoints or the set of all cells centroids are random point processes of $\mathbb{R}^d$. By determining mean-value formulae for these point processes, it is possible to characterize some of the geometrical properties of $\mathcal{T}$. For instance, the intensity of the random point process constituted by all cells centroid correspond the mean number of cells of the tessellation per volume unit. The number $n_{d-1, d}(x)$ of edges emanating from the vertex $x$ or the number of cells containing $x$ are additional features of interest. Again, mean values for these quantities characterize the geometry of the tessellation. The determination of mean-values formulae for these quantites is a difficult problem, which often builds upon marked point processes theory.
+
+Another common approach is to rely on germ-grain processes theory. Let $\mathcal{T}$ be a tessellation of $\mathbb{R}^d$. If we denote by $x_n$ the cell centers, then $\{(x_n, \mathcal{C}_n )\}$ can be seen as a germ-grain process with convex grains. We call typical cell and we note $\mathcal{C}^0$ the typical grain of the process. In an analogous manner, the edges midpoints with their cooresponding edges form a germ-grain process. The advantage of this approach is that one can rely on results obtained for germ-grain processes to study a tessellation $\mathcal{T}$.\\
+
+\subsubsection{Random tessellation in the plane}
+
+In this section, we try to illustrate the study of random mosaics for a planar tessellation. Thus, let $\mathcal{T}$ be a tessellation on $\mathbb{R}^2$. The following mean values are of particular interest to characterize $\mathcal{T}$:
+\begin{itemize}
+\item $\theta_k$ : Intensity of the point process of the centroids of the $k$-faces induced by $\mathcal{T}$ on $\mathbb{R}^2$.
+\item $\bar{\mathcal{A}} $ : Mean area of the typical cell.
+\item $\bar{\mathcal{P}} $ : Mean perimeter of the typical cell.
+\item $n_{jk}$ : Mean number of $k$-faces adjacent to the typical $j$-faces of $\mathcal{T}$. 
+\end{itemize}
+\begin{proposition}
+The parameters of $\mathcal{T}$ satisfy
+\begin{equation}
+\theta _1 = \theta _0 +  \theta _2
+\end{equation}
+\begin{equation}
+n_{02} = 2 + 2 \dfrac{\theta _2}{\theta _0}, \quad n_{20} = 2 + 2 \dfrac{\theta _0}{\theta _2},
+\end{equation}
+\begin{equation}
+\bar{\mathcal{A}} = \dfrac{1}{\theta _2}, \quad \mathcal{P} = 2 \dfrac{\theta _1}{\theta _2}l_1,
+\end{equation}
+\begin{equation}
+n_{21} = n_{20}, \quad n_{01} = 3, \quad n_{10} = 2.
+\end{equation}
+In addition, if the tessellation $\mathcal{T}$ is normal, then we have
+\begin{equation}
+n_{02} = 3, \quad n_{20} = 6.
+\end{equation}
+\end{proposition}
+These relation are derived by considering the topological configuration of random mosaics. Some results are particularly obvious. For instance, it is clear that the number of neighbor vertices for a given edge is $n_{10} = 2$. Note that similar relations can be obtained in higher dimensions. We refer the reader to the book of Schneider and Weil~\cite{schneider} for a more extensive presentation of the theory and to the book of Stoyan, Kendall and Mecke~\cite{stoyan} for the case $d = 3$. 
+
+\subsection{Poisson tessellation models}
+
+\subsubsection{Poisson hyperplanes}
+
+A hyperplane is a subspace of one dimension less than its ambient space. For instance, if a space is 3-dimensional then its hyperplanes are the 2-dimensional planes. An affine hyperplane is an affine subspace of codimension 1 in an affine space. In Cartesian coordinates, an affine hyperplane $H$ can be described with a single linear equation of the following form
+\begin{equation}
+u_1 x_1 + u_2 x_2 + \cdots + u_d x_d = r,\ 
+\end{equation}
+where $\sum_{i}^d u_d^2 = 1$ and $r \in \mathbb{R}$. The vector $u = (u_1, \cdots , u_d)^T$ is  orthogonal to $H$ and unitary. We denote by $\mathcal{A}$ the set of all affine hyperplanes of $\mathbb{R}^d$. An hyperplane is completely characterized by $u$ and $r$, and can thus be considered as the image of these quantities by the application
+\begin{equation}
+\Psi:(u, r) \in \frac{1}{2}\mathbb{S}\times \mathbb{R} \rightarrow\mathcal{A} \ni H(u, r), 
+\end{equation}
+where
+\begin{equation}
+H(u, r) = \{x \in \mathbb{R}, u_1 x_1 + u_2 x_2 + \cdots + u_d x_d = r \}.
+\end{equation}
+and $\mathbb{S}$ is the unit semi-sphere of $\mathbb{R}^d$.
+
+\begin{definition} Let $\mathcal{P}$ be a Poisson point process in $\frac{1}{2}\mathbb{S} \times \mathbb{R}$ with intensity $\theta(d \mathbf{u} ) \mathrm{d}x$, where $\theta $ is a positive Radom measure on the semi-sphere $ \frac{1}{2}\mathbb{S}$. The image of $\mathcal{P}$ by application $\Psi $ is the random closed set $\mathcal{H}$ called Poisson hyperplanes network.
+\end{definition}
+
+\paragraph{Remark} One could have thought of relying on a classical Boolean model with lines as grains to construct Poisson hyperplanes. The problem with this approach is that lines are not bounded and therefore not compact. 
+
+\begin{theorem}
+Let $K$ be a compact set of $\mathbb{R}^d$. The number of hyperplanes hit by $K$ is a Poisson random variable with intensity
+\begin{equation}
+\theta(K) = \int_{\frac{1}{2}\mathbb{S}} \nu _{1}(K |_{\mathbf{u}})\theta(\mathrm{d} \mathbf{u}).
+\end{equation} 
+In this expression, $\nu _{1}(K |_{\mathbf{u} })$ denotes the total length of the orthogonal projection of $K$ on direction $\mathbf{u}$.
+\label{th:poissonflat}
+\end{theorem}
+\begin{proof}
+By construction, the intersection of $\mathcal{T}$ with every line with unit support vector $\mathbf{u}$ is a Poisson point process with intensity $\theta( \mathrm{d} \mathbf{u})$. Hence, the number of hyperplanes hit by $K$ for a given direction $\mathbf{u}$ is $\nu _{1}(K |_{\mathbf{u}})\theta(\mathrm{d} \mathbf{u})$.
+\end{proof}
+Using theorem~\ref{th:poissonflat}, we can easily prove the following proposition.
+\begin{proposition}
+The Choquet capacity of a Poisson hyperplanes network $H$ is given for all compact sets $K$ in $\mathbb{R}^d$ by
+\begin{equation}
+T(K) = 1 - \exp \bigg [ - \int_{\frac{1}{2}\mathbb{S}} \nu _{1}(K |_{\mathbf{u}})\theta(d \mathbf{u}) \bigg ].
+\end{equation}
+\end{proposition} 
+
+
+
+\subsubsection{Poisson lines tessellations}
+
+Poisson hyperplanes can be used to produce random tessellations. In this section, we restrict ourselves to the plane $\mathbb{R}^2$. 
+
+\begin{definition}
+Let $\mathcal{L}$ be a planar motion-invariant line process of intensity $\theta $. $\mathcal{L}$ induces a stationary tessellation on $\mathbb{R}^2$, called Poisson line tessellation. The line intersections form the vertices of the tessellation, and segments of line with vertices at both endpoints form the edges. 
+\end{definition}
+To characterize the tessellation, we introduce the quantity
+\begin{equation}
+\rho = \dfrac{2 \theta }{\pi },
+\end{equation}
+which corresponds to the mean number of lines intersected by a test line segment of unit length. Let $g$ be a fixed line of $\mathcal{L}$. Then, the intensity of the point process of intersection points on $g$ is given by $\rho $. As a consequence, the mean edge length is 
+\begin{equation}
+l_1 = \dfrac{1}{\rho }
+\end{equation}
+With probability one, there are no triplets of lines that meet at the same vertex. Hence, we have
+\begin{equation}
+n_{02} = 4
+\end{equation}
+almost surely. Therefore, using proposition, we find
+\begin{eqnarray}
+\theta_0 & = & \dfrac{\pi \rho ^2}{4}, \\
+\theta_1 & = & \dfrac{\pi \rho ^2}{2}, \\
+\theta_2 & = & \dfrac{\pi \rho ^2}{4}.
+\end{eqnarray}
+
+\begin{definition}
+The typical cell of the Poisson hyperplane tessellation is called Poisson polygon.
+\end{definition}
+The first moments of Poisson polygon can easily be calculated with proposition, to find
+\begin{eqnarray}
+\bar{\mathcal{A}} & = & \dfrac{4}{\pi \rho ^2}, \\
+\bar{\mathcal{L}} & = & \dfrac{4}{\rho }.
+\end{eqnarray}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.7]{figures/random/WCCO1.png}
+\quad 
+\includegraphics[scale=0.7]{figures/random/WCCO2.png}
+\caption{Simulations of WC-Co cermets microstructures using Poisson polygons. This figure is taken from the study~\cite{quenec} of Quenec'h \textit{et al.} \label{fig:wcco}}
+\end{center}
+\end{figure}
+
+\subsection{Poisson-Vorono\"i tessellations}
+
+We present in this section the Poisson-Vorono\"i tessellation model. This model has been studied extensively and is a classical model in stochastic geometry. 
+
+\subsubsection{Definition}
+
+Let $\Omega $ denote a given volume in $\mathbb{R}^3$.  A Vorono\"i tessellation is a tessellation built from a Poisson point process $\mathcal{P}$ in the space $\mathbb{R}^3$. Every point $x$ of $\mathbb{R}^3$ is associated to the class $\mathcal{C}_i$ containing all points of $\mathbb{R}^3$ closer from the point $x_i$ of $\mathcal{P}$ than from any other point of $\mathcal{P}$. Hence, the classes $C_{i}, i = 1, .., N$ are defined by
+\begin{equation}
+C_i = \bigg \{y \in \mathbb{R}^3, \forall j \neq i, \| x_i - y \| \leq  \| x_j - y \| \bigg \}.
+\end{equation}\\
+It can be shown that with probability one, Vorono\"i tessellations are normal and face-to-face. Vorono\"i tessellations are characterized by one single parameter, namely the intensity of the underlying point process. Thus, according to proposition, for a Vorono\"i tessellation in the plane, we have
+\begin{eqnarray}
+\theta_2 & = & \theta, \\
+\theta_0 & = & 2 \theta, \\
+\theta_1 & = & 3 \theta,
+\end{eqnarray}
+where $\theta_0$, $\theta_1$ and $\theta_2$ denote the intensities of the point processes constituted by the vertices, the edges center and the cell centers, respectively. Similarly, the mean area of a cell of the tessellation is 
+\begin{equation}
+\bar{\mathcal{A}} = \dfrac{1}{\theta }.
+\end{equation}
+These relations can be generalized for $d > 2$.   
+
+\begin{figure}[p]
+\begin{center}
+\includegraphics[scale=0.45]{figures/random/voronoi.png}
+\caption{Vorono\"i tessellation in $\mathbb{R}^3$. The simulation has been obtained with the software VtkSim~\cite{vtkSim}. The center of the Vorono\"i cells are represented in grey.}
+\end{center}
+\end{figure}
+
+\begin{figure}[p]
+\begin{center}
+\includegraphics[scale=0.45]{figures/random/johnson.png}
+\caption{Vorono\"i tessellation in $\mathbb{R}^3$. The simulation has been obtained with the software VtkSim~\cite{vtkSim}. The center of the tessellation cells are represented in grey. The first germs are represented with larger radii.  }
+\end{center}
+\end{figure}
+
+\subsubsection{Johnson-Mehl Tessellations}
+
+Johnson-Mehl tesselations can be seen as a sequential version of the Vorono\"i model, where the Poisson points are implanted sequentially with time. All classes grow then isotropically with the same rate, and the growth of crystal boundaries is stopped when they meet. All Poisson points falling in an existing crystal are removed. From a mathematical perspective, a Johnson-Mehl tessellation is constructed from a sequential Poisson point process where the points $x_i, i = 1, .., N$ are implanted sequentially at a time $t_i, i = 1, .., N$. The classes $C_{i}, i = 1, .., N$ corresponding to the points $x_i, i = 1, .., N$ are defined by
+\begin{equation}
+C_i = \bigg \{y \in \mathbb{R}^3, \forall j \neq i, t_i + \dfrac{\| x_i - y \| }{v} \leq t_j + \dfrac{\| x_j - y \| }{v}\bigg \}.
+\end{equation}
+Note that when all times are set to zero, we recover the classical Poisson-Vorono\"i tessellation model.
+
+
+\subsubsection{Notes}
+
+Random tessellations constitute an active topic in stochastic geometry. Reference textbooks on this topic include Matheron~\cite{matheron}, Stoyan, Kendall and Mecke~\cite{stoyan}. For an extensive presentation, we refer the reader to the book of Schneider and Weil~\cite{schneider}, where a proof is given for almost all results. The mean-value relationships given in section~\ref{s1} are mostly due to the studies of Mecke~\cite{mecke1980} and M\o ller~\cite{moller1989}.
+
+Poisson hyperplanes tessellations and Poisson polyhedra have been extensively studied by Matheron~\cite{matheron}, Serra~\cite{serra1982} and Miles~\cite{miles1972b}. We also refer the reader to the paper~\cite{mecke1995} of Mecke.
+
+The Vorono\"i tessellation is a classical model in stochastic geometry. A general description of Poisson-Vorono\"i tessellations in $\mathbb{R}^d$ can be found in M\o ller~\cite{moller1989, moller1994}. The Johnson-Mehl tessellation model was introduced by Johnson and Mehl to describe crystallization processes~\cite{johnson, avrami, gilbert}. Their model can be seen as a variation of the Vorono\"i model. The paper~\cite{moller1992} of M\o ller provides a unified exposition of Random Johnson-Mehl tessellations.
+
+ 
+
+
+
+
+

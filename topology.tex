@@ -1,0 +1,207 @@
+\chapter{Topology of random closed sets}
+
+\section{Closed convergence topology \label{s2}}
+
+In this section, we consider a locally compact space of countable type $E$. Recall that a topological space $E$ is compact if and only if there exists some countable collection $\mathcal{U} = \{U_i\}_{i=1}^\infty$ of open subsets of $E$ such that any open subset of $E$ can be written as a union of elements of some subfamily of $\mathcal{U}$. We denote by $\mathcal{F}(E)$, $\mathcal{G}(E)$ and  $\mathcal{K}(E)$ the classes of closed, open and compact subsets of $E$ respectively. Similarly, we denote by $\mathcal{P}(E)$ the set of all parts of $E$.
+
+\subsection{Closed convergence topology on $\mathcal{F}(E)$}
+
+\begin{definition}
+If $B$ is a subset of $E$, we denote by $\mathcal{F}_B$ the class of all closed subsets of $E$ intersecting $B$, and by $\mathcal{F}^B$ its complementary in $\mathcal{F}(E)$.
+\begin{equation}
+\mathcal{F}_B = \{ F \in \mathcal{F}, F \cap B \neq \o \}, \qquad
+\mathcal{F}^B = \{ F \in \mathcal{F}, F \cap B = \o \}
+\end{equation}
+\label{def:hitormiss}
+$\mathcal{F}^B$ is the class of all closed subsets of $E$ disjoint from the subset $B$.
+\end{definition}
+We can easily show (Problem~\ref{pb:stable}) that the classes $\{\mathcal{F}^K, K \in \mathcal{K}(E)\}$ and $\{\mathcal{F}_G, G \in \mathcal{G}(E)\}$ are stable by union and by finite intersection. In addition, the empty set and $E$ belong to both classes. An immediate consequence is that $\{\mathcal{F}^K, K \in \mathcal{K}\}$ and $\{\mathcal{F}_G, G \in \mathcal{G}\}$ constitute a familly of open sets of $\mathcal{F}$. We denote by $\mathcal{T }_f$ the \textit{closed convergence topology} induced on $\mathcal{F}$ by these classes. Note that the class of subsets
+\begin{equation}
+\{\mathcal{F}^{K}_{G_1, G_2, .. G_n} = \mathcal{F}^{K} \cap \mathcal{F}_{G_1} \cap ... \cap \mathcal{F}_{G_n},  K \in \mathcal{K}, G_1, .., G_n \in \mathcal{G} \}
+\end{equation}
+is a basis of the closed convergence topology $\mathcal{T }_f$.
+\begin{problem}
+If $(B_i)_{i \in I}$ is a familly of subsets of $E$, show that we have
+\begin{equation}
+\cup _{i \in I} \mathcal{F}_{B_i} = \mathcal{F}_{\cup_{i \in I} B_i}, \qquad 
+\cap _{i \in I} \mathcal{F}^{B_i} = \mathcal{F}^{\cup_{i \in I} B_i}, 
+\end{equation}
+but only the inclusions
+\begin{equation}
+\mathcal{F}_{\cap_{i \in I} B_i} \subset \cap _{i \in I} \mathcal{F}_{B_i}, \qquad 
+\cup _{i \in I} \mathcal{F}^{B_i} \subset \mathcal{F}^{\cap_{i \in I} B_i}.
+\end{equation}
+\label{pb:stable}
+\end{problem}
+
+\begin{theorem}
+$\mathcal{F}(E)$ is compact and countable for the closed convergence topology.
+\label{th:compact} 
+\end{theorem}
+\begin{proof}
+The proof proceeds in three steps. First, we construct a countable topological basis of $\mathcal{T }_f$. Then, we show that $\mathcal{F}(E)$ is separated for the closed convergence topology. We finally rely on the topological basis constructed in step one to demonstrate the compacity of $\mathcal{F}(E)$\\
+
+
+1/ We first construct a countable topological basis of $\mathcal{T }_f$. Recall that a basis for a topological space equipped with a topology is a collection of open sets for this topology such that every open set can be written as a union of elements of the basis. Let $\mathcal{B}$ be a countable basis of relatively compact open sets for the topology $\mathcal{E}$ of $E$, such that
+$$
+\forall U \in \mathcal{E}, \quad U = \cup \{B \in \mathcal{B}| \bar{B} \subset U \}.
+$$
+Let $F$ be an element of $\mathcal{F}(E)$ and $\mathcal{F}^{K}_{G_1, .., G_n}$ an open neighborhood of $F$ in $\mathcal{F}(E)$. We introduce the family $\mathcal{T }_b$ of subsets of $\mathcal{F}(E)$ defined by 
+$$
+\mathcal{T }_b = \{ \mathcal{F}_{B_1, .., B_n}^{\bar{B}'_1 \cup ... \cup \bar{B}'_k } |n, k \leq 0, B_1, .., B_n, B'_1, ..., B'_k \in \mathcal{B}\}.
+$$
+For all $i$ between $1$ and $n$, we can select a point $x_i$ in $F \cap G_i$ and an open set $B_i$ in $\mathcal{B}$ such that $x_i \in \bar{B}_i \subset G_i \cap K^c$. We have built a finite covering of the compact $K$ by a class of open sets $\{B_j \in \mathcal{B}, j = 1, .., k\}$ such that $\forall j = 1, .., k$, $\forall i = 1, .., n$, $\bar{B}_j \cap \bar{B}_i = \o $ and $\bar{B}_j \cap F = \o $. This demonstrates that $\mathcal{T }_b$ is a countable basis of the topology $\mathcal{T }_f$. \\
+
+2/ The second step of the proof is to show that $\mathcal{F}$ is separated for the closed convergence topology. If $F$ and $F'$ are two distinct closed subsets of $E$, there exists $x \in F$ such that $x \in F'$ (or $x \in F'$ such that $x \in F$). Since $E$ is separated, we can find an open set $B$ relatively compact such that $x \in B$ and $F' \cap \bar{B} = \o$. By definition, $F \in \mathcal{F}_B$, $F' \in \mathcal{F}^{\bar{B}}$, and $\mathcal{F}_B \cap \mathcal{F}^{\bar{B}} = \o$. We just exhibited an open set separating $F$ and $F'$ and thus demonstrated that $\mathcal{F}$ is separated.\\
+
+3/ We finally demonstrate that $\mathcal{F}(E)$ is compact. Let $I$ and $J$ be countable sets, $\{K_i \in\mathcal{K}(E), i \in I\}$  a family  of compact sets and $\{G_j \in\mathcal{K}(E), j \in J\}$ a family of open sets, such that
+\begin{equation}
+\bigg ( \cap_{i \in I} \mathcal{F}_{K_i} \bigg ) \cap \bigg ( \cap_{j \in J} \mathcal{F}^{G_i} \bigg ) = \o.
+\label{eq:covering}
+\end{equation}
+If we denote by $\Omega $ the union $\cup_{j \in J} G_j$, we have $\cap_{j \in J}\mathcal{F}^{G_j} = \mathcal{F}^{\Omega}$ so that equation~\ref{eq:covering} reads
+\begin{equation}
+\cap_{j \in J} \mathcal{F}^{\Omega }_{K_i} = \o .
+\label{eq:covering2}
+\end{equation}
+If we assume that for all $i \in I$, $K_i \cap \Omega^c \neq \o$, then, by construction, the closed subset $ \overline{(\cup_{i \in I} K_i)} \cap \Omega^c$ is disjoint of $\Omega $ and intersects each compact set $K_i$, which contradicts relation~\ref{eq:covering2}. As a consequence, there exists $i_0$ in $I$ such that
+$K_{i_0} \subset \Omega$. Since $E$ is locally compact, we can exhibit a finite covering $G_{j_1}, .., G_{j_n}$ of $K_{i_0}$ by open subsets of $E$. Moreover, we have
+\begin{equation}
+\mathcal{F}_{K_{i_0}} \cap  \mathcal{F}^{G_{i_1}} \cap .. \cap \mathcal{F}^{G_{i_n}} = \o .
+\label{eq:covering3}
+\end{equation}
+This demonstrates that any covering of $\mathcal{F}(E)$ by open subsets of its topological basis contains a finite covering. Thus, $\mathcal{F}(E)$ is quasi-compact. Being also separated, $\mathcal{F}(E)$ is compact. 
+\end{proof}
+
+\subsection{Closed convergence topology on $\mathcal{G}(E)$}
+
+The classes $\{\mathcal{G}^K, K \in \mathcal{K}\}$ and $\{\mathcal{G}_G, G \in \mathcal{G}\}$ constitute a familly of open sets of $\mathcal{G}$. This family induce a topology $\mathcal{T}_g$ on $\mathcal{G}(E)$. The application from $\mathcal{F}$ to $\mathcal{G}$ which associates to each closed set $F$ of $\mathcal{F}$ its complementary $F^c$ in $\mathcal{G}$ is obviously an homeomorphism. As a consequence, we can transpose all topological properties of $\mathcal{F}$ to $\mathcal{G}$ by duality. 
+
+\section{Convergence and continuity in $\mathcal{F}(E)$\label{s3}}
+
+\subsection{Convergence in $\mathcal{F}(E)$}
+
+\begin{definition}
+Let $\{F_n \}_{n \in \mathbb{N}}$ be a sequence of elements of $\mathcal{F}(E)$, and $F$ be a closed subset of $E$. $\{F_n\}_{n \in \mathbb{N}}$ converges to $F$ if and only if the two following conditions are satisfied:
+\begin{enumerate}
+\item If an open set $G$ intersects $F$, then it intersects all elements $F_n$ of the sequence, except for a finite number of them.
+\item If a compact set $K$ is disjoint for $F$, it is disjoint from all elements $F_n$ of the sequence, except for a finite number of them.
+\end{enumerate}
+\label{def:convergence}
+\end{definition}
+Definition~\ref{def:convergence} relies on topological considerations, and is quite difficult to use in practice. However, since $\mathcal{F}(E)$ is a countable space, we can restrict our analysis to the case of sequential convergence. Theorem~\ref{th:convergence} enables us to characterize analytically the convergence in $\mathcal{F}(E)$.
+\begin{theorem}
+Let $\{F_n \}_{n \in \mathbb{N}}$ be a sequence of elements of $\mathcal{F}(E)$, and $F$ be a closed subset of $E$. $\{F_n\}_{n \in \mathbb{N}}$ converges to $F$ if and only if the two following conditions are satisfied:
+\begin{enumerate}
+\item $\forall x \in F$, we can find a sequence $\{x_n\}$ converging to $x$ and $N > 0$ such that, $\forall n > N$, $x_n \in F_n$. 
+\item If a compact set $K$ is disjoint for $F$, it is disjoint from all elements $F_n$ of the sequence, except for a finite number of them.
+\end{enumerate}
+In addition, condition 1 (resp. 2) is equivalent to condition 1 (resp. 2) of definition~\ref{def:convergence}.
+\label{th:convergence}
+\end{theorem}
+\begin{proof}
+Let $\{F_n \}$ be a sequence of elements of $\mathcal{F}(E)$, and $F$ be a closed subset of $E$.
+
+\item $1 \rightarrow 1'$: We assume that condition 1 of definition~\ref{def:convergence} is satisfied: if an open set $G$ intersects $F$, then it intersects all elements $F_n$ of the sequence, except for a finite number of them. Let $x$ be in $F$, and $G_1 = E \supset G_2 \supset ... $ be a fundamental system of open neighbourhoods of $x$. By construction, each open set $G_k$ intersects $F$. Since condition 1 of definition~\ref{def:convergence} is satisfied, there exists an integer $N_k$ such that $n \geq N_k$ implies $F_n \cap G_k \neq \o$. As a consequence, we can construct a sequence $\{ x_n \}_{n \geq N_1}$, such that $\forall p = N_k, N_k + 1, .., N_{k + 1} - 1$, $x_p \in F_p \cap G_k$. $\{ x_n \}_{n \geq N_1}$. $\{ x_n \}_{n \geq N_1}$ converges to $x$.
+
+\item $1' \rightarrow 1$: We assume now that condition 1 of theorem~\ref{th:convergence} is satisfied. Let $G$ be an open set that intersects $F$. Necessarily, there exists a sequence $\{ x_n \}_{n \geq n_0}$ converging to $x$ such that $\forall n \geq n_0, x_n \in F_n$. Since $G$ is an open neighboordood of $x$, there exists $N \geq n_0$ such that $x_n \in G \cap F_n$. For all $n \geq N$, $G$ intersects $F_n$.
+
+\item $2 \rightarrow 2'$: If $F = E$, the implication is trivial. If $F \neq E$, let $x$ be a point of and $K$ a compact neighboorhood of $x$. Since condition 2 of definition~\ref{def:convergence} is satisfied, there exists $N \geq 0$ such that $K$ is disjoint of $F_n$ for $n \geq N$. 
+
+\item $2' \rightarrow 2$: If condition 2 is not satisfied, there exists a compact set $K$ disjoint from $F$ and a subsequence $\{F_{n_k}\}$ such that for any $k$, $x_{n_k} \in K \cap F_{n_k}$. The subsequence $\{x_{n_k}\}$ has an accumulation point $x$ in $K \cap F^c$. As a consequence, condition 2' is not satisfied.
+
+
+
+\end{proof}
+
+\begin{problem}
+Use theorem~\ref{th:convergence} to show that the application $(F, F') \rightarrow F \cup F'$ from $\mathcal{F}(E) \times \mathcal{F}(E)$ to $\mathcal{F}(E)$ is continuous.
+\label{pb:continuity}
+\end{problem}
+
+\subsection{Semi-continuity}
+
+
+\begin{definition}
+Let $\{F_n \}$ be a sequence of elements of $\mathcal{F}(E)$. We denote by $\text{\underline{lim} } F_n$ the intersection of all accumulation points of $\{F_n \}$ in $\mathcal{F}(E)$. Similarly, we denote by $\overline{\text{lim} } \text{ }  F_n$ their union.
+\end{definition}
+Obviously, a sequence $\{F_n \}$ converges in $\mathcal{F}(E)$ if and only if $\text{\underline{lim} } F_n = \overline{\text{lim} } \text{ } F_n$.
+
+\begin{proposition}
+Let $\{F_n \}$ be a sequence of elements of $\mathcal{F}(E)$.
+\begin{enumerate}
+\item $\overline{\text{lim} } \text{ } F_n$ is the larger closed set $F \in \mathcal{F}(E)$ satisfying properties 1 of defintion and theorem
+\item $\text{\underline{lim} } F_n$ is closed, and is the smaller closed set $F \in \mathcal{F}(E)$ satisfying properties 2 of definition and theorem
+\end{enumerate}
+\label{prop:accumulation}
+\end{proposition}
+
+\begin{proof}
+To prove the first assertion of proposition~\ref{prop:accumulation}, we consider the set $F$ constituted of all $x \in E$ such that any neighbourhood of $x$ intersects all elements $F_n$ of the sequence $\{F_n \}_{n \geq 0}$ except for a finite number of them. Note that $F$ is a closed set.\\
+
+On the one hand, if $x \in F$, then $x$ the limit of a sequence $\{x_n \}$ such that $x_n \in F_n$ for $n$ large enough. As a consequence, if $x$ belongs to $F$, then $x$ belongs to all accumulation sets of the sequence $\{F_n \}_{n \geq 0}$, so that $F \subset \text{\underline{lim} } F_n$.\\
+
+On the other hand, if $x \nin F$, we can find a neighbourhood $V$ of $x$ and a partial sequence $\{F_{n_k}\}_{k \geq 0}$ such that $\forall k, V \cap F_{n_k} = \o$. Since $\mathcal{F}(E)$ is a compact space, $\{F_{n_k}\}_{k \geq 0}$ has an accumulation set $A$ such that $\text{\underline{lim} } F_n \subset A$. Since $x \nin A$, $x \nin \text{\underline{lim} } F_n$.  As a consequence, $\text{\underline{lim} } F_n \subset F$.\\\\
+\end{proof}
+
+We conclude this section by defining the notion of semi-continuity for applications in 
+$\mathcal{F}(E)$.
+\begin{definition}
+Let $\Omega $ be a topological space, and $\psi $ an application from $\Omega $ to $\mathcal{F}(E)$. $\psi $ is upper semi-continuous if for all compact set $K$ in $\mathcal{K}$, the inverse image $\psi ^{-1}(\mathcal{F}^K)$  of $\mathcal{F}^K$ is open in $\Omega $. Similarly, $\psi $ is lower semi-continuous if for all open set $G$ in $\mathcal{G}$, the inverse image $\psi ^{-1}(\mathcal{F}_G)$  of $\mathcal{F}_G$ is open in $\Omega $
+\end{definition}
+It is clear that an application is continuous if and only if it is both upper and lower semi-continuous. 
+
+\begin{problem}
+Show that the application $(F, F') \rightarrow F \cap F'$ from $\mathcal{F}(E) \times \mathcal{F}(E)$ to $\mathcal{F}(E)$ is lower semi-continuous.
+\end{problem}
+
+\section{Choquet capacity}
+
+As pointed out in introduction, statistical approaches provide powerfull methods to study mathematical sets. According to the axiomatic approach of probability theory, the definition of a closed random set in a space $E$ should rely on the construction of a measurable map from some abstract probability space into $\mathcal{F}(E)$. 
+\begin{problem}
+Show $\mathcal{F}(E)$ can be equipped with the $\sigma$-algebra $\mathcal{B}(\mathcal{F}})$ induced by the closed convergence topology, generated by either of the classes
+\begin{equation}
+\{\mathcal{F}^K, K \in \mathcal{K}(E)\}, \qquad \{\mathcal{F}_G, G \in \mathcal{G}(E)\}.
+\end{equation}
+\label{pb:algebra}
+\end{problem}
+An immediate consequence of problem~\ref{pb:algebra} is that if $\Psi:\Omega \rightarrow \mathcal{F}(E)$ is a map from some topological space $\Omega$ to $\mathcal{F}$, $\Psi $ is measurable if and only if it is upper or lower semi-continuous. These considerations enable us to define the notion of random closed sets.
+\begin{definition}
+Let $(\Omega , \sigma (\Omega), P)$ be a probability space equipped with its $\sigma$-algebra $\sigma (\Omega)$ and a probability measure $P$. A random closed set $A$ is an $(\sigma (\Omega),\mathcal{B}(\mathcal{F}})$-measurable map $A$ from $\Omega $ into $\mathcal{F}(E)$. Its distribution is the image measure $P_{A} $of $P$ by $A$.
+\end{definition}
+Two random closed sets with identical distribution are said to be stochastically equivalent. Similarly, two random closed sets are said to be independant when their joint distribution law is the product of their individual distribution laws.
+
+\begin{definition}
+Let $A$ be a random closed set of $E$. The capacity functional $T$ of $Z$ is the functional defined on $\mathcal{K}(E)$ by
+\begin{equation}
+T(K) = P_A\{\mathcal{F}_A \} = P\{A \cap K \neq \o \}.
+\end{equation}
+\end{definition}
+The distribution of a closed random set is uniquely specified by its capacity functional. Note that for all $K$ in $\mathcal{K}(E)$, $0 \leq T(K) \leq 1$ (i). In addition, if a sequence $\{K_n\}_{n \in \mathbb{N}}$ converges toward $K$ in $\mathcal{K}(E)$, it can be easily proved using that the sequence $T(K_n)_{n \in \mathbb{N}}$ converges toward $T(K)$ (ii). If $T$ is a capacity functional, we can finally consider the functional $S_0$ on $\mathcal{K}(E)$ defined by
+\begin{equation}
+S_0(K) = 1 - T(K).
+\end{equation}
+By recurrence, we define for all $k \geq 1$ a functional $S_k$ on $\mathcal{K}(E)^k$ by
+\begin{equation}
+S_k(K_0, K_1, .., K_k) = S_{k-1}(K_0, K_1, .., K_{k - 1}) -  S_{k-1}(K_0 \cup K_k, K_1, .., K_{k - 1}).
+\end{equation}
+Then, for all $K_0$,$K_1$, .., $K_k$ in $\mathcal{K}(E)$, $k \geq 0$, $S_k (K_0, .., K_k) \geq 0$ (iii).
+
+\begin{definition}
+A real function $T$ on $\mathcal{K}(E)$ satisfying properties (i) and (ii) is called a Choquet capacity. A Choquet capacity satisfying property (iii) is said to be alternating of infinite order.
+\end{definition}
+
+The main result of this chapter is the Choquet theorem, that we state below without proof. Note that a proof can be found in the books of Matheron~\cite{matheron} or Schneider and Weil~\cite{schneider}.
+
+\begin{theorem}
+If $T: \mathcal{K}(E) \rightarrow \mathbb{R}$ is an alternating Choquet capacity of infinite order, then there exists a uniquely determined probability measure $P$ on $\mathcal{F}(E)$ such that, for all compact set $K$ in $\mathcal{K}(E)$, 
+\begin{equation}
+P\{\mathcal{F}_K \} = T(K).
+\end{equation}
+\label{th:choquet}
+\end{theorem}
+
+\section{Notes \label{s7}}
+
+Most of the material of this chapter has been developed by George Matheron. We refer the reader interested by a broader treatment of the topological and stochastic properties of random sets to his treaty~\cite{matheron} published in 1975, and to the more recent book of Schneider and Weil~\cite{schneider}. The Choquet theorem~\ref{th:choquet} was first established by Choquet~\cite{choquet}. Another relevant reference for the material covered in this chapter is the book of Stoyan, Kendall and Mecke~\cite{stoyan}.
+

@@ -1,0 +1,263 @@
+\chapter{Supervised segmentation from synthesized data \label{chap:cnn}}
+
+As pointed out in the introduction of this part of the manuscript dedicated to image segmentation, state-of-the-art image segmentation techniques currently rely on supervised learning algorithms including convolutional neural networks. However, segmenting images obtained during physics experiments with these algorithms requires to train them on manually segmented images that are often not available. In addition, the images that we want to study are significantly different from natural images, therefore making transfer learning techniques unsuitable to overcome the lack of training data. As a consequence, developing effective segmentation methods that can handle limited annotated data is a critical research area. I describe in this chapter research work conducted in collaboration with David Paulovics (Student, Institut de Physique de Nice), Dr. Fr\'ed\'eric Blanc (Researcher, Institut de Physique de Nice) and Th\'eo Dumont (Student, Mines Paris, PSL University) that seek to train a neural network for performing the segmentation of images obtained during rheology experiments based on a dataset of training images entirely synthesized by a morphological model.
+
+\section{Context}
+
+Image processing techniques are crucial for interpreting the outcomes of rheometry experiments on non-Brownian suspensions. The two most significant quantities for characterizing suspension properties are the concentration fields and the viscosity. Traditionally, these are determined by recording images of the suspension particles during flow at regular time intervals. Figure~\ref{fig:device} illustrates the principle of a recording device, where a flat laser sheet illuminates a transparent suspension and excites the fluorescence of a dye dissolved in the liquid. A camera perpendicular to the laser plane captures the fluorescent light. An image obtained from this device is displayed in Figure~\ref{fig:device}. In this image, the spherical particles of the suspension appear as black disks.
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.4\textwidth]{figures/figure1-bis} \quad
+    \includegraphics[width=0.4\textwidth]{figures/figure2}
+    \caption[Schematic view of a recording device and experimental image of a granular suspension.]{Left: schematic view of a recording device \citep{blanc2013microstructure}. Right: experimental image of a granular suspension from \citep{dambrosio2021}. The boundaries of the flow cell containing the suspension are visible at the top and at the bottom of the image.~\label{fig:device}}
+\end{figure}
+
+The measurement of the concentration field relies on the detection and segmentation of the particles present in the image \citep{snook2016dynamics,dambrosio2021}. Currently, the algorithms that are utilized for this specific task are relatively ``classical'' image processing algorithms, that often rely on mathematical morphology tools~\citep{Kimme1975, dougherty1992,blanc2013microstructure,snook2016dynamics,dijksman2017refractive,dambrosio2021}. It is usually necessary to properly parameterize these algorithms and to adjust the parameterization depending on the image being processed, which makes the use of these algorithms relatively difficult in practice.
+
+To overcome these difficulties, we developed an image processing algorithm based on a convolutional network~\citep{chen2017}, which brings an advantage over traditional image processing techniques by alleviating the need of updating the algorithm parameterization for each novel image. However, like all supervised learning algorithms, convolutional networks require a dataset of annotated experimental images to be trained. Constructing the ground truth is a time consuming task, which renders the use of supervised algorithms difficult in a lot of problems related to physical applications. In addition, the annotation process can be error prone. The main originality of our approach is that we entirely trained the network on a series of synthetic images generated with morphological models rather than on images of real experiments. 
+
+The lack of annotated data has long been identified as a critical issue that prevents the use of state-of-the-art supervised algorithms in many image processing problems. In particular, annotating images obtained during physical experiments is often expensive, which triggers interest in alternative methods where ground truth images are generated in a synthetic manner. The development of such methods is increasingly being studied in the literature~\citep{ravuri, jahanian, nagy2022automatic, barisin2022}. In~\citep{besnier}, a generative adversarial network is for instance used to generate a dataset of images similar to those of ImageNet. These generated images are then used to train a classification network. In~\citep{baradad}, the authors investigate image generation models that produce images from simple random processes. These generated images are subsequently used as training data for a visual representation learner. Finally, in~\citep{barisin2022}, morphological models are used to generate synthetic 3D images of cracks in concrete that are used to train a supervised segmentation model.
+
+\section{Segmentation algorithm~\label{sec:segm_s2}}
+
+\subsection{Network architecture}
+
+To perform the image segmentation, we use the Context Aggregation Network (CAN) introduced in~\citep{yu2016}. This network is entirely composed of convolutional layers, making it adaptable to any size of input image. Its main particularity is that it gradually aggregates contextual information without losing resolution through the use of dilated convolutions whose field of view increases exponentially over the successive network layers. This exponential growth yields global information aggregation with a very compact structure~\citep{yu2016,chen2017}.
+
+The CAN architecture is composed of a set of basis layers $\{L^{(s)}\}_{1\leq s\leq\ell}$. We modify the output of the original network so that it is composed of an image with two channels corresponding to a segmentation mask $M$ for the granular suspension particles and of an image $C$ used to locate the centers of the particles, respectively. 
+
+The detailed architecture of the network is presented in Tab.~\ref{tab:architecture}. Each block $L^{(s)}$ for $s\in [\![2,\ell-2]\!]$ is made of a $3 \times 3$ \textit{dilated convolution} with kernel $K^{(s)}$ and dilation parameter $r^{(s)}=2^{s-1}$, followed by an \textit{adaptive batch normalization} layer $\Psi^{(s)}$~\citep{chen2017} and a \textit{leaky rectifier linear unit} (leaky ReLU) non-linear activation function $\Phi$. The depth $d$ of all hidden convolutional layers is kept fixed in the CAN architecture. 
+
+            
+            \begin{table*}[!ht]
+                \centering
+                \begin{tabular}{c|c|ccccccc}
+                    % \hline
+                    \multicolumn{2}{c|}{\textbf{Layer $L^{(s)}$ for $s=$}} & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+                    \hline
+                    \hline
+                    \multicolumn{2}{c|}{Input channels} & 3 & 24 & 24 & 24 & 24 & 24 & 24 \\
+                    \multicolumn{2}{c|}{Output channels} & 24 & 24 & 24 & 24 & 24 & 24 & 2 \\
+                    \hline
+                    % \cline{2-9}
+                     & kernel size & $\ 3\times 3\ $ & $\ 3\times 3\ $ & $\ 3\times 3\ $ & $\ 3\times 3\ $ & $\ 3\times 3\ $ & $\ 3\times 3\ $ & $\ 1\times 1\ $ \\
+                    Conv. & dilation $r^{(s)}$ & 1 & 2 & 4 & 8 & 16 & 1 & 1 \\
+                     & padding & 1 & 2 & 4 & 8 & 16 & 1 & 0 \\
+                    \hline
+                    \multicolumn{2}{c|}{Adaptive BN} & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ \\
+                    \hline
+                    \multicolumn{2}{c|}{Leaky ReLU} & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & --- \\
+                    \hline
+                    \multicolumn{2}{c|}{Number of parameters} & $722$ & $5258$ & $5258$ & $5258$ & $5258$ & $5258$ & $50$ \\
+                    \hline
+                \end{tabular}
+                \caption[Architecture of the Context Aggregation Network (CAN).]{Architecture of the Context Aggregation Network (CAN). The total number of trainable parameters for this architecture is $27162$~\citep{paulovics2023}. \label{tab:architecture}}
+            \end{table*}
+
+The penultimate layer of the network is a classic convolution layer with a filter with size $3 \times 3$. The final layer is a $1 \times 1$ convolution used to perform dimension reduction. The neural network produces a segmentation mask $M$ and an image $C$ with bi-dimensional Gaussian functions placed at locations corresponding to the centers of the detected particles. We obtain a labeled image of the detected particles by applying a watershed algorithm~\citep{vincent1991} to the segmentation mask $M$, previously thresholded at the value $1/2$, with the local maxima of $C$ selected as markers. 
+            
+
+\subsection{Generation of synthetic training images}
+
+As mentioned previously, the use of convolutional neural networks can be challenging due to the substantial amount of annotated data required for training. Manual annotation is especially arduous when dealing with large quantities of particles in each image, which can number in the thousands.
+\par
+To address this issue, we utilize synthetic images created using a morphological model to train the neural network. This approach enables us to acquire training images with corresponding ground truth information without the need for manual annotation of a subset of experimental images. However, generating synthetic images that closely resemble the experimental images is crucial to ensure that the trained neural network architecture has good generalization properties.
+\par
+Our approach consists in generating gray level images encoded on $8$ bits through the use of random morphological models. The image generation proceeds in several subsequent steps:
+\begin{itemize}
+\item \textbf{Step 1.} We start by specifying the dimension $w \times h$ of the synthetic image and we build a mask specifying the location of the wall of the flow cell at the image borders. We assign distinct gray levels to the mask and to the interior to obtain an intensity image denoted $\bar{I}$.
+\item \textbf{Step 2.} The experimental images exhibit quasi-periodic stripes patterns. To simulate these patterns, we perturb the intensity at each pixel location $[x, y]$ in the image according to the relationship:
+\begin{equation}
+\hat{I}_1[x, y] = \bar{I} + \sum_{i = 1}^{2} A_i \cos (2\pi f_i \phi(x, y))\,.
+\end{equation}
+In this equation, the amplitudes $A_1$ and $A_2$ and the frequencies $f_1$ and $f_2$ are specified randomly for each generated image from uniform distributions on specified intervals. The quantities $\phi(x, y)$ defined at each location are independent random variables drawn from a normal distribution with mean $x$ and standard deviation $\sigma $ and are used instead of the coordinate $x$ in order to add randomness to the geometry of the patterns. 
+\item \textbf{Step 3.} We use a Boolean model of disks to simulate a mask for the particles. We recall (see Chap~\ref{random:s1}) that the Boolean model is a grain model obtained by implanting independent random primary grains $G'$ on the germs $\{x_{k}\}$ of a Poisson point process with intensity $\theta$.  The resulting set $\mathcal{G}$ is
+\begin{equation}
+\mathcal{G} = \bigcup _{x_k \in \mathcal{P}} G'_{x_k}\,,
+\end{equation}
+where $G'_{x_k}$ denotes the translated of the primary grain $G'$ at point $x_k$. In general, the grains of a Boolean model can overlap. To avoid this, we add the grains of the Boolean model sequentially. When a grain intersects a grain which is already present, we simply remove it from the simulation. The primary grains used to construct the model are random disks whose radii are drawn according to a normal distribution with mean $\bar{R}$ and standard deviation $\sigma_{R}$ specified for each image. In practice, we draw $\bar{R}$ and $\sigma_{R}$ from pre-defined uniform distribution for each generated image. A gray level is finally selected independently for each particle according to an uniform law on a specified interval. The gray level background is set equal to $255$. This results in the obtaining of a particle image $\hat{P}$. The synthetic image is updated by taking the minimum value between the background image $\hat{I}_1$ and the particles image $\hat{P}$:
+\begin{equation}
+\hat{I}_2[x, y] = \min \{\hat{I}_1[x, y], \hat{P}[x, y]\}\,.
+\end{equation}
+The particle image $\hat{P}$ is used to generate a binary mask image $\hat{M}$ indicating the presence of the particles in the generated image. In addition, we create an image $\hat{C}$ recording the centers $(x_i, y_i)_{1 \leq i \leq N}$ of the $N$ implanted suspension particles by setting:
+\begin{equation}
+\hat{C}[x, y] = \sum_{i = 1}^{N} \frac{1}{2 \pi s ^2} \exp \bigg (-\frac{(x - x_i)^2 + (y - y_i)^2}{2 s^2} \bigg )\,,
+\end{equation}
+where $s$ is the size of the selected Gaussian kernel. In this image, each particle is identified by a normalized bi-dimensional Gaussian function. $\hat{M}$ and $\hat{C}$ constitute the ground truth images associated with the synthetic image.
+\item \textbf{Step 4.} To complete the image generation, we add blur to the synthetic image by convolving it with a Gaussian kernel $G$ with standard deviation set equal to $3$ pixels, as well as white noise. The synthetic image is therefore described by:
+\begin{equation}
+\hat{I}[x, y] = \max\{0,(\hat{I}_2 * G)[x, y] + W[x, y]\}\,,
+\end{equation}
+where the quantities $\{W[x, y]\}_{1\leq x \leq w,\, 1\leq y \leq h}$ are independent centered Gaussian random variables with specified standard deviation.
+\end{itemize}
+All the parameters involved in the description of the model can be adapted depending on the set of experimental images under scrutiny. We display in Fig.~\ref{fig:synthetic} a synthetic image of the suspension constructed with the aforementioned procedure. We remark that synthetic images are visually very close to the suspension images obtained in the experiments.
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.4\linewidth]{figures/figure2} \qquad
+    \includegraphics[width=0.4\linewidth]{figures/figure3}
+    \caption[Experimental and synthetic image of the suspension.]{Left: experimental image of the suspension. Right: synthetic image of the suspension constructed with our procedure~\citep{paulovics2023}.~\label{fig:synthetic}}
+\end{figure}
+
+
+\subsection{Training of the neural network~\label{sec:segm_s23}}
+
+To train the neural network architecture, we generated a training set and a validation set containing respectively $2240$ and $360$ synthetic images along with their corresponding ground truth images. We used the Euclidean distance between the output of the network and the ground truth images as loss function to train the algorithm, therefore formulating the segmentation as a regression problem. We relied on data augmentation techniques~\citep{shorten2019} to improve the robustness of the network : the network was fed with random crops of the training images with randomly distorted gray level histogram. To train the neural network, we used the Adam optimizer with a learning rate initially set to $0.1$ and a batch size of $8$, and we divided the learning rate by a factor of $2$ every $50$ epochs. We fixed the maximal number of epochs to $400$, and retained the weights of the epoch that led to the minimal error on the validation set. 
+
+\begin{table*}[!ht]
+\centering
+\begin{tabular}{cc||cccc|cccc}
+ & & \multicolumn{4}{c|}{\textbf{CAN}} & \multicolumn{4}{c}{\textbf{K-means}}\\
+\hline
+Image & Particles & Recall & Prec. & $D$[px] & IoU & Recall & Prec. & $D$[px] & IoU \\
+\hline
+\#1 & 1339 & 0.949 & 0.978 & 0.68 & 0.784 & 0.827 & 0.954 & 1.25 & 0.626 \\
+\#2 & 1329 & 0.944 & 0.977 & 0.67 & 0.771 & 0.839 & 0.963 & 1.46 & 0.581 \\
+\#3 & 964 & 0.926 & 0.983 & 0.72 & 0.752 & 0.817 & 0.962 & 2.05 & 0.487 \\
+\#4 & 1051 & 0.947 & 0.996 & 0.55 & 0.869 & 0.808 & 0.948 & 1.75 & 0.666 \\
+\#5 & 487 & 0.961 & 0.998 & 0.5 & 0.883 & 0.879 & 0.949 & 1.49 & 0.671 \\
+\hline
+Avg & 1034 & \underline{0.945} & \underline{0.986} & 0.62 & \underline{0.812} & 0.834 & 0.955 & 1.6 & 0.606 \\
+\hline
+\end{tabular}
+\\
+\vspace{4mm}
+\begin{tabular}{cc||cccc|cccc}
+& & \multicolumn{4}{c|}{\textbf{Otsu thresholding}} & \multicolumn{4}{c}{\textbf{Adaptive thresholding}}\\
+\hline
+Image & Particles & Recall & Prec. & $D$[px] & IoU & Recall & Prec. & $D$[px] & IoU\\
+\hline
+\#1 & 1339 & 0.819 & 0.953 & 1.24 & 0.639 & 0.845 & 0.956 & 1.2 & 0.654 \\
+\#2 & 1329 & 0.833 & 0.967 & 1.46 & 0.591 & 0.875 & 0.965 & 1.25 & 0.612 \\
+\#3 & 964 & 0.812 & 0.958 & 1.92 & 0.5 & 0.898 & 0.964 & 1.3 & 0.585 \\
+\#4 & 1051 & 0.808 & 0.948 & 1.75 & 0.666 & 0.866 & 0.921 & 1.78 & 0.662 \\
+\#5 & 487 & 0.830 & 0.967 & 1.43 & 0.707 & 0.899 & 0.946 & 1.52 & 0.697 \\
+\hline
+Avg & 1034 & 0.821 & 0.959 & 1.56 & 0.621 & 0.877 & 0.95 & 1.2 & 0.66 \\
+\hline
+\end{tabular}
+\vspace{4mm}
+\caption[Segmentation metrics.]{Segmentation metrics for the Context Aggregation Network (CAN), K-means, Otsu and adaptive thresholding algorithms.~\label{tab:results}}
+\end{table*}
+
+
+\section{Results and discussion~\label{sec:segm_s3}}
+
+
+\subsection{Evaluation dataset}
+
+
+
+In order to quantitatively evaluate the results and investigate the generalization capability of the algorithm to real experimental images, we performed manual annotation on $5$ experimental images. Each image was annotated by labeling all suspension particles with a disk, providing the center and radius of each particle. While $5$ images may seem relatively small in number, these images are large in size and contain a significant number of particles, as shown in Tab.~\ref{tab:results}. Consequently, the detection results were tested against a substantial number of particles, ensuring the statistical validity of the findings. Moreover, we deliberately included a low-quality image in the experimental dataset, featuring a prominent illumination gradient and noticeable blurriness. This specific image is depicted in Fig.~\ref{fig:segmentation}. On average, each image in the dataset contained 1037 particles. Manual annotation of an image typically required one to two hours, illustrating the significant time investment involved. This highlights the practical challenge of manually annotating an entire set of images for training a convolutional network architecture, which is often unfeasible in many applications.
+
+\begin{figure*}[p]
+    \centering
+	\begin{subfigure}[b]{0.45\textwidth}
+	\includegraphics[width=\textwidth]{figures/9_3.png}
+	\caption{Original image}
+	\end{subfigure} 
+    \\
+	\centering
+	\begin{subfigure}[b]{0.45\textwidth}
+	\includegraphics[width=\textwidth]{figures/9_3_segments.png}
+	\caption{CAN segmentation}
+	\end{subfigure} 
+    %
+	\begin{subfigure}[b]{0.45\textwidth}
+ 	\includegraphics[width=\textwidth]{figures/9_3_kmeans.png}
+    \caption{K-means segmentation}
+    \end{subfigure}   
+    %
+    \begin{subfigure}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{figures/9_3_otsu.png}
+    \caption{Otsu thresholding}
+    \end{subfigure}
+    %
+    \begin{subfigure}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{figures/9_3_adaptative.png}
+    \caption{Adaptive thresholding}
+    \end{subfigure}
+    
+\caption[Segmentation results obtained for image \#3.]{Segmentation results obtained for image \#3 (a) with the CAN network (b), K-means (c), Otsu thresholding (d) and adaptive thresholding (e). Correct detections (\texttt{tp}) are displayed in blue, false positives (\texttt{fp}) in yellow and false negatives (\texttt{fn}) in green~\citep{paulovics2023}.\label{fig:segmentation}}
+\end{figure*}
+
+\begin{figure*}[p]
+    \centering
+	\begin{subfigure}[b]{0.45\textwidth}
+	\includegraphics[width=\textwidth]{figures/2_1.png}
+	\caption{Original image}
+	\end{subfigure} 
+    \\
+	\centering
+	\begin{subfigure}[b]{0.45\textwidth}
+	\includegraphics[width=\textwidth]{figures/2_1_segments.png}
+	\caption{CAN segmentation}
+	\end{subfigure} 
+    %
+	\begin{subfigure}[b]{0.45\textwidth}
+ 	\includegraphics[width=\textwidth]{figures/2_1_kmeans.png}
+    \caption{K-means segmentation}
+    \end{subfigure}   
+    %
+    \begin{subfigure}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{figures/2_1_otsu.png}
+    \caption{Otsu thresholding}
+    \end{subfigure}
+    %
+    \begin{subfigure}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{figures/2_1_adaptative.png}
+    \caption{Adaptive thresholding}
+    \end{subfigure}
+    
+\caption[Segmentation results obtained for image \#4]{Segmentation results obtained for image \#4 (a) with the CAN network (b), K-means (c), Otsu thresholding (d) and adaptive thresholding (e). Correct detections (\texttt{tp}) are displayed in blue, false positives (\texttt{fp}) in yellow and false negatives (\texttt{fn}) in green~\citep{paulovics2023}.\label{fig:segmentation2}}
+\end{figure*}
+
+\subsection{Detection metrics}
+
+In order to evaluate the segmentation results, we developed an approach that allows to establish a one-to-one correspondence between the particles detected by the algorithm (the ``detections'') and the particles present in the ground truth. We refer the reader interested by more details on this approach to the original preprint~\citep{paulovics2023}. 
+
+Once the correspondence established between the particles and the ground truth, we determined the number $\texttt{fp}$  of false detections by counting the number of detections not associated with any particle. Similarly, we determined the number $\texttt{fn}$ of undetected particles in the ground truth by counting the number of particles in the ground truth left unassociated. The number $\texttt{tp}$ of correct detections is to the number of correspondences established between the particles of the ground truth and the detections.
+The ability of the algorithm to properly detect the suspension particles is described in terms of precision and recall, defined by
+\begin{equation}
+\text{Recall} = \dfrac{\texttt{tp}}{\texttt{tp} + \texttt{fn}}, \quad\text{Precision}  = \dfrac{\texttt{tp}}{\texttt{tp} + \texttt{fp}}\,.
+\end{equation}
+For all correct detections, we computed different metrics that characterize the quality of the segmentation including the distance $D = \|c_p - \hat{c}_q\|_2$ between the center of the detection and the actual center of the particle as annotated in the ground truth or the intersection over union (IoU) of the particle and the detection, defined by
+\begin{equation}
+\operatorname{IoU}(\mathcal{P}_p, \mathcal{D}_q) = \dfrac{\mathcal{P}_p \cap \mathcal{D}_q}{\mathcal{P}_p \cup \mathcal{D}_q}\,.
+\end{equation}
+
+\subsection{Results and discussion}
+
+We compare the results of the convolutional network architecture trained on synthetic data to results obtained with traditional algorithms, including Otsu thresholding~\citep{otsu1979}, adaptive thresholding~\citep{gonzalez} and K-means segmentation~\citep{bishop2006}. The results for the CAN neural network, the K-mean segmentation and the Otsu and adaptive thresholding algorithms for the segmentation metrics (precision $P$, recall $R$ and average IoU between the particle and the detection mask) are reported in Fig.~\ref{fig:results} and Tab.~\ref{tab:results}, where we also report the average distance $D$ (in pixels) between the centers of the particles and the centroid of their corresponding detection masks.
+
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=0.45\textwidth]{figures/results.png}
+\caption[Average over the 5 images of Tab.~\ref{tab:results} of the segmentation metrics.]{Average over the 5 images of Tab.~\ref{tab:results} of the segmentation metrics (recall, precision, IoU) for the CAN, K-means, Otsu and adaptive thresholding algorithms~\citep{paulovics2023}.~\label{fig:results}}
+\end{figure}
+
+In general, it can be observed that the convolutional neural network (CNN) performs significantly better than traditional methods in terms of segmentation quality for all evaluation metrics. However, the algorithm shows slightly lower performance for image \#3 in the test dataset, which can be attributed to its lower quality compared to the other images, making segmentation more challenging. Interestingly, all proposed approaches exhibit relatively similar precision results, with values systematically exceeding 0.95. It is mostly for the recall metric that the CNN significantly outperforms other methods. Furthermore, there is a substantial improvement in particle center localization, with an average below one pixel for test images using the CNN architecture. Additionally, the intersection over union (IoU) metric shows significantly better results than conventional algorithms. Notably, adaptive thresholding outperforms K-means or Otsu thresholding, emphasizing the importance of local threshold adaptation rather than relying on global image information.
+
+To illustrate the performance of the compared algorithms, segmentation examples are presented in Figures~\ref{fig:segmentation} and~\ref{fig:segmentation2}. Blue represents correctly detected particles from the ground truth, green indicates false negatives, and yellow highlights false positives superimposed on the ground truth image. It is worth noting that false positives and negatives often occur for particles with ambiguous or inaccurate manual segmentation. In practice, we can therefore consider that the CNN architecture can provide segmentation of similar quality to manual segmentation.
+
+
+\section{Conclusion and perspectives~\label{sec:segm_s4}}
+
+In the study described in this chapter, we  introduced a novel approach for segmenting experimental images of a suspension by training a convolutional neural network on synthetic images generated with a morphological model. We demonstrated in particular that the CNN exhibits good generalization properties and outperforms traditional segmentation algorithms when applied to real images of the suspension. From a broader perspective, efficient image processing techniques are essential for making the most of images collected during physical experiments. This study highlights the value of using morphological models to generate reliable training samples in situations where annotated images are unavailable, therefore enabling the use of current state-of-the-art supervised approaches in image segmentation.
+
+
+\section{Related work}
+
+In addition to this work on the segmentation of images from rheology experiments, I also worked as part of Robin Alais PhD thesis on the development of a convolutional neural network architecture that evaluates the quality of retinal images by assessing the visibility of the macular region. The algorithm deems an image to be of acceptable quality if the macular region is completely visible and within the field of view. In addition, the method can pinpoint the location of the fovea with a maximal error of 0.34 mm for acceptable images. The algorithm is based on a lightweight fully-convolutional network, which is several thousand times smaller than state-of-the-art networks classically used for this specific task, and achieves near-human performance for assessing macula visibility and fovea localization. The main advantage of the method is that it can easily be integrated into portable retinographs, reduce the number of ungradable images and therefore save both patient and physician time. It is a significant step towards automating the screening process for retinal pathologies, including diabetic retinopathy, which constitutes a major global healthcare concern. This work was published in the journal \textit{Biomedical Signal Processing and Control}~\citep{alais2020fast}.
+
+\section{Related publications}
+
+\begin{itemize}
+\item D. Paulovics, B. Figliuzzi, T. Dumont and F. Blanc. A supervised algorithm entirely trained on a synthetic dataset to segment granular suspension images. \textit{Preprint}, 2023.
+\item R. Alais, P. Dokl\'adal, A. Erginay, \underline{B. Figliuzzi}, E. Decenci\`ere. Fast macula detection and application to retinal image quality assessment. \textit{Biomedical Signal Processing and Control}, 55, 101567, 2020.
+\end{itemize}
+
+
+
+

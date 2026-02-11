@@ -1,0 +1,689 @@
+\chapter{Image segmentation}
+
+In materials science, experimental campaigns can generate large databases of images that require automatic processing for being efficiently exploited. Supervised learning algorithms based on convolutional neural networks constitute the state-of-the-art approaches for performing image segmentation. However, training these architectures depends upon the availability of images segmented manually, which are often not available in sufficient quantity. This challenge is further compounded by the fact that images from materials science experiments are markedly different from the natural images that are typically used for training convolutional neural networks. Consequently, transfer learning techniques alone are insufficient to address the lack of training data. As a result, the development of segmentation methods that can effectively handle limited amounts of data remains a crucial area of research. The applicability of the most effective segmentation methods to actual industrial problems is dependent on overcoming this challenge. This can be done in two manners: first, by pursuing the development of segmentation techniques that require minimal training data; second, by relying on data augmentation and image generation techniques to obtain sufficiently large training datasets for the task at hand. This part of the manuscript presents my main contributions to these two lines of research.
+
+My main contribution to the development of segmentation techniques is related to the work conducted during the PhD thesis of Ka\"iwen Chang between 2016 and 2019, which I co-directed along with Jes\'us Angulo at the Centre for Mathematical Morphology~\citep{chang2019thesis}. During the course of this PhD thesis, we developed an algorithm based on the Eikonal equation to generate the superpixel segmentation of a given image based on color and texture information~\citep{chang2019fast, chang2020fast}. Any superpixel segmentation can be represented by a graph whose nodes represent the superpixels of the image and whose edges represent the adjacency relations between superpixels. Using different features extracted from each superpixel, we showed that it was possible to learn a distance characterizing the dissimilarity between neighboring superpixels with a limited number of images. We finally relied on a generalization of the Eikonal equation to graph structures to merge the superpixels of the image into an actual segmentation. I describe these researches in chapters~\ref{chap:superpixels} and~\ref{chap:graph}. In chapter~\ref{chap:cnn}, I present a study conducted in collaboration with the Institut de Physique de Nice, which explores the second line of research mentioned previously, and aims to segment images in a supervised way from a dataset of images synthesized with a morphological model.
+
+
+\section{Eikonal-based superpixels}
+
+Superpixel algorithms are a class of techniques that seek to divide an image into smaller regions consisting of similar pixels, providing more meaningful and analyzable representations than raw pixels. One major advantage of superpixels is that they significantly reduce the amount of calculations required for further processing, as their number is much lower than that of the original pixels. Moreover, due to their homogeneous nature, superpixels form subregions of the image that are particularly relevant for feature computation. As a result, superpixel algorithms are frequently used as a pre-processing step in various applications such as object classification, image segmentation, or depth estimation, as demonstrated by studies like~\citep{zitnick} and~\citep{fulkerson}. 
+
+
+A significant amount of literature in computer vision and image analysis is dedicated to the topic of superpixels~\citep{achanta2012, stutz, li2015}. Graph based methods rely on a graph representation of the image. These methods include the normalized cut algorithm (NC) of Shi and Malik~\citep{malik2001, shi2000} or the efficient graph-based segmentation algorithm (GS) of Felzenswalb and Huttenlocher~\citep{felzenswalb}. By contrast, clustering based methods proceed by iteratively refining clusters of pixels until some convergence criterion is met. These methods notably include mean shift~\citep{comaniciu2002}, watershed~\citep{beucher, beucher1992, figliuzzi2017hierarchical, vincent1991, meyer1990}, turbopixel~\citep{levinshtein} or waterpixel~\citep{cettour2019, machairas} algorithms, respectively.
+
+This chapter presents in a synthetic manner the work conducted during the PhD thesis of Ka\"iwen Chang on the development of a novel superpixel algorithm~\citep{chang2019thesis}. Our objective was to use superpixels as a first segmentation step to perform the complete segmentation of an image by region merging techniques. We noticed during this work that the quality of the resulting segmentation was strongly related to the quality of the initial superpixel segmentation. Hence, we dedicated part of our efforts to the development of a clustering-based algorithm for generating a superpixel partition, which will be referred to as fast-marching based superpixels (FMS) algorithm in the remainder of this manuscript. In this algorithm, following an idea originally introduced for the Eikonal-based region growing for efficient clustering algorithm (ERGC) of Buyssens \textit{et al.}~\citep{buyssensc,buyssensb,buyssensa}, we used the Eikonal equation to compute the superpixel partition of the image. This work resulted in two scientific publications~\citep{chang2019fast, chang2020fast}, which we summarize in the present chapter.
+
+
+\subsection{Algorithm}
+
+The FMS algorithm operates by likening the growth of regions on an image to waves propagating through a non-uniform medium, where the growth rate depends on the local color and texture. The wave propagation is governed by the stationary Eikonal equation. Hence, the task of constructing the superpixel partition essentially involves solving the Eikonal equation on the image domain using a velocity field that is determined by the local color and texture. A similar approach was introduced by Buyssens \textit{et al.} in 2014~\citep{buyssensa,buyssensb,buyssensc}, but there are notable differences between the two methods, such as the expression for the local velocity as a function of the image content, the use of texture features, and the region update mechanism during propagation.
+
+\subsubsection{The Eikonal equation on a bounded domain}
+
+We recall in this paragraph basic notions on the stationary Eikonal equation, already discussed in section~\ref{random:s3} of this manuscript. Let $\Omega $ denote some bounded domain in $\mathbb{R}^2$. In what follows, we consider a wave front emerging from a set of points on the domain and propagating at a velocity $u:= u(x)$ specified at every location $x \in \Omega$. Let us denote by $x \rightarrow T(x)$ the function associating with each point $x \in \Omega $ the first arrival time of the propagation front. It can be shown~\citep{sethian1996} that $T$ is solution of the so-called stationary Eikonal equation
+\begin{equation}
+\|\nabla T (x)\| =\dfrac{1}{u(x)}, \quad \forall x \in \Omega.
+\label{eqn:eikonal}
+\end{equation}
+The stationary Eikonal equation~(\ref{eqn:eikonal}) must be complemented by boundary conditions specified on $\partial \Omega $. One usually considers a function $g$ defined on the boundary $\partial \Omega $ so that $T(x) = g(x)$ for all $x \in \partial \Omega $. Generally, the function $g$ is taken to be identically $0$. Hence, the stationary Eikonal equation becomes
+\begin{equation}
+\left\{
+\begin{array}{l}
+||\nabla T (x)|| =\dfrac{1}{u(x)}, \quad \forall x \in \Omega \\
+T(x) = 0, \quad \forall x \in \partial \Omega.
+\end{array}
+\right.
+\label{eqn:eikonal2}
+\end{equation}
+
+For all $x$ in $\Omega $, the solution $T(x)$ of Eq.~(\ref{eqn:eikonal2}) can be interpreted as the minimal time required to travel from $x$ to the domain boundary $\partial \Omega $. In other words, the Eikonal equation allows us to compute the shortest distance between any point $x$ of the domain $\Omega $ and the boundary $\partial \Omega$. Efficient numerical methods can be found in the literature to solve the Eikonal equation on a domain. Among these methods, the fast marching algorithm, originally introduced by Sethian \textit{et al.}, ranks among the most popular. It works by iteratively following the wavefront propagation and computing the first arrival time step by step~\citep{sethian1996}.
+
+
+\subsubsection{Region growing} 
+
+We describe in this section the practical implementation of the superpixel generation algorithm. Let us first introduce some notations. A pixel in image $\mathcal{I}$ is denoted by $p$ and its coordinates in the image by $(x, y)$. We denote by $\mathbf{C}(p)$ the color at pixel $p$ in the CIELAB color space. Similarly, we denote by $\mathbf{T}(p)$ a vector of features characterizing the local texture at pixel $p$. The proposed algorithm is equivalent to solving the stationary Eikonal equation on the image domain with the fast marching algorithm for a velocity field depending upon the local content of the image. 
+
+Let $K$ denote the requested number of superpixels. We initialize the algorithm by selecting $K$ seeds on a regular grid. To avoid placing a seed on a boundary, following~\citep{achanta2012}, we place the seed at the local minimum of the gradient in a $3 \times 3$ neighborhood of the nodes of the grid.
+
+For each seed $s_i$, we define a velocity field $u_i(p)$, which depends on the color and on the texture of both the seed and the location $p:=(x, y)$ in the image. The labels of the seeds are then gradually propagated from the labeled pixels to the unlabeled pixels according to the local velocities $(u_i(p))_{i = 1, .., K}$. The propagation is described by the Eikonal equation
+\begin{equation}
+  \begin{cases}
+    ||\nabla T(p)|| = \dfrac{1}{u(p)}, \quad \forall p \in \mathcal{I}\\
+    T(p) = 0,   \quad \forall p \in \partial \mathcal{I}.
+  \end{cases}
+\label{eqn:stationaryEikonal}
+\end{equation}
+In this expression, $u(p)$ is the local velocity at pixel $p$, $\partial \mathcal{I}$ corresponds to the subset of the image $\mathcal{I}$ constituted by the seeds $\left\{s_1, s_2, ..., s_K \right\}$ and $T(p)$ is the minimal traveling time from $\partial \mathcal{I}$ to $p$. Once seeds have been selected, we solve Eq.~(\ref{eqn:stationaryEikonal}) using the fast marching algorithm, whose cost is known to be in $O(N \log N)$~\citep{sethian1996, sethian1999}, $N$ being the number of pixels in the image.
+  
+
+\subsubsection{Local velocity model}
+
+We can use the algorithm described in the previous paragraph with any non-negative velocity model $u(p)$. One of the main difficulties related to superpixel segmentation is that certain regions of the image are extremely textured. In these regions, the colorimetric distance between two pixels presumes in no way that these two pixels belong to the same cluster or not. To account for texture, we considered a velocity model incorporating both local color and texture information. This velocity model is based on a distance $D$ between the image pixels and the seeds defined by
+\begin{equation}
+D(p, s_i) = w_0 \|\mathbf{C}_p -\textbf{C}_i\|_2 + w_1 d(\textbf{T}_p, \textbf{T}_i),
+\end{equation}
+where $\textbf{T}_p$ is a vector of features characterizing the local texture at pixel $p$, $\textbf{T}_i$ is the corresponding vector of features for the $i-$th cluster center $s_i$, $d(\textbf{T}_p, \textbf{T}_i)$ a texture distance between the pixel $p$ and the $i-$th cluster center, and $w_0$ and $w_1$ are positive coefficients weighting color and texture contributions, respectively.\\
+
+Several approaches can be implemented to obtain the features vector $\boldsymbol T_p$. In our study, we constructed a texton map based on some texture classifier and we associated with each pixel in the image an histogram of textons computed in a local window of fixed size. We could then define a texture distance between two pixels of the image by considering the $\chi ^2$ distance between the textons histograms associated with both pixels.
+
+The local velocity $u_i(p)$ associated with the propagation of region $i$ is computed by relying on the exponential kernel
+\begin{equation}
+u_i(p) = \exp(-w_0 \|\boldsymbol C_p-\boldsymbol C_i\|_2 - w_1 d(\boldsymbol T_p, \boldsymbol T_i)).
+\label{eqn:velocity}
+\end{equation}
+In the FMS algorithm, the velocity is at its maximum and equals 1 when both the pixel and the cluster center have identical color and texture characteristics. The weighting parameters $w_0$ and $w_1$ that are used to compute the color and texture distances need to be chosen carefully. Increasing these parameters leads to better adherence to the image boundaries because the propagation velocity becomes more sensitive to variations in color and texture. However, using high values of $w_0$ and $w_1$ (i.e. $>8$) can cause the local velocity to become very low. This, in turn, can result in the creation of many small, isolated superpixels that correspond to low-contrast regions of the image, which can degrade the compactness of the final superpixels partition. Therefore, the choice of parameters involves a trade-off between boundary adherence performance and topological considerations.
+
+\subsubsection{Refinement}
+
+Images often contain regions of interest that vary greatly in scale, making it challenging to select seeds for superpixel segmentation using a uniform grid. To achieve better boundary adherence in the superpixel segmentation, we employed a refinement strategy that utilizes the map of arrival times.
+
+The map $T(p)$ obtained at the end of the superpixel generation algorithm contains information about the arrival time at each pixel $p$, and can be used to refine the superpixel partition by adding additional seeds. When the arrival time at a pixel $p$ within a region $\mathcal{R}_i$ associated with seed $s_i$ is high, it indicates that the region boundary propagating from $s_i$ has passed through pixels that are highly dissimilar to $s_i$. Therefore, the arrival times in each region $\mathcal{R}_i$ can be used as a criterion to determine if that region should be split further. A similar refinement strategy is employed in~\citep{buyssensb}, where the distance map is used to generate new superpixels for refinement at the end of the over-segmentation process.
+
+The refinement is conducted as follows. Let us denote by $\mathcal{B}$ the set of pixels belonging to the superpixel boundaries and by $\delta(\mathcal{B})$ the dilated set of $\mathcal{B}$ by a disk of radius 2 pixels. Then, the maximal arrival time in region $\mathcal{R}_i$ is defined to be
+\begin{equation}
+t_i = \max_{p \in \mathcal{R}_i \cap \delta(\mathcal{B})^c} T(p),
+\end{equation}
+where $\delta(\mathcal{B})^c$ is the complementary set of $\delta(\mathcal{B})$. To further refine the superpixel segmentation, we select the $k$ regions with highest $t_i$ and we add seeds at the corresponding locations before re-propagating, $k$ being a parameter fixed by the user. We exclude the pixels that belong to the region $\delta(\mathcal{B})$ to avoid implanting a seed directly on a boundary. This procedure is repeated iteratively until the desired number of superpixels is obtained and significantly improves the boundary adherence of the resulting superpixel partition. It must however be noted that the refinement strategy usually reduces the compactness of the obtained superpixel segmentation by increasing the density of superpixels in selected regions of the image. 
+
+\subsubsection{Comparison with other algorithms}
+
+It is interesting to point out the main differences between the FMS and the ERGC algorithms~\citep{buyssensc,buyssensb,buyssensa}. ERGC is a clustering-based algorithm that computes superpixel partitions by relying upon the Eikonal equation. The most significant difference between both algorithms is related to the velocity models that are employed in both cases. For ERGC, the local velocity field is simply given by:
+\begin{equation}
+u_i(p) = \dfrac{1}{||\boldsymbol C_p-\boldsymbol C_i\|_2}.
+\end{equation}
+In particular, the velocity is very high when the pixel and the seed have similar color characteristics. Another important difference is that ERGC only considers local color information to compute the local velocity, while FMS is also able to incorporate texture information. 
+FMS is also very close to an algorithm referred to as Iterative Spanning Forest (ISF)~\citep{vargas2019}, which constructs superpixels by iteratively merging pixels with the aim of maximizing intra-clusters color and spatial distance proximity. The maximization is conducted through a greedy procedure. Even if ISF cannot be directly interpreted in terms of waves propagating according to the stationary Eikonal equation, the greedy procedure for merging superpixels is similar to the fast marching algorithm used to compute the superpixel partition in FMS and ERGC.
+
+Overall, the main differences between the proposed approach and both ISF and ERGC are the incorporation of texture information and the choice of the velocity model to compute the clustering, as well as the refinement procedure and the choice of initial seeds, that are not implemented for ISF and ERGC, respectively. 
+
+\subsection{Experiments and discussion}
+
+We evaluate in this section the performance of the FMS algorithm and compare it with several state of the art superpixel algorithms including SLIC~\citep{achanta2012}, ERGC~\citep{buyssensc,buyssensb,buyssensa} and ISF~\citep{vargas2019}. These algorithms share the characteristics of generating superpixels through clustering procedures, either by relying on a K-means algorithm, like SLIC, or on iterative agglomeration procedures, like ERGC, ISF and FMS. To perform the evaluation, we use the Berkeley Segmentation Dataset 500 (BSDS500)~\citep{martin2001, arbelaez}. This dataset contains 500 images and provides several ground truth manual segmentations for each image. We point out that we also presented in~\citep{chang2019thesis, chang2020fast} an evaluation of the performance of FMS on a database of images recombining texture patches extracted from images representing stripes, constructed by Giraud \textit{et al.} with the intent to evaluate a superpixel algorithm adapted to highly textured images~\citep{giraud_texture-aware_2019}.
+
+
+\begin{figure}[!ht]
+\centering
+\begin{subfigure}[b]{0.35\textwidth}
+\centering 
+\includegraphics[width=\textwidth]{figures/grid.png}
+\caption{FMS ($w_0$ = 3, $w_1$ = 0)}
+\end{subfigure}
+~
+\begin{subfigure}[b]{0.35\textwidth}
+\centering 
+\includegraphics[width=\textwidth]{figures/compact.png}
+\caption{FMS ($w_0$ = 1, $w_1$ = 0)}
+\end{subfigure}
+
+\centering
+\begin{subfigure}[b]{0.35\textwidth}
+\centering \includegraphics[width=\textwidth]{figures/texture.png}
+\caption{FMS ($w_0$ = 3, $w_1$ = 3)}
+\end{subfigure}
+~
+\begin{subfigure}[b]{0.35\textwidth}
+\centering \includegraphics[width=\textwidth]{figures/slic.png}
+\caption{SLIC (m=10)}
+\end{subfigure}
+
+\centering
+\begin{subfigure}[b]{0.35\textwidth}
+\centering \includegraphics[width=\textwidth]{figures/ergc.png}
+\caption{ERGC}
+\end{subfigure}
+~
+\begin{subfigure}[b]{0.35\textwidth}
+\centering \includegraphics[width=\textwidth]{figures/isf.png}
+\caption{ISF ($\alpha$=0.5, $\beta $=12)}
+\end{subfigure}
+
+\caption[Illustration of the superpixel segmentation on an image of the BSDS500, for $K=200$ superpixels.]{Illustration of the superpixel segmentation on an image of the BSDS500, for $K=200$ superpixels~\citep{chang2020fast}.}\label{fig:superpixels}
+\end{figure}
+
+
+\subsubsection{Experiments on the BSD500 dataset}
+
+To evaluate the performance of the algorithms, we considered the following metrics: boundary recall, undersegmentation error, compactness and contour density. These metrics are classic in the field of image segmentation and we refer the reader seeking more details to the articles~\citep{schick, chang2019fast, chang2020fast}.
+
+\begin{figure}[ht]
+\centering
+\begin{subfigure}[b]{0.45\textwidth}
+\centering \includegraphics[width=\textwidth]{figures/recall.png}
+\caption{Boundary recall}\label{fig:recall}
+\end{subfigure}
+~
+\begin{subfigure}[b]{0.45\textwidth}
+\centering \includegraphics[width=\textwidth]{figures/undersegmentation.png}
+\caption{Undersegmentation error}\label{fig:underseg}
+\end{subfigure}
+
+\centering
+\begin{subfigure}[b]{0.45\textwidth}
+\centering \includegraphics[width=\textwidth]{figures/compactness.png}
+\caption{Compactness}\label{fig:compactness}
+\end{subfigure}
+~
+\begin{subfigure}[b]{0.45\textwidth}
+\centering \includegraphics[width=\textwidth]{figures/density.png}
+\caption{Density}\label{fig:density}
+\end{subfigure}
+\caption[Comparison between SLIC, ERGC, IFS and FMS algorithms on BSDS500.]{Comparison between SLIC, ERGC, IFS and FMS algorithms on BSDS500 \citep{chang2020fast}.}\label{fig:metrics}
+\end{figure}
+
+
+Figure~\ref{fig:metrics} displays the recall, undersegmentation error, compactness and density metrics of FMS, SLIC, ISF and ERGC averaged over the 500 images of the BSDS500. These metrics are represented for a number $K$ of superpixels ranging from 100 to 600.  We also display in Fig.~\ref{fig:superpixels} superpixel partitions obtained with these algorithms on an image of the BSDS500. In our results, we present several versions of the FMS algorithm: two versions using only color information, and a third one incorporating texture information through an additional texton channel computed with a bank of Gabor filters~\citep{jain}. We selected the parameter $w_0 = 3$ for the color term in the velocity expression~(\ref{eqn:velocity}) by relying on a grid search to maximize boundary adherence while keeping a reasonable compactness for the superpixel partition. To illustrate the trade-off between compactness and boundary recall controlled by the parameter $w_0$, we also displayed the metrics as obtained with the set of parameters $w_0 = 1$ and $w_1=0$. Finally, we computed the superpixel partition using the parameters $w_0 = 3$ and $w_1 = 3$ to evaluate the texture influence. Additional experiments aiming at characterizing the influence of the refinement and of the seeds initialization are also presented in the original article~\citep{chang2019fast, chang2020fast} related to the present work.
+
+In terms of recall, we can note that the FMS algorithm yields better results than SLIC and ERGC algorithms, and performs slightly better than ISF when $w_0=3$. However, the boundary recall should be considered along with compactness, and we can note that the compactness of the FMS algorithm is significantly lower than the one of ISF when $w_0 = 3$. Interestingly, when specifying $w_0=1$ and therefore favoring the construction of compact superpixels, we are able to obtain a similar boundary recall than the one reached by ISF, but with higher compactness. The gain in terms of superpixel compactness is also clearly visible in Fig.~\ref{fig:superpixels}. The compact FMS algorithm also exhibits a smaller density when compared to all other algorithms except SLIC. The performances of SLIC appear to be significantly below the ones of the other algorithms. Regarding the compactness, we can note that the compactness decreases between $K=100$ and $K=200$ for the FMS algorithm. This is caused by the fact that no refinement steps are applied when computing the partition with $K=100$ superpixels. Due to the refinement procedure, the size of the superpixels constructed with the FMS algorithm is locally adapted depending on the content of the image. Therefore, the refinement is performed at the expense of the superpixels uniformity: the refinement yields superpixels that are heterogeneous in scale and size. We can finally note that in terms of undersegmentation, all considered superpixel algorithms are relatively similar.
+
+\subsection{Conclusion}
+
+During Ka\"iwen Chang's PhD thesis research~\citep{chang2019thesis}, we developed a fast-marching based algorithm for generating superpixel partitions of images, building upon an idea initially used in the ERGC algorithm by Buyssens \textit{et al.}~\citep{buyssensc,buyssensb,buyssensa}. The significant contribution of this study was the introduction of a new expression for the velocity term, which allowed for texture information to be incorporated into the computation of the superpixel partition. In addition, different strategies were also proposed to refine the segmentation.
+
+We evaluted the FMS algorithm on the Berkeley Segmentation Database 500 and we found that it constructs superpixel partitions with slightly higher recall and similar undersegmentation error compared to similar superpixel algorithms such as ERGC, ISF, and SLIC. Moreover, we demonstrated that the inclusion of texture information improved the compactness of the partition without compromising boundary recall.
+
+One potential extension of this work could involve incorporating gradient information into the local velocity model to better account for contours and image discontinuities. It would also be interesting to attempt to automatically estimate optimal parameters, such as $w_0$ and $w_1$, based on the processed image, a strategy that has been successfully employed in several other superpixel algorithms~\citep{achanta2017, giraud_texture-aware_2019}. Additionally, developing a multiscale version of the algorithm, where superpixels are computed and refined at different scales using a pyramid representation of the image, could be useful. This multiscale approach could generate a hierarchy of superpixel partitions and a corresponding saliency map, which could be utilized as a criterion for superpixel merging.
+
+
+\section{Eikonal-based region merging}
+
+In chapter~\ref{chap:superpixels}, we presented a superpixel algorithm using the Eikonal equation to compute the superpixel partition of an image. We go one step further in this chapter and present a generalization of this algorithm to the framework of graphs, which allows to merge image regions into an actual segmentation of the image.
+The chapter is organized as follows: in section~\ref{graph:s1}, we introduce a generalization of the Eikonal equation to the setting of graphs. In section~\ref{graph:s2}, we explain how the Eikonal equation can be leveraged to perform region merging in the image. We present finally in section~\ref{graph:s3} the results obtained with our algorithm on the Berkeley Segmentation Dataset and compare these results to the ones obtained with a classical algorithm for performing graph clustering: the normalized cut~\citep{shi2000}. The research works presented in this chapter was conducted during the PhD thesis of Ka\"iwen Chang between 2016 an 2019~\citep{chang2019thesis}.
+
+\subsection{Eikonal equation on an undirected graph~\label{graph:s1}}
+
+We describe in this section how to extend the continuous Eikonal equation to the setting of graphs. A graph is a structure employed to depict a collection of objects, wherein certain objects are connected. The objects are denoted by \textit{vertices} or \textit{nodes}, while the connections between pairs of vertices are represented by \textit{edges}.
+
+\subsubsection{Eikonal equation}
+
+In what follows, we consider an undirected, path-connected graph $\mathcal{G}:=(V, E)$. We assume that each edge $(i, j)$ in $E$ connecting vertices $V_i$ and $V_j$ carries a weight $w_{ij}$ that describes the similarity between nodes $V_i$ and $V_j$, and that $t:V \rightarrow \mathbb{R}$ is some function defined on the set $V$ of all vertices of the graph. To keep notations simple, we note $t_u$ the value of the function $t$ at vertice $u$.
+
+\begin{definition}
+Let $v$ be some vertex of the graph. We denote by $\mathcal{N}_v$ the set of all neighbor vertices of $v$ i.e. the set of all vertices that are connected to $v$. For all vertices $u$ in $\mathcal{N}_v$, the \textit{morphological} derivative of $t$ at $v$ with respect to $u$ is:
+\begin{equation}
+Dt(u, v) := w_{uv}(t_u - t_v)^+,
+\end{equation}
+where the quantity $(t_u - t_v)^+$ is defined by $(t_u - t_v)^+ = \max(0, t_u - t_v).$
+\label{def:graph_deriv}
+\end{definition}
+\noindent
+Definition~\ref{def:graph_deriv} allows us to define the gradient of $t$ in the following manner:
+\begin{definition}
+The gradient of $t$ at vertex $v$ is the vector
+\begin{equation}
+\nabla t(v) := (Dt(u, v))_{u \in \mathcal{N}_v}.
+\end{equation}
+\label{def:graph_grad}
+\end{definition}
+
+Based on definitions~\ref{def:graph_deriv} and~\ref{def:graph_grad}, we can propose a formulation of the Eikonal equation adapted to graph structures by using an analogy with the continuous setting. In the continuous setting, the Eikonal equation relates the $L^p$ norm of the local gradient to the local velocity $u$ in the open domain $\Omega $:
+\begin{equation}
+u(x)\|\nabla t(x)\|_p = 1, \quad \forall x \in \Omega.
+\end{equation}
+For a graph structure, the equivalent formulation is therefore
+\begin{equation}
+u(v)\|\nabla t(v)\|_p = 1, \quad \forall v \in V,
+\label{eqn:nabla}
+\end{equation}
+where $u(v)$ denotes a local velocity associated to node $v$. 
+
+Here, we focus on the case where $p = \infty $. In this case, the Eikonal equation is given at each vertex $v$ of $\mathcal{G}$ by
+\begin{equation}
+u(v)\max_{u \in \mathcal{N}_v} w_{uv}(t_u - t_v)_+ = 1.
+\label{eqn:eikonal_graph}
+\end{equation}
+The choices of $p = \infty $ and of the morphological derivative in Eq.~(\ref{def:graph_deriv}) are not accidental and expression~(\ref{eqn:eikonal_graph}) arises naturally if we consider a wave propagating on the entire graph $\mathcal{G}$ and arriving at a given vertice $v \in \mathcal{G}$. For all neighbor vertices $u \in \mathcal{N}_v$, we have necessarily
+\begin{equation}
+t_v \leq t_u + \dfrac{1}{w_{uv}}, 
+\end{equation} 
+and there exists a particular neighbor $\hat{u}$ of $v$ such that
+\begin{equation}
+t_u = t_{\hat{u}} + \dfrac{1}{w_{\hat{u}v}}.
+\end{equation}
+If we put these requirements together, we obtain the single equation
+\begin{equation}
+\|\nabla t(v)\| := \max_{u \in \mathcal{N}_v} w_{uv} (t_v - t_u)^+.
+\end{equation}
+
+It is finally straightforward to define boundary conditions for the Eikonal equation, by simply selecting a subset $\partial \mathcal{G} = (v_i)_{1 \leq i \leq k}$ of $k$ vertices in $V$ and specifying that $\forall i = 1, ..., k$, $t_{v_i} = 0$.
+
+\subsubsection{Eikonal equation and shortest path distance between two vertices}
+
+
+\begin{definition}[Shortest path distance between two vertices]
+Let us denote by $\mathcal{P}(u,v)$ the set of all paths in $\mathcal{G}$ that connect vertices $u$ and $v$. Since $\mathcal{G}$ is path-connected, $\mathcal{P}(u,v)$ contains at least one element. A path $p$ in $\mathcal{G}(V, E)$ is a collection of edges in $E$. The distance $D(p)$ associated to path $p$ is simply the sum of the weights of the edges constitutive of $p$. The shortest path distance between two vertices $u$ and $v$ in $\mathcal{G}$ is:
+\begin{equation}
+\hat{D}(u, v) =  \min _{p \in \mathcal{P}(u,v)} D(p)
+\end{equation}
+\end{definition}
+Building upon this definition, we can define the distance function between any vertex $v$ of the graph and the subset $\partial \mathcal{G} = (v_i)_{1 \leq i \leq k}$ to be 
+\begin{equation}
+d(v, \partial \mathcal{G} ) = \inf_{i = 1, ..., k} \hat{D}(v, v_i).
+\end{equation}
+Proposition~\ref{prop:distance2} relates the distance function to the solution of the Eikonal equation:
+\begin{proposition}
+Let $\mathcal{G} $ be an undirected, weighted graph. Then, the gradient of the distance function $d(\cdot, \partial \mathcal{G} )$ satisfies the Eikonal equation
+$$
+||\nabla t (v)|| = 1\\
+$$
+with boundary conditions $t(v_i) = 0, \forall i = 1, ..., k$.
+\label{prop:distance2}
+\end{proposition}
+
+
+\subsubsection{Fast marching algorithm on graphs}
+
+We present in this section the generalization of the fast marching algorithm already encountered in chapters~\ref{chap:random} and~\ref{chap:superpixels} to undirected graph structures. To that end, let us consider an undirected, path-connected graph $\mathcal{G}:=(V, E)$ such that each edge $(i, j)$ in $E$ carries a weight $w_{ij}$. The fast marching algorithm seeks to determine the solution of the Eikonal equation. However, instead of iteratively solving this equation for each vertex of $\mathcal{G}$ until convergence, it works by following the front propagation within the graph to compute the arrival times. During the procedure, the vertices of $\mathcal{G}$ are divided into three distinct subsets:
+\begin{itemize}
+\item The \textit{frozen} set groups all vertices already reached by the propagation front.
+\item Vertices adjacent to the frozen points but not reached by the front yet are grouped in the \textit{narrow band}.
+\item The remaining vertices constitute a subset referred to as the \textit{far away} set.
+\end{itemize}
+\paragraph{Initialization}
+\begin{enumerate}
+\item We affect the arrival time $t = 0$ to all vertices in $\partial \mathcal{G}$ and we add them to the narrow band.
+\item We label all other vertices as \textit{far away} and we affect them the arrival time $\infty $. The frozen set is initially empty. 
+\item In order to keep track of the shortest paths between each vertex in $\mathcal{G}$ and the boundary $\partial \mathcal{G}$, we affect the label $i$ to each vertex in $\{v_i, i = 1, ..., k \}$. All other vertices are labelled $0$.
+\end{enumerate}
+
+\paragraph{Iteration} At each iteration, we extract the vertex $v$ of the narrow band with the smallest arrival time and we label it as \textit{frozen}. Next, we compute the arrival times for each neighbor $u$ of $v$ not belonging to the frozen set, by solving equation~(\ref{eqn:eikonal_graph}) and by considering that the arrival times at the neighbor nodes $w$ of $u$ are $t_w$ if $w \in \mathcal{C}_i $ and $\infty $ otherwise, where $\mathcal{C}_i$ is the subset of $\mathcal{G}$ containing the points reached by the front that emerged from the $i$-th vertex in $\partial \mathcal{G}$. We assume obviously that $v \in \mathcal{C}_i$. Once the arrival time $t$ of a neighbor point $u$ has been computed, two situations can be encountered:
+\begin{itemize}
+\item When $u$ is in the narrow band, it has already been affected an arrival time and it is affected to one of the subsets $\mathcal{C}_j, j = 1, ..., k$. If the new arrival time is smaller than the current one, the arrival time is updated and the vertex $u$ is affected to the subset $\mathcal{C}_i$. 
+\item When the neighbor vertex $u$ is in the \textit{far away} set, we add it to the narrow band with the computed arrival time and to the subset $\mathcal{C}_i$.
+\end{itemize}
+
+\paragraph{Stopping condition} The fast marching algorithm stops when the narrow band is empty.\\
+
+
+\subsection{Application to superpixels merging~\label{graph:s2}}
+
+We describe in this section an algorithm that allows to perform the clustering of a similarity graph based on the resolution of the Eikonal equation in order to perform the segmentation of color images. A similar idea was proposed in 2014 in~\citep{buyssensa}.
+
+Let $I$ be a color image. We denote by $I(p, q)$ the color of the pixel located at position $(p, q)$ in the image. In what follows, we assume that $I$ is represented as the union of $N$ disjoint superpixels $(\mathcal{S}_i)_{i = 1, ..., N}$:
+\begin{equation}
+I = \cup_{1 \leq i \leq N} \mathcal{S}_i,
+\label{eqn:partition}
+\end{equation}
+with $\mathcal{S}_i \cap \mathcal{S}_j = \emptyset $ if $ i \neq j$.
+
+\paragraph{Region adjacency graph} We can associate to the superpixel partition of $I$ a graph referred to as its region adjacency graph $\mathcal{G}$. This region adjacency graph is a representation of the image $I$ as an undirected graph, whose vertices $(V_i)_{i = 1, ..., N}$ are associated with the superpixels $(\mathcal{S}_i)_{i = 1, ..., N}$. Two vertices $V_i$ and $V_j$ are linked by an edge of the graph if and only if the corresponding superpixels $\mathcal{S}_i$ and $\mathcal{S}_j$ share a common boundary in the image. In the following, we will adopt the notation $\mathcal{G}:= (V, E)$ when referring to the region adjacency graph, where $V$ is the set of all vertices (superpixels) in $\mathcal{G}$ and $E$ the set of all edges.
+
+We can specify a weight for each edge in $E$ by defining a function $w:E \rightarrow [0, 1]$ which associates to the edge $e_{ij}$ joining vertices $v_i$ and $v_j$ a quantity $w_{ij} \in [0, 1]$, interpreted as a dissimilarity measure between superpixels $\mathcal{S}_i$ and $\mathcal{S}_j$. Several approaches have been considered in the literature to compute the dissimilarity weights $w_{ij}$, including the color distance between $\mathcal{S}_i$ and $\mathcal{S}_j$ or the strength of the gradient at the boundary. Here, we will assume that, for each pair $(\mathcal{S}_i, \mathcal{S}_j)$ of adjacent superpixels, we were able to estimate the probability $p_{ij}$ that $\mathcal{S}_i$ and $\mathcal{S}_j$ belong to the same segment of the image. It is clear that the quantity
+\begin{equation}
+  w_{ij} = \exp(-p_{ij}),
+  \label{eqn:dissimilarity}
+\end{equation}
+then defines a dissimilarity measure between vertices $V_i$ and $V_j$ of $\mathcal{G}$.
+
+\paragraph{Graph clustering} According to proposition~\ref{prop:distance2}, it is possible to partition a graph $\mathcal{G}$ into $K \geq 1$ subgraphs by relying on the Eikonal equation. To that end, we start by selecting $K$ vertices $(v_k)_{1 \leq k \leq K}$ of $\mathcal{G}$. Then, solving the Eikonal equation on $\mathcal{G}$ with boundary conditions set to be $t(v_k) = 0, \forall k = 1, ..., K$ allows to compute the distance $w(v, \partial \mathcal{G})$ of the shortest path linking each vertex $v \in V$ to the closest vertex in the subset $\partial \mathcal{G}) := (v_k)_{1 \leq k \leq K}$. Since the graph $\mathcal{G}$ is path-connected, for $k = 1, ..., K$, the subsets
+\begin{equation}
+\mathcal{C}_k = \{v \in V, w(v, v_k) = w(v, \partial \mathcal{G}) \}
+\end{equation}
+constitute a partition of $\mathcal{G}$ into $K$ connected subgraphs. We can use this approach to compute a partition of the region adjacency graph associated to a superpixel segmentation and therefore coarsen the segmentation.
+
+\paragraph{Algorithm} The merging algorithm that we proposed works by iteratively solving the Eikonal equation on the region adjacency graph of the superpixel segmentation $\mathcal{S}$ of $I$ and adapting the boundary conditions. The algorithm start with an initial segmentation $\mathcal{S}^0$ containing $N$ superpixels. Typical values for $N$ are in the order of $500$ to $800$ superpixels. Our objective is to significantly reduce the number of segments in the image to a value around $50-100$. The superpixel merging is conducted as follows:
+\begin{enumerate}
+\item To initialize the algorithm, $K$ vertices $(v_k)_{1 \leq k \leq K}$ are chosen randomly in the region adjacency graph.
+\item The Eikonal equation is solved for the region adjacency graph with boundary conditions $t(v_k) = 0, \forall k = 1, ..., K$. After this step, the graph is clustered into $K$ separated subgraphs $(\mathcal{G}_k)_{k = 1, ..., K}$. For $k = 1, ..., K$, we denote by $V_k$ and $E_k$ the set of the vertices and of the edges of $\mathcal{G}_i$, respectively.
+\item For each subgraph $(\mathcal{G}_k)_{k = 1, ..., K}$, we search for the edge $e_k$ in $E_k$ with maximal weight $w_k$. We denote by $n_{0, k}$ and $n_{1, k}$ the vertices in $V_k$ linked by $e_k$. Then, we select the  subgraph $\mathcal{G}_j$ whose maximal internal weight is the highest and we add the nodes $n_{0, j}$ and $n_{1, j}$ to the boundary conditions. This step allows to refine the previously obtained segmentation.
+\item We solve the Eikonal equation for the region adjacency graph with the updated boundary conditions $t(v_k) = 0, \forall k = 1, ..., K + 2$, where $v_{k + 1} = n_{0, j}$ and $v_{k + 2} = n_{1, j}$.
+\item We iterate between steps 3 and 4 until some stopping criterion is met. 
+\end{enumerate}
+
+Two distinct stopping criteria can be used in the algorithm. A first stopping criterion consists in stopping the algorithm iterations when a specified number of segments are obtained, the advantage of this approach being that it enables to control the number of segments obtained in the final segmentation. However, this approach can potentially yield a segmentation with segments still containing highly dissimilar superpixels. A second stopping criterion consists in specifying a probability threshold $t$ and in iterating between steps 3 and 4 until no subgraph contains weights higher than this threshold. 
+
+
+
+\subsection{Results and discussion ~\label{graph:s3}}
+
+We present in this section results obtained on the Berkeley Segmentation Dataset (BSDS500) with the proposed merging approach. Starting from a superpixel partition with roughly $500$ superpixels, our objective is to reduce the number of superpixels to around $60-80$ by merging them. The oversegmentation that results from this process contains a ``reasonable'' number of segments and can serve as a solid foundation for implementing a classification algorithm depending on higher-level features to accomplish the segmentation.
+
+\subsubsection{Experiments}
+
+Our proposed merging method is agnostic to the choice of superpixel generation algorithm. In our experiments, we started from an image partition containing $K = 500$ superpixels computed with the fast marching based algorithm described in Chapter~\ref{chap:superpixels}, and we used this initial partition to construct a region adjacency graph (RAG) on the image. The merging procedure was completed in two steps. The first step allows to reduce the number of superpixels from $N = 500$ to $N = 100-200$. After the first step, the weights of the RAG are updated and a second merging procedure is conducted in order to obtain an oversegmentation with $N = 50-100$ regions. 
+
+\paragraph{Dissimilarity measure}
+
+The edges of the RAG must carry a dissimilarity measure constructed through Eq.~(\ref{eqn:dissimilarity}) from the probability that the adjacent regions associated with the edge belong to the same segment. To compute the dissimilarity measure, we learned the similarity measure between regions by using a regression algorithm, which takes as input features extracted from the pair of adjacent superpixels and returns a score that can be interpreted as the probability of merging each pair of adjacent regions. These features incorporate in particular various color and texture distances between the adjacent superpixels and information on the gradient strength at the boundary separating the superpixels. We refer the reader interested by additional details on the selected features to the manuscript~\citep{chang2019thesis}.
+
+To train the classifier, we use Berkeley Segmentation Dataset 500 (BSDS500)~\citep{martin2001} in the following manner. For each training image in the BSDS500, we dispose of $K$ distinct manual segmentation. Let $\mathcal{T}^k:= (T^k_i)_{i = 1, ... K_k}$ be the $k-$th segmentation mask in the ground truth, which contains $K_k$ segments. We can associate each superpixel $\mathcal{S}:= (S_i)_{i = 1, ... N}$ to the region $\mathcal{T}^k = (T^k_i)_{i = 1, ... K_k}$ that it intersects the most: 
+\begin{equation}
+A^k_i = \arg \max _{j = 1, ..., K_n} \mathcal{A}(S_i \cap \mathcal{T}^k_j),
+\end{equation}
+where $\mathcal{A}(S_i \cap \mathcal{T}^k_j)$ is the area of the intersection and $A^k_i$ denotes the index of the region associated with $S_i$ in the $k$-th manual segmentation. For a given edge $(S_i, S_j)$ of the RAG, we define the target similarity measure $\hat{w}_{ij}$ to be:
+$$
+\hat{w}_{ij} = \exp \left ( - \dfrac{1}{K} \sum_{k = 1}^{K} 1_{\{A^k_i = A^k_j\}} \right ).
+$$
+
+\begin{figure}[ht]
+  \centering
+  \begin{subfigure}[t]{0.45\textwidth}
+    % \centering
+    \includegraphics[width=\textwidth]{figures/78098_500c.png}
+    \caption{Eikonal graph merging}
+  \end{subfigure}
+  \quad
+  \begin{subfigure}[t]{0.45\textwidth}
+    % \centering
+    \includegraphics[width=\textwidth]{figures/78098_mosaic_500c.png}
+    \caption{Average color}
+  \end{subfigure}
+  \\[0.1cm]
+  \begin{subfigure}[t]{0.45\textwidth}
+    % \centering
+    \includegraphics[width=\textwidth]{figures/78098_ncut_500c.png}
+    \caption{Ncut}
+  \end{subfigure}
+  \quad
+  \begin{subfigure}[t]{0.45\textwidth}
+    % \centering
+    \includegraphics[width=\textwidth]{figures/78098_mosaic_ncut_500c.png}
+    \caption{Average color}
+  \end{subfigure}
+ 
+  \caption[Segmentation results obtained with the Eikonal and normalized cut algorithms.]{Segmentation results obtained with the Eikonal and normalized cut algorithms. The boundary recall are $0.64$ and $0.63$, respectively and the boundary precision are $0.33$ and $0.29$. The final partition comprises $70$ segments~\citep{chang2019thesis}.~\label{fig:eiko_results}}
+\end{figure}
+
+\subsubsection{Results and discussion}
+
+To evaluate the performance of our algorithm, we compared it to a classical approach for performing graph clustering, the normalized cut algorithm (Ncut)~\citep{shi2000}. In addition to classical metrics including boundary recall and precision, we also report the results in terms of the segmentation covering metrics. Segmentation covering provides a measures of the average matching between a segmentation and a given ground truth. It is defined by
+\begin{equation}
+SC(S, S_g) = \sum_{s_i\in S}\frac{\lvert s_i \rvert}{\lvert \mathcal{P} \rvert}\max_{s_j\in S_g}\frac{\lvert s_i\cap s_j \rvert}{\lvert s_i\cup s_j \rvert}.
+\end{equation}
+In this expression, $S$ and $S_g$ are the segmentation and the ground truth segmentation, respectively. $\mathcal{P}$ is the set of pixels, so that $|\mathcal{P}|$ corresponds to the total number of pixels in the image. The segmentation covering metric computes, for each segment $s_i \in S$, the area of the largest intersection over union with the corresponding ground truth segment $s_j$. The calculation is weighted by the number of pixels within segment $s_i$ and normalized by the total number of pixels in the image. The maximum possible value 1 can be achieved when $S$ is identical with $S_g$.
+
+The results obtained with our merging approach are provided in Tab.~\ref{tab:merging_results}. We display one example of obtained segmentation in Fig.~\ref{fig:eiko_results}. Overall, we can note that the results obtained with the Eikonal equation on graphs are better than the ones obtained with the normalized cut. In particular, the Eikonal based approach brings significant improvement over the normalized cut algorithm with respect to the boundary precision and to the segmentation covering metrics. In our experiment, we opted for the second stopping criterion for the Eikonal algorithm, which consists in specifying a probability threshold $t$ and in iterating between the last two steps of the algorithm until no cluster contains weights higher than $t$. A drawback of this approach is that it makes it difficult to control the number of segments obtained at the end of the procedure. Hence, to facilitate the comparison between the Eikonal and Ncut approaches, for each image, we computed the normalized cut segmentation with the same number of segments as the one yielded by the Eikonal algorithm.
+
+\vspace{2mm}
+\begin{table}[!ht]
+\centering
+\begin{tabular}{l||c|c}
+  \hline
+  & Eikonal & NCut \\
+  \hline
+  \hline
+  Boundary recall & $0.76\pm 0.09$ & $0.74\pm 0.08$ \\  
+  \hline
+  Boundary precision & $0.36\pm 0.12$ & $0.31\pm 0.11$ \\ 
+  \hline 
+  Seg. covering & $0.32\pm 0.12$ & $0.23\pm 0.09$ \\
+  \hline
+  Number of segments & $66\pm 10$ & $63\pm 9$ \\  
+  \hline
+\end{tabular}
+\caption{Results of the Eikonal and of the normalized cut algorithm on the test images of the BSD.~\label{tab:merging_results}}
+\end{table}
+
+It is interesting to discuss in greater detail the stopping criterion used for Eikonal algorithm, in particular the choice of the threshold $t$. This threshold can indeed be fixed in an adaptative manner depending on the set of weights as observed on the adjacency graph. In our experiments, we followed the following procedure to select the threshold value:
+\begin{enumerate}
+\item Sort the edges increasingly according to their weight.
+\item Arbitrarily select a proportion of edges considered to be actual contours, and set the corresponding weight as threshold.
+\end{enumerate}  
+
+Another interesting thing to notice is that in spite of the refinement step, the obtained segmentation depends on the initial choice of germs. Due to the initial random selection of germs, certain areas of the image may become artificially over-segmented. To address this issue and minimize the impact of the initial seed selection, a straightforward post-processing operation can be performed at the conclusion of the algorithm. This operation involves extracting the highest merging probability observed at the boundaries between adjacent regions, thereby establishing a dissimilarity measure between these regions. Subsequently, the pairs of regions are sorted in ascending order based on their dissimilarity values. As the algorithm progresses, pairs of adjacent regions are evaluated, and if their dissimilarity falls below a specified threshold for the refinement step, they are merged together. It is important to note that each region can only be merged once during this process to prevent the creation of adjacency graph regions with edges exceeding the threshold weight. By implementing this post-processing step, the number of clustered regions can be effectively reduced, while the overall quality of the segmentation is only minimally affected. This post-processing was applied in our experiment, which explains why the number of segments obtained with the Eikonal based algorithm and the normalized cut are slightly different in Tab.~\ref{tab:merging_results}.
+
+\subsection{Conclusion}
+
+In this chapter, we presented a novel algorithm that performs region merging on the superpixel segmentation of an image. This algorithm is based upon a region adjacency graph representation of the superpixel partition. Each edge in the graph corresponds to a pair of adjacent superpixels and carries a weight accounting for the dissimilarity between these superpixels. The algorithm uses a generalization of the Eikonal equation to the framework of graphs to perform the graph clustering, an idea originally introduced by~\citep{buyssensa}. During Kaiwen Chang's PhD thesis, our main contribution was to propose to learn the weights of the graph based on annotated data. We evaluated the performance of our Eikonal-based approach by comparing it to a classical graph clustering algorithm, namely the normalized cut~\citep{shi2000}. Our results demonstrated improvements over the classical algorithm, particularly in terms of segmentation covering and boundary precision metrics.
+
+The initial goal of the algorithm was to process images from experiments in materials science. For these images, it is difficult to obtain annotated training data, and therefore it is crucial to develop segmentation algorithms requiring a low number of data to be trained. So far, our merging algorithm has only been applied to perform the segmentation of natural images taken from the Berkeley Segmentation Dataset. Hence, an obvious short term perspective of the work presented in this chapter would be to evaluate it on images obtained during physics experiments. We expect these images to be more homogeneous in terms of content than natural images, so that they might require a lower amount of training example to be segmented using a supervised approach. 
+
+\section{Supervised segmentation from synthesized data \label{chap:cnn}}
+
+As pointed out in the introduction of this part of the manuscript dedicated to image segmentation, state-of-the-art image segmentation techniques currently rely on supervised learning algorithms including convolutional neural networks. However, segmenting images obtained during physics experiments with these algorithms requires to train them on manually segmented images that are often not available. In addition, the images that we want to study are significantly different from natural images, therefore making transfer learning techniques unsuitable to overcome the lack of training data. As a consequence, developing effective segmentation methods that can handle limited annotated data is a critical research area. I describe in this chapter research work conducted in collaboration with David Paulovics (Student, Institut de Physique de Nice), Dr. Fr\'ed\'eric Blanc (Researcher, Institut de Physique de Nice) and Th\'eo Dumont (Student, Mines Paris, PSL University) that seek to train a neural network for performing the segmentation of images obtained during rheology experiments based on a dataset of training images entirely synthesized by a morphological model.
+
+\subsection{Context}
+
+Image processing techniques are crucial for interpreting the outcomes of rheometry experiments on non-Brownian suspensions. The two most significant quantities for characterizing suspension properties are the concentration fields and the viscosity. Traditionally, these are determined by recording images of the suspension particles during flow at regular time intervals. Figure~\ref{fig:device} illustrates the principle of a recording device, where a flat laser sheet illuminates a transparent suspension and excites the fluorescence of a dye dissolved in the liquid. A camera perpendicular to the laser plane captures the fluorescent light. An image obtained from this device is displayed in Figure~\ref{fig:device}. In this image, the spherical particles of the suspension appear as black disks.
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.4\textwidth]{figures/figure1-bis} \quad
+    \includegraphics[width=0.4\textwidth]{figures/figure2}
+    \caption[Schematic view of a recording device and experimental image of a granular suspension.]{Left: schematic view of a recording device \citep{blanc2013microstructure}. Right: experimental image of a granular suspension from \citep{dambrosio2021}. The boundaries of the flow cell containing the suspension are visible at the top and at the bottom of the image.~\label{fig:device}}
+\end{figure}
+
+The measurement of the concentration field relies on the detection and segmentation of the particles present in the image \citep{snook2016dynamics,dambrosio2021}. Currently, the algorithms that are utilized for this specific task are relatively ``classical'' image processing algorithms, that often rely on mathematical morphology tools~\citep{Kimme1975, dougherty1992,blanc2013microstructure,snook2016dynamics,dijksman2017refractive,dambrosio2021}. It is usually necessary to properly parameterize these algorithms and to adjust the parameterization depending on the image being processed, which makes the use of these algorithms relatively difficult in practice.
+
+To overcome these difficulties, we developed an image processing algorithm based on a convolutional network~\citep{chen2017}, which brings an advantage over traditional image processing techniques by alleviating the need of updating the algorithm parameterization for each novel image. However, like all supervised learning algorithms, convolutional networks require a dataset of annotated experimental images to be trained. Constructing the ground truth is a time consuming task, which renders the use of supervised algorithms difficult in a lot of problems related to physical applications. In addition, the annotation process can be error prone. The main originality of our approach is that we entirely trained the network on a series of synthetic images generated with morphological models rather than on images of real experiments. 
+
+The lack of annotated data has long been identified as a critical issue that prevents the use of state-of-the-art supervised algorithms in many image processing problems. In particular, annotating images obtained during physical experiments is often expensive, which triggers interest in alternative methods where ground truth images are generated in a synthetic manner. The development of such methods is increasingly being studied in the literature~\citep{ravuri, jahanian, nagy2022automatic, barisin2022}. In~\citep{besnier}, a generative adversarial network is for instance used to generate a dataset of images similar to those of ImageNet. These generated images are then used to train a classification network. In~\citep{baradad}, the authors investigate image generation models that produce images from simple random processes. These generated images are subsequently used as training data for a visual representation learner. Finally, in~\citep{barisin2022}, morphological models are used to generate synthetic 3D images of cracks in concrete that are used to train a supervised segmentation model.
+
+\subsection{Segmentation algorithm~\label{sec:segm_s2}}
+
+\subsubsection{Network architecture}
+
+To perform the image segmentation, we use the Context Aggregation Network (CAN) introduced in~\citep{yu2016}. This network is entirely composed of convolutional layers, making it adaptable to any size of input image. Its main particularity is that it gradually aggregates contextual information without losing resolution through the use of dilated convolutions whose field of view increases exponentially over the successive network layers. This exponential growth yields global information aggregation with a very compact structure~\citep{yu2016,chen2017}.
+
+The CAN architecture is composed of a set of basis layers $\{L^{(s)}\}_{1\leq s\leq\ell}$. We modify the output of the original network so that it is composed of an image with two channels corresponding to a segmentation mask $M$ for the granular suspension particles and of an image $C$ used to locate the centers of the particles, respectively. 
+
+The detailed architecture of the network is presented in Tab.~\ref{tab:architecture}. Each block $L^{(s)}$ for $s\in [\![2,\ell-2]\!]$ is made of a $3 \times 3$ \textit{dilated convolution} with kernel $K^{(s)}$ and dilation parameter $r^{(s)}=2^{s-1}$, followed by an \textit{adaptive batch normalization} layer $\Psi^{(s)}$~\citep{chen2017} and a \textit{leaky rectifier linear unit} (leaky ReLU) non-linear activation function $\Phi$. The depth $d$ of all hidden convolutional layers is kept fixed in the CAN architecture. 
+
+            
+            \begin{table*}[!ht]
+                \centering
+                \begin{tabular}{c|c|ccccccc}
+                    % \hline
+                    \multicolumn{2}{c|}{\textbf{Layer $L^{(s)}$ for $s=$}} & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+                    \hline
+                    \hline
+                    \multicolumn{2}{c|}{Input channels} & 3 & 24 & 24 & 24 & 24 & 24 & 24 \\
+                    \multicolumn{2}{c|}{Output channels} & 24 & 24 & 24 & 24 & 24 & 24 & 2 \\
+                    \hline
+                    % \cline{2-9}
+                     & kernel size & $\ 3\times 3\ $ & $\ 3\times 3\ $ & $\ 3\times 3\ $ & $\ 3\times 3\ $ & $\ 3\times 3\ $ & $\ 3\times 3\ $ & $\ 1\times 1\ $ \\
+                    Conv. & dilation $r^{(s)}$ & 1 & 2 & 4 & 8 & 16 & 1 & 1 \\
+                     & padding & 1 & 2 & 4 & 8 & 16 & 1 & 0 \\
+                    \hline
+                    \multicolumn{2}{c|}{Adaptive BN} & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ \\
+                    \hline
+                    \multicolumn{2}{c|}{Leaky ReLU} & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & --- \\
+                    \hline
+                    \multicolumn{2}{c|}{Number of parameters} & $722$ & $5258$ & $5258$ & $5258$ & $5258$ & $5258$ & $50$ \\
+                    \hline
+                \end{tabular}
+                \caption[Architecture of the Context Aggregation Network (CAN).]{Architecture of the Context Aggregation Network (CAN). The total number of trainable parameters for this architecture is $27162$~\citep{paulovics2023}. \label{tab:architecture}}
+            \end{table*}
+
+The penultimate layer of the network is a classic convolution layer with a filter with size $3 \times 3$. The final layer is a $1 \times 1$ convolution used to perform dimension reduction. The neural network produces a segmentation mask $M$ and an image $C$ with bi-dimensional Gaussian functions placed at locations corresponding to the centers of the detected particles. We obtain a labeled image of the detected particles by applying a watershed algorithm~\citep{vincent1991} to the segmentation mask $M$, previously thresholded at the value $1/2$, with the local maxima of $C$ selected as markers. 
+            
+
+\subsubsection{Generation of synthetic training images}
+
+As mentioned previously, the use of convolutional neural networks can be challenging due to the substantial amount of annotated data required for training. Manual annotation is especially arduous when dealing with large quantities of particles in each image, which can number in the thousands.
+\par
+To address this issue, we utilize synthetic images created using a morphological model to train the neural network. This approach enables us to acquire training images with corresponding ground truth information without the need for manual annotation of a subset of experimental images. However, generating synthetic images that closely resemble the experimental images is crucial to ensure that the trained neural network architecture has good generalization properties.
+\par
+Our approach consists in generating gray level images encoded on $8$ bits through the use of random morphological models. The image generation proceeds in several subsequent steps:
+\begin{itemize}
+\item \textbf{Step 1.} We start by specifying the dimension $w \times h$ of the synthetic image and we build a mask specifying the location of the wall of the flow cell at the image borders. We assign distinct gray levels to the mask and to the interior to obtain an intensity image denoted $\bar{I}$.
+\item \textbf{Step 2.} The experimental images exhibit quasi-periodic stripes patterns. To simulate these patterns, we perturb the intensity at each pixel location $[x, y]$ in the image according to the relationship:
+\begin{equation}
+\hat{I}_1[x, y] = \bar{I} + \sum_{i = 1}^{2} A_i \cos (2\pi f_i \phi(x, y))\,.
+\end{equation}
+In this equation, the amplitudes $A_1$ and $A_2$ and the frequencies $f_1$ and $f_2$ are specified randomly for each generated image from uniform distributions on specified intervals. The quantities $\phi(x, y)$ defined at each location are independent random variables drawn from a normal distribution with mean $x$ and standard deviation $\sigma $ and are used instead of the coordinate $x$ in order to add randomness to the geometry of the patterns. 
+\item \textbf{Step 3.} We use a Boolean model of disks to simulate a mask for the particles. We recall (see Chap~\ref{random:s1}) that the Boolean model is a grain model obtained by implanting independent random primary grains $G'$ on the germs $\{x_{k}\}$ of a Poisson point process with intensity $\theta$.  The resulting set $\mathcal{G}$ is
+\begin{equation}
+\mathcal{G} = \bigcup _{x_k \in \mathcal{P}} G'_{x_k}\,,
+\end{equation}
+where $G'_{x_k}$ denotes the translated of the primary grain $G'$ at point $x_k$. In general, the grains of a Boolean model can overlap. To avoid this, we add the grains of the Boolean model sequentially. When a grain intersects a grain which is already present, we simply remove it from the simulation. The primary grains used to construct the model are random disks whose radii are drawn according to a normal distribution with mean $\bar{R}$ and standard deviation $\sigma_{R}$ specified for each image. In practice, we draw $\bar{R}$ and $\sigma_{R}$ from pre-defined uniform distribution for each generated image. A gray level is finally selected independently for each particle according to an uniform law on a specified interval. The gray level background is set equal to $255$. This results in the obtaining of a particle image $\hat{P}$. The synthetic image is updated by taking the minimum value between the background image $\hat{I}_1$ and the particles image $\hat{P}$:
+\begin{equation}
+\hat{I}_2[x, y] = \min \{\hat{I}_1[x, y], \hat{P}[x, y]\}\,.
+\end{equation}
+The particle image $\hat{P}$ is used to generate a binary mask image $\hat{M}$ indicating the presence of the particles in the generated image. In addition, we create an image $\hat{C}$ recording the centers $(x_i, y_i)_{1 \leq i \leq N}$ of the $N$ implanted suspension particles by setting:
+\begin{equation}
+\hat{C}[x, y] = \sum_{i = 1}^{N} \frac{1}{2 \pi s ^2} \exp \bigg (-\frac{(x - x_i)^2 + (y - y_i)^2}{2 s^2} \bigg )\,,
+\end{equation}
+where $s$ is the size of the selected Gaussian kernel. In this image, each particle is identified by a normalized bi-dimensional Gaussian function. $\hat{M}$ and $\hat{C}$ constitute the ground truth images associated with the synthetic image.
+\item \textbf{Step 4.} To complete the image generation, we add blur to the synthetic image by convolving it with a Gaussian kernel $G$ with standard deviation set equal to $3$ pixels, as well as white noise. The synthetic image is therefore described by:
+\begin{equation}
+\hat{I}[x, y] = \max\{0,(\hat{I}_2 * G)[x, y] + W[x, y]\}\,,
+\end{equation}
+where the quantities $\{W[x, y]\}_{1\leq x \leq w,\, 1\leq y \leq h}$ are independent centered Gaussian random variables with specified standard deviation.
+\end{itemize}
+All the parameters involved in the description of the model can be adapted depending on the set of experimental images under scrutiny. We display in Fig.~\ref{fig:synthetic} a synthetic image of the suspension constructed with the aforementioned procedure. We remark that synthetic images are visually very close to the suspension images obtained in the experiments.
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.4\linewidth]{figures/figure2} \qquad
+    \includegraphics[width=0.4\linewidth]{figures/figure3}
+    \caption[Experimental and synthetic image of the suspension.]{Left: experimental image of the suspension. Right: synthetic image of the suspension constructed with our procedure~\citep{paulovics2023}.~\label{fig:synthetic}}
+\end{figure}
+
+
+\subsubsection{Training of the neural network~\label{sec:segm_s23}}
+
+To train the neural network architecture, we generated a training set and a validation set containing respectively $2240$ and $360$ synthetic images along with their corresponding ground truth images. We used the Euclidean distance between the output of the network and the ground truth images as loss function to train the algorithm, therefore formulating the segmentation as a regression problem. We relied on data augmentation techniques~\citep{shorten2019} to improve the robustness of the network : the network was fed with random crops of the training images with randomly distorted gray level histogram. To train the neural network, we used the Adam optimizer with a learning rate initially set to $0.1$ and a batch size of $8$, and we divided the learning rate by a factor of $2$ every $50$ epochs. We fixed the maximal number of epochs to $400$, and retained the weights of the epoch that led to the minimal error on the validation set. 
+
+\begin{table*}[!ht]
+\centering
+\begin{tabular}{cc||cccc|cccc}
+ & & \multicolumn{4}{c|}{\textbf{CAN}} & \multicolumn{4}{c}{\textbf{K-means}}\\
+\hline
+Image & Particles & Recall & Prec. & $D$[px] & IoU & Recall & Prec. & $D$[px] & IoU \\
+\hline
+\#1 & 1339 & 0.949 & 0.978 & 0.68 & 0.784 & 0.827 & 0.954 & 1.25 & 0.626 \\
+\#2 & 1329 & 0.944 & 0.977 & 0.67 & 0.771 & 0.839 & 0.963 & 1.46 & 0.581 \\
+\#3 & 964 & 0.926 & 0.983 & 0.72 & 0.752 & 0.817 & 0.962 & 2.05 & 0.487 \\
+\#4 & 1051 & 0.947 & 0.996 & 0.55 & 0.869 & 0.808 & 0.948 & 1.75 & 0.666 \\
+\#5 & 487 & 0.961 & 0.998 & 0.5 & 0.883 & 0.879 & 0.949 & 1.49 & 0.671 \\
+\hline
+Avg & 1034 & \underline{0.945} & \underline{0.986} & 0.62 & \underline{0.812} & 0.834 & 0.955 & 1.6 & 0.606 \\
+\hline
+\end{tabular}
+\\
+\vspace{4mm}
+\begin{tabular}{cc||cccc|cccc}
+& & \multicolumn{4}{c|}{\textbf{Otsu thresholding}} & \multicolumn{4}{c}{\textbf{Adaptive thresholding}}\\
+\hline
+Image & Particles & Recall & Prec. & $D$[px] & IoU & Recall & Prec. & $D$[px] & IoU\\
+\hline
+\#1 & 1339 & 0.819 & 0.953 & 1.24 & 0.639 & 0.845 & 0.956 & 1.2 & 0.654 \\
+\#2 & 1329 & 0.833 & 0.967 & 1.46 & 0.591 & 0.875 & 0.965 & 1.25 & 0.612 \\
+\#3 & 964 & 0.812 & 0.958 & 1.92 & 0.5 & 0.898 & 0.964 & 1.3 & 0.585 \\
+\#4 & 1051 & 0.808 & 0.948 & 1.75 & 0.666 & 0.866 & 0.921 & 1.78 & 0.662 \\
+\#5 & 487 & 0.830 & 0.967 & 1.43 & 0.707 & 0.899 & 0.946 & 1.52 & 0.697 \\
+\hline
+Avg & 1034 & 0.821 & 0.959 & 1.56 & 0.621 & 0.877 & 0.95 & 1.2 & 0.66 \\
+\hline
+\end{tabular}
+\vspace{4mm}
+\caption[Segmentation metrics.]{Segmentation metrics for the Context Aggregation Network (CAN), K-means, Otsu and adaptive thresholding algorithms.~\label{tab:results}}
+\end{table*}
+
+
+\subsection{Results and discussion~\label{sec:segm_s3}}
+
+
+\subsubsection{Evaluation dataset}
+
+
+
+In order to quantitatively evaluate the results and investigate the generalization capability of the algorithm to real experimental images, we performed manual annotation on $5$ experimental images. Each image was annotated by labeling all suspension particles with a disk, providing the center and radius of each particle. While $5$ images may seem relatively small in number, these images are large in size and contain a significant number of particles, as shown in Tab.~\ref{tab:results}. Consequently, the detection results were tested against a substantial number of particles, ensuring the statistical validity of the findings. Moreover, we deliberately included a low-quality image in the experimental dataset, featuring a prominent illumination gradient and noticeable blurriness. This specific image is depicted in Fig.~\ref{fig:segmentation}. On average, each image in the dataset contained 1037 particles. Manual annotation of an image typically required one to two hours, illustrating the significant time investment involved. This highlights the practical challenge of manually annotating an entire set of images for training a convolutional network architecture, which is often unfeasible in many applications.
+
+\begin{figure*}[p]
+    \centering
+	\begin{subfigure}[b]{0.45\textwidth}
+	\includegraphics[width=\textwidth]{figures/9_3.png}
+	\caption{Original image}
+	\end{subfigure} 
+    \\
+	\centering
+	\begin{subfigure}[b]{0.45\textwidth}
+	\includegraphics[width=\textwidth]{figures/9_3_segments.png}
+	\caption{CAN segmentation}
+	\end{subfigure} 
+    %
+	\begin{subfigure}[b]{0.45\textwidth}
+ 	\includegraphics[width=\textwidth]{figures/9_3_kmeans.png}
+    \caption{K-means segmentation}
+    \end{subfigure}   
+    %
+    \begin{subfigure}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{figures/9_3_otsu.png}
+    \caption{Otsu thresholding}
+    \end{subfigure}
+    %
+    \begin{subfigure}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{figures/9_3_adaptative.png}
+    \caption{Adaptive thresholding}
+    \end{subfigure}
+    
+\caption[Segmentation results obtained for image \#3.]{Segmentation results obtained for image \#3 (a) with the CAN network (b), K-means (c), Otsu thresholding (d) and adaptive thresholding (e). Correct detections (\texttt{tp}) are displayed in blue, false positives (\texttt{fp}) in yellow and false negatives (\texttt{fn}) in green~\citep{paulovics2023}.\label{fig:segmentation}}
+\end{figure*}
+
+\begin{figure*}[p]
+    \centering
+	\begin{subfigure}[b]{0.45\textwidth}
+	\includegraphics[width=\textwidth]{figures/2_1.png}
+	\caption{Original image}
+	\end{subfigure} 
+    \\
+	\centering
+	\begin{subfigure}[b]{0.45\textwidth}
+	\includegraphics[width=\textwidth]{figures/2_1_segments.png}
+	\caption{CAN segmentation}
+	\end{subfigure} 
+    %
+	\begin{subfigure}[b]{0.45\textwidth}
+ 	\includegraphics[width=\textwidth]{figures/2_1_kmeans.png}
+    \caption{K-means segmentation}
+    \end{subfigure}   
+    %
+    \begin{subfigure}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{figures/2_1_otsu.png}
+    \caption{Otsu thresholding}
+    \end{subfigure}
+    %
+    \begin{subfigure}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{figures/2_1_adaptative.png}
+    \caption{Adaptive thresholding}
+    \end{subfigure}
+    
+\caption[Segmentation results obtained for image \#4]{Segmentation results obtained for image \#4 (a) with the CAN network (b), K-means (c), Otsu thresholding (d) and adaptive thresholding (e). Correct detections (\texttt{tp}) are displayed in blue, false positives (\texttt{fp}) in yellow and false negatives (\texttt{fn}) in green~\citep{paulovics2023}.\label{fig:segmentation2}}
+\end{figure*}
+
+\subsubsection{Detection metrics}
+
+In order to evaluate the segmentation results, we developed an approach that allows to establish a one-to-one correspondence between the particles detected by the algorithm (the ``detections'') and the particles present in the ground truth. We refer the reader interested by more details on this approach to the original preprint~\citep{paulovics2023}. 
+
+Once the correspondence established between the particles and the ground truth, we determined the number $\texttt{fp}$  of false detections by counting the number of detections not associated with any particle. Similarly, we determined the number $\texttt{fn}$ of undetected particles in the ground truth by counting the number of particles in the ground truth left unassociated. The number $\texttt{tp}$ of correct detections is to the number of correspondences established between the particles of the ground truth and the detections.
+The ability of the algorithm to properly detect the suspension particles is described in terms of precision and recall, defined by
+\begin{equation}
+\text{Recall} = \dfrac{\texttt{tp}}{\texttt{tp} + \texttt{fn}}, \quad\text{Precision}  = \dfrac{\texttt{tp}}{\texttt{tp} + \texttt{fp}}\,.
+\end{equation}
+For all correct detections, we computed different metrics that characterize the quality of the segmentation including the distance $D = \|c_p - \hat{c}_q\|_2$ between the center of the detection and the actual center of the particle as annotated in the ground truth or the intersection over union (IoU) of the particle and the detection, defined by
+\begin{equation}
+\operatorname{IoU}(\mathcal{P}_p, \mathcal{D}_q) = \dfrac{\mathcal{P}_p \cap \mathcal{D}_q}{\mathcal{P}_p \cup \mathcal{D}_q}\,.
+\end{equation}
+
+\subsubsection{Results and discussion}
+
+We compare the results of the convolutional network architecture trained on synthetic data to results obtained with traditional algorithms, including Otsu thresholding~\citep{otsu1979}, adaptive thresholding~\citep{gonzalez} and K-means segmentation~\citep{bishop2006}. The results for the CAN neural network, the K-mean segmentation and the Otsu and adaptive thresholding algorithms for the segmentation metrics (precision $P$, recall $R$ and average IoU between the particle and the detection mask) are reported in Fig.~\ref{fig:results} and Tab.~\ref{tab:results}, where we also report the average distance $D$ (in pixels) between the centers of the particles and the centroid of their corresponding detection masks.
+
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=0.45\textwidth]{figures/results.png}
+\caption[Average over the 5 images of Tab.~\ref{tab:results} of the segmentation metrics.]{Average over the 5 images of Tab.~\ref{tab:results} of the segmentation metrics (recall, precision, IoU) for the CAN, K-means, Otsu and adaptive thresholding algorithms~\citep{paulovics2023}.~\label{fig:results}}
+\end{figure}
+
+In general, it can be observed that the convolutional neural network (CNN) performs significantly better than traditional methods in terms of segmentation quality for all evaluation metrics. However, the algorithm shows slightly lower performance for image \#3 in the test dataset, which can be attributed to its lower quality compared to the other images, making segmentation more challenging. Interestingly, all proposed approaches exhibit relatively similar precision results, with values systematically exceeding 0.95. It is mostly for the recall metric that the CNN significantly outperforms other methods. Furthermore, there is a substantial improvement in particle center localization, with an average below one pixel for test images using the CNN architecture. Additionally, the intersection over union (IoU) metric shows significantly better results than conventional algorithms. Notably, adaptive thresholding outperforms K-means or Otsu thresholding, emphasizing the importance of local threshold adaptation rather than relying on global image information.
+
+To illustrate the performance of the compared algorithms, segmentation examples are presented in Figures~\ref{fig:segmentation} and~\ref{fig:segmentation2}. Blue represents correctly detected particles from the ground truth, green indicates false negatives, and yellow highlights false positives superimposed on the ground truth image. It is worth noting that false positives and negatives often occur for particles with ambiguous or inaccurate manual segmentation. In practice, we can therefore consider that the CNN architecture can provide segmentation of similar quality to manual segmentation.
+
+
+\subsection{Conclusion and perspectives~\label{sec:segm_s4}}
+
+In the study described in this chapter, we  introduced a novel approach for segmenting experimental images of a suspension by training a convolutional neural network on synthetic images generated with a morphological model. We demonstrated in particular that the CNN exhibits good generalization properties and outperforms traditional segmentation algorithms when applied to real images of the suspension. From a broader perspective, efficient image processing techniques are essential for making the most of images collected during physical experiments. This study highlights the value of using morphological models to generate reliable training samples in situations where annotated images are unavailable, therefore enabling the use of current state-of-the-art supervised approaches in image segmentation.
+
+
+
+
+
+
+
+
+
+
+
+

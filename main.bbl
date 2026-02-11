@@ -1,0 +1,305 @@
+\begin{thebibliography}{10}
+
+\bibitem{altendorf}
+H.~Altendorf and D.~Jeulin.
+\newblock Random-walk-based stochastic modeling of three-dimensional fiber
+  systems.
+\newblock {\em Physical Review E}, 83(4):041804, 2011.
+
+\bibitem{jeandin2008}
+O.~Amsellem, K.~Madi, F.~Borit, D.~Jeulin, V.~Guipont, M.~Jeandin, E.~Boller,
+  and F.~Pauchet.
+\newblock Two-dimensional (2d) and three-dimensional (3d) analyses of
+  plasma-sprayed alumina microstructures for finite-element simulation of
+  young's modulus.
+\newblock {\em Journal of Materials Science}, 43(12):4091--4098, 2008.
+
+\bibitem{andrieu2003}
+Christophe Andrieu, Nando De~Freitas, Arnaud Doucet, and Michael~I Jordan.
+\newblock An introduction to mcmc for machine learning.
+\newblock {\em Machine learning}, 50:5--43, 2003.
+
+\bibitem{avrami}
+M.~Avrami.
+\newblock Kinetics of phase change. {I}. general theory.
+\newblock {\em The Journal of Chemical Physics}, 7(12):1103--1112, 1939.
+
+\bibitem{baccelli}
+F.~Baccelli and B.~Blaszczyszyn.
+\newblock {\em Stochastic Geometry and Wireless Networks: Volume 1: THEORY},
+  volume~1.
+\newblock Now Publishers Inc, 2009.
+
+\bibitem{guipont2008}
+S.~Beauvais, V.~Guipont, M.~Jeandin, D.~Jeulin, A.~Robisson, and R.~Saenger.
+\newblock Study of the porosity in plasma-sprayed alumina through an innovative
+  three-dimensional simulation of the coating buildup.
+\newblock {\em Metallurgical and Materials Transactions A}, 39(11):2711--2724,
+  2008.
+
+\bibitem{bortolussi2018}
+Vincent Bortolussi, Bruno Figliuzzi, Fran{\c{c}}ois Willot, Matthieu Faessel,
+  and Michel Jeandin.
+\newblock Morphological modeling of cold spray coatings.
+\newblock {\em Image Analysis \& Stereology}, 37(2):145--158, 2018.
+
+\bibitem{bortolussi2020}
+Vincent Bortolussi, Bruno Figliuzzi, Fran{\c{c}}ois Willot, Matthieu Faessel,
+  and Michel Jeandin.
+\newblock Electrical conductivity of metal--polymer cold spray composite
+  coatings onto carbon fiber-reinforced polymer.
+\newblock {\em Journal of Thermal Spray Technology}, 29:642--656, 2020.
+
+\bibitem{capasso}
+V.~Capasso.
+\newblock {\em Mathematical Modelling for Polymer Processing: Polymerization,
+  Crystallization, Manufacturing}, volume~2.
+\newblock Springer, 2003.
+
+\bibitem{stoyan}
+S.~N. Chiu, D.~Stoyan, W.~S. Kendall, and J.~Mecke.
+\newblock {\em Stochastic geometry and its applications}.
+\newblock John Wiley \& Sons, 2013.
+
+\bibitem{dejnozkova2003}
+Eva Dejnozkov{\'a} and Petr Dokl{\'a}dal.
+\newblock A parallel algorithm for solving the eikonal equation.
+\newblock In {\em 2003 IEEE International Conference on Acoustics, Speech, and
+  Signal Processing, 2003. Proceedings.(ICASSP'03).}, volume~3, pages III--325.
+  IEEE, 2003.
+
+\bibitem{delloro2014}
+F.~Delloro, M.~Faessel, H.~Proudhon, D.~Jeulin, M.~Jeandin, E.~Meillot, and
+  L.~Bianchi.
+\newblock A morphological approach to the modeling of the cold spray process.
+\newblock In {\em ITSC 2014}, pages 221--226. DVS, 2014.
+
+\bibitem{vtksim}
+M.~Faessel.
+\newblock Vtksim software.
+
+\bibitem{figliuzzi2019}
+Bruno Figliuzzi.
+\newblock Eikonal-based models of random tessellations.
+\newblock {\em Image Analysis \& Stereology}, 38(1):15--23, 2019.
+
+\bibitem{figliuzzi2016}
+Bruno Figliuzzi, WHR Chan, CR~Buie, and JL~Moran.
+\newblock Nonlinear electrophoresis in the presence of dielectric decrement.
+\newblock {\em Physical Review E}, 94(2):023115, 2016.
+
+\bibitem{figliuzzi2021}
+Bruno Figliuzzi, Antoine Montaux-Lambert, Fran{\c{c}}ois Willot, Gr{\'e}goire
+  Naudin, Pierre Dupuis, Bernard Querleux, and Etienne Huguet.
+\newblock A bayesian approach to morphological models characterization.
+\newblock {\em Image Analysis \& Stereology}, 40(3):171--180, 2021.
+
+\bibitem{gilbert}
+E.~N. Gilbert.
+\newblock Random subdivisions of space into crystals.
+\newblock {\em The Annals of mathematical statistics}, pages 958--972, 1962.
+
+\bibitem{hall}
+P.~Hall.
+\newblock {\em Introduction to the theory of coverage processes}, volume 188.
+\newblock Wiley New York, 1988.
+
+\bibitem{hermann}
+H~Hermann.
+\newblock Stochastic models of heterogeneous materials.
+\newblock In {\em Materials science forum}. Trans Tech Publications, 1991.
+
+\bibitem{jean}
+A.~Jean, D.~Jeulin, S.~Forest, S.~Cantournet, and F.~N'Guyen.
+\newblock A multiscale microstructure model of carbon black distribution in
+  rubber.
+\newblock {\em Journal of microscopy}, 241(3):243--260, 2011.
+
+\bibitem{jeulin}
+D.~Jeulin.
+\newblock {\em Models of random structures}.
+\newblock Lecture notes.
+
+\bibitem{jeulin2012}
+D.~Jeulin.
+\newblock Morphology and effective properties of multi-scale random sets: A
+  review.
+\newblock {\em Comptes Rendus M{\'e}canique}, 340(4):219--229, 2012.
+
+\bibitem{jeulin1}
+D.~Jeulin, P.~Monnaie, and F.~P{\'e}ronnet.
+\newblock Gypsum morphological analysis and modeling.
+\newblock {\em Cement and Concrete Composites}, 23(2):299--311, 2001.
+
+\bibitem{moreaud}
+D.~Jeulin and M.~Moreaud.
+\newblock Percolation of multi-scale fiber aggregates.
+\newblock In {\em S4G, 6th International Conference Stereology, Spatial
+  Statistics and Stochastic Geometry. Prague}, pages 26--29, 2006.
+
+\bibitem{jeulin2021}
+Dominique Jeulin.
+\newblock {\em Morphological models of random structures}.
+\newblock Springer, 2021.
+
+\bibitem{johnson}
+W.~A. Johnson and R.~F. Mehl.
+\newblock Reaction kinetics in processes of nucleation and growth.
+\newblock {\em Trans. Aime}, 135(8):396--415, 1939.
+
+\bibitem{liebscher2013}
+Andr{\'e} Liebscher and Claudia Redenbach.
+\newblock Statistical analysis of the local strut thickness of open cell foams.
+\newblock {\em Image Analysis \& Stereology}, 32(1):1--12, 2013.
+
+\bibitem{malladi1995}
+Ravi Malladi, James~A Sethian, and Baba~C Vemuri.
+\newblock Shape modeling with front propagation: A level set approach.
+\newblock {\em IEEE transactions on pattern analysis and machine intelligence},
+  17(2):158--175, 1995.
+
+\bibitem{matheron}
+G.~Matheron.
+\newblock {\em Random sets and integral geometry}, volume~1.
+\newblock Wiley New York, 1975.
+
+\bibitem{mecke1980}
+J.~Mecke.
+\newblock Palm methods for stationary random mosaics.
+\newblock {\em Combinatorial principles in stochastic geometry}, pages
+  124--132, 1980.
+
+\bibitem{mecke1995}
+J.~Mecke.
+\newblock Inequalities for the anisotropic poisson polytope.
+\newblock {\em Advances in applied probability}, pages 56--62, 1995.
+
+\bibitem{miles1972b}
+R.~E. Miles.
+\newblock The random division of space.
+\newblock {\em Advances in applied probability}, pages 243--266, 1972.
+
+\bibitem{miles1976}
+R.~E. Miles.
+\newblock Estimating aggregate and overall characteristics from thick sections
+  by transmission microscopy.
+\newblock {\em Journal of Microscopy}, 107(3):227--233, 1976.
+
+\bibitem{molchanov1995}
+I.~S. Molchanov.
+\newblock Statistics of the boolean model: from the estimation of means to the
+  estimation of distributions.
+\newblock {\em Advances in applied probability}, pages 63--86, 1995.
+
+\bibitem{moller1989}
+J.~M{\o}ller.
+\newblock Random tessellations in $\mathbb{R}^d$.
+\newblock {\em Advances in Applied Probability}, pages 37--73, 1989.
+
+\bibitem{moller1992}
+J.~M{\o}ller.
+\newblock Random johnson-mehl tessellations.
+\newblock {\em Advances in applied probability}, pages 814--844, 1992.
+
+\bibitem{moller1994}
+Jesper M{\o}ller.
+\newblock {\em Lectures on random Voronoi tessellations}.
+\newblock Springer, 1994.
+
+\bibitem{moreaud2012}
+Maxime Moreaud, Dominique Jeulin, Vincent Morard, and Renaud Revel.
+\newblock Tem image analysis and modelling: application to boehmite
+  nanoparticles.
+\newblock {\em Journal of microscopy}, 245(2):186--199, 2012.
+
+\bibitem{ohser}
+Joachim Ohser and Katja Schladitz.
+\newblock {\em 3D images of materials structures: processing and analysis}.
+\newblock John Wiley \& Sons, 2009.
+
+\bibitem{peyrega}
+Ch. Peyrega, D.~Jeulin, Ch. Delis{\'e}e, and J.~Malvestio.
+\newblock 3d morphological modelling of a random fibrous network.
+\newblock {\em Image Analysis \& Stereology}, 28(3):129--141, 2011.
+
+\bibitem{quenec}
+J.-L. Quenech, M.~Coster, J.-L. Chermant, and D.~Jeulin.
+\newblock Study of the liquid-phase sintering process by probabilistic models:
+  {A}pplication to the coarsening of {WC-Co} cermets.
+\newblock {\em Journal of Microscopy}, 168(1):3--14, 1992.
+
+\bibitem{redenbach2009}
+Claudia Redenbach.
+\newblock Microstructure models for cellular materials.
+\newblock {\em Computational Materials Science}, 44(4):1397--1407, 2009.
+
+\bibitem{redenbach2011}
+Claudia Redenbach and Irene Vecchio.
+\newblock Statistical analysis and stochastic modelling of fibre composites.
+\newblock {\em Composites Science and Technology}, 71(2):107--112, 2011.
+
+\bibitem{robert}
+Christian~P Robert, George Casella, and George Casella.
+\newblock {\em Monte Carlo statistical methods}, volume~2.
+\newblock Springer, 1999.
+
+\bibitem{santalo}
+L.~A. Santal{\'o}.
+\newblock Integral geometry and geometric probability. 1976.
+
+\bibitem{schneider}
+R.~Schneider and W.~Weil.
+\newblock {\em Stochastic and integral geometry}.
+\newblock Springer, 2008.
+
+\bibitem{serra1982}
+J.~Serra.
+\newblock {\em Image analysis and mathematical morphology}.
+\newblock Academic press, 1982.
+
+\bibitem{sethian1996}
+James~A Sethian.
+\newblock A fast marching level set method for monotonically advancing fronts.
+\newblock {\em Proceedings of the National Academy of Sciences},
+  93(4):1591--1595, 1996.
+
+\bibitem{sethian1999}
+James~A Sethian.
+\newblock Fast marching methods.
+\newblock {\em SIAM review}, 41(2):199--235, 1999.
+
+\bibitem{torquato}
+S.~Torquato.
+\newblock {\em Random heterogeneous materials: microstructure and macroscopic
+  properties}, volume~16.
+\newblock Springer, 2002.
+
+\bibitem{wang2018}
+Haisheng Wang, Dominique Jeulin, Fran{\c{c}}ois Willot, Lo{\"\i}c Sorbier, and
+  Maxime Moreaud.
+\newblock Modelling of the microstructure of mesoporous alumina constrained by
+  morphological simulation of nitrogen porosimetry.
+\newblock {\em Colloids and Surfaces A: Physicochemical and Engineering
+  Aspects}, 553:378--396, 2018.
+
+\bibitem{wang2015}
+Haisheng Wang, Andrea Pietrasanta, Dominique Jeulin, Fran{\c{c}}ois Willot,
+  Matthieu Faessel, Lo{\"\i}c Sorbier, and Maxime Moreaud.
+\newblock Modelling mesoporous alumina microstructure with 3d random models of
+  platelets.
+\newblock {\em Journal of microscopy}, 260(3):287--301, 2015.
+
+\bibitem{wang2017}
+Haisheng Wang, Fran{\c{c}}ois Willot, Maxime Moreaud, Micka{\"e}l Rivallan,
+  Lo{\"\i}c Sorbier, and Dominique Jeulin.
+\newblock Numerical simulation of hindered diffusion in $\gamma$-alumina
+  catalyst supports.
+\newblock {\em Oil \& Gas Science and Technology--Revue d'IFP Energies
+  nouvelles}, 72(2):8, 2017.
+
+\bibitem{weil1984}
+W.~Weil and J.~A. Wieacker.
+\newblock Densities for stationary random sets and point processes.
+\newblock {\em Advances in applied probability}, pages 324--346, 1984.
+
+\end{thebibliography}

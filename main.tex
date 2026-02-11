@@ -1,0 +1,37 @@
+\documentclass[12pt]{book}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{nomencl}
+\usepackage{amsthm}
+\usepackage{natbib}
+
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{problem}[theorem]{Problem}
+
+
+\title{Introduction to stochastic geometry}
+\author{Bruno Figliuzzi}
+\begin{document}
+
+\frontmatter
+\maketitle{}
+\tableofcontents{}
+
+\mainmatter
+\include{random}
+\include{materials}
+%\include{applications}
+
+\bibliographystyle{plain}
+\bibliography{biblio}
+
+
+\end{document}

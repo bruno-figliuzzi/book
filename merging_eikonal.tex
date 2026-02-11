@@ -1,0 +1,246 @@
+\chapter{Eikonal-based region merging \label{chap:graph}}
+
+In chapter~\ref{chap:superpixels}, we presented a superpixel algorithm using the Eikonal equation to compute the superpixel partition of an image. We go one step further in this chapter and present a generalization of this algorithm to the framework of graphs, which allows to merge image regions into an actual segmentation of the image.
+The chapter is organized as follows: in section~\ref{graph:s1}, we introduce a generalization of the Eikonal equation to the setting of graphs. In section~\ref{graph:s2}, we explain how the Eikonal equation can be leveraged to perform region merging in the image. We present finally in section~\ref{graph:s3} the results obtained with our algorithm on the Berkeley Segmentation Dataset and compare these results to the ones obtained with a classical algorithm for performing graph clustering: the normalized cut~\citep{shi2000}. The research works presented in this chapter was conducted during the PhD thesis of Ka\"iwen Chang between 2016 an 2019~\citep{chang2019thesis}.
+
+\section{Eikonal equation on an undirected graph~\label{graph:s1}}
+
+We describe in this section how to extend the continuous Eikonal equation to the setting of graphs. A graph is a structure employed to depict a collection of objects, wherein certain objects are connected. The objects are denoted by \textit{vertices} or \textit{nodes}, while the connections between pairs of vertices are represented by \textit{edges}.
+
+\subsection{Eikonal equation}
+
+In what follows, we consider an undirected, path-connected graph $\mathcal{G}:=(V, E)$. We assume that each edge $(i, j)$ in $E$ connecting vertices $V_i$ and $V_j$ carries a weight $w_{ij}$ that describes the similarity between nodes $V_i$ and $V_j$, and that $t:V \rightarrow \mathbb{R}$ is some function defined on the set $V$ of all vertices of the graph. To keep notations simple, we note $t_u$ the value of the function $t$ at vertice $u$.
+
+\begin{definition}
+Let $v$ be some vertex of the graph. We denote by $\mathcal{N}_v$ the set of all neighbor vertices of $v$ i.e. the set of all vertices that are connected to $v$. For all vertices $u$ in $\mathcal{N}_v$, the \textit{morphological} derivative of $t$ at $v$ with respect to $u$ is:
+\begin{equation}
+Dt(u, v) := w_{uv}(t_u - t_v)^+,
+\end{equation}
+where the quantity $(t_u - t_v)^+$ is defined by $(t_u - t_v)^+ = \max(0, t_u - t_v).$
+\label{def:graph_deriv}
+\end{definition}
+\noindent
+Definition~\ref{def:graph_deriv} allows us to define the gradient of $t$ in the following manner:
+\begin{definition}
+The gradient of $t$ at vertex $v$ is the vector
+\begin{equation}
+\nabla t(v) := (Dt(u, v))_{u \in \mathcal{N}_v}.
+\end{equation}
+\label{def:graph_grad}
+\end{definition}
+
+Based on definitions~\ref{def:graph_deriv} and~\ref{def:graph_grad}, we can propose a formulation of the Eikonal equation adapted to graph structures by using an analogy with the continuous setting. In the continuous setting, the Eikonal equation relates the $L^p$ norm of the local gradient to the local velocity $u$ in the open domain $\Omega $:
+\begin{equation}
+u(x)\|\nabla t(x)\|_p = 1, \quad \forall x \in \Omega.
+\end{equation}
+For a graph structure, the equivalent formulation is therefore
+\begin{equation}
+u(v)\|\nabla t(v)\|_p = 1, \quad \forall v \in V,
+\label{eqn:nabla}
+\end{equation}
+where $u(v)$ denotes a local velocity associated to node $v$. 
+
+Here, we focus on the case where $p = \infty $. In this case, the Eikonal equation is given at each vertex $v$ of $\mathcal{G}$ by
+\begin{equation}
+u(v)\max_{u \in \mathcal{N}_v} w_{uv}(t_u - t_v)_+ = 1.
+\label{eqn:eikonal_graph}
+\end{equation}
+The choices of $p = \infty $ and of the morphological derivative in Eq.~(\ref{def:graph_deriv}) are not accidental and expression~(\ref{eqn:eikonal_graph}) arises naturally if we consider a wave propagating on the entire graph $\mathcal{G}$ and arriving at a given vertice $v \in \mathcal{G}$. For all neighbor vertices $u \in \mathcal{N}_v$, we have necessarily
+\begin{equation}
+t_v \leq t_u + \dfrac{1}{w_{uv}}, 
+\end{equation} 
+and there exists a particular neighbor $\hat{u}$ of $v$ such that
+\begin{equation}
+t_u = t_{\hat{u}} + \dfrac{1}{w_{\hat{u}v}}.
+\end{equation}
+If we put these requirements together, we obtain the single equation
+\begin{equation}
+\|\nabla t(v)\| := \max_{u \in \mathcal{N}_v} w_{uv} (t_v - t_u)^+.
+\end{equation}
+
+It is finally straightforward to define boundary conditions for the Eikonal equation, by simply selecting a subset $\partial \mathcal{G} = (v_i)_{1 \leq i \leq k}$ of $k$ vertices in $V$ and specifying that $\forall i = 1, ..., k$, $t_{v_i} = 0$.
+
+\subsection{Eikonal equation and shortest path distance between two vertices}
+
+
+\begin{definition}[Shortest path distance between two vertices]
+Let us denote by $\mathcal{P}(u,v)$ the set of all paths in $\mathcal{G}$ that connect vertices $u$ and $v$. Since $\mathcal{G}$ is path-connected, $\mathcal{P}(u,v)$ contains at least one element. A path $p$ in $\mathcal{G}(V, E)$ is a collection of edges in $E$. The distance $D(p)$ associated to path $p$ is simply the sum of the weights of the edges constitutive of $p$. The shortest path distance between two vertices $u$ and $v$ in $\mathcal{G}$ is:
+\begin{equation}
+\hat{D}(u, v) =  \min _{p \in \mathcal{P}(u,v)} D(p)
+\end{equation}
+\end{definition}
+Building upon this definition, we can define the distance function between any vertex $v$ of the graph and the subset $\partial \mathcal{G} = (v_i)_{1 \leq i \leq k}$ to be 
+\begin{equation}
+d(v, \partial \mathcal{G} ) = \inf_{i = 1, ..., k} \hat{D}(v, v_i).
+\end{equation}
+Proposition~\ref{prop:distance2} relates the distance function to the solution of the Eikonal equation:
+\begin{proposition}
+Let $\mathcal{G} $ be an undirected, weighted graph. Then, the gradient of the distance function $d(\cdot, \partial \mathcal{G} )$ satisfies the Eikonal equation
+$$
+||\nabla t (v)|| = 1\\
+$$
+with boundary conditions $t(v_i) = 0, \forall i = 1, ..., k$.
+\label{prop:distance2}
+\end{proposition}
+
+
+\subsection{Fast marching algorithm on graphs}
+
+We present in this section the generalization of the fast marching algorithm already encountered in chapters~\ref{chap:random} and~\ref{chap:superpixels} to undirected graph structures. To that end, let us consider an undirected, path-connected graph $\mathcal{G}:=(V, E)$ such that each edge $(i, j)$ in $E$ carries a weight $w_{ij}$. The fast marching algorithm seeks to determine the solution of the Eikonal equation. However, instead of iteratively solving this equation for each vertex of $\mathcal{G}$ until convergence, it works by following the front propagation within the graph to compute the arrival times. During the procedure, the vertices of $\mathcal{G}$ are divided into three distinct subsets:
+\begin{itemize}
+\item The \textit{frozen} set groups all vertices already reached by the propagation front.
+\item Vertices adjacent to the frozen points but not reached by the front yet are grouped in the \textit{narrow band}.
+\item The remaining vertices constitute a subset referred to as the \textit{far away} set.
+\end{itemize}
+\paragraph{Initialization}
+\begin{enumerate}
+\item We affect the arrival time $t = 0$ to all vertices in $\partial \mathcal{G}$ and we add them to the narrow band.
+\item We label all other vertices as \textit{far away} and we affect them the arrival time $\infty $. The frozen set is initially empty. 
+\item In order to keep track of the shortest paths between each vertex in $\mathcal{G}$ and the boundary $\partial \mathcal{G}$, we affect the label $i$ to each vertex in $\{v_i, i = 1, ..., k \}$. All other vertices are labelled $0$.
+\end{enumerate}
+
+\paragraph{Iteration} At each iteration, we extract the vertex $v$ of the narrow band with the smallest arrival time and we label it as \textit{frozen}. Next, we compute the arrival times for each neighbor $u$ of $v$ not belonging to the frozen set, by solving equation~(\ref{eqn:eikonal_graph}) and by considering that the arrival times at the neighbor nodes $w$ of $u$ are $t_w$ if $w \in \mathcal{C}_i $ and $\infty $ otherwise, where $\mathcal{C}_i$ is the subset of $\mathcal{G}$ containing the points reached by the front that emerged from the $i$-th vertex in $\partial \mathcal{G}$. We assume obviously that $v \in \mathcal{C}_i$. Once the arrival time $t$ of a neighbor point $u$ has been computed, two situations can be encountered:
+\begin{itemize}
+\item When $u$ is in the narrow band, it has already been affected an arrival time and it is affected to one of the subsets $\mathcal{C}_j, j = 1, ..., k$. If the new arrival time is smaller than the current one, the arrival time is updated and the vertex $u$ is affected to the subset $\mathcal{C}_i$. 
+\item When the neighbor vertex $u$ is in the \textit{far away} set, we add it to the narrow band with the computed arrival time and to the subset $\mathcal{C}_i$.
+\end{itemize}
+
+\paragraph{Stopping condition} The fast marching algorithm stops when the narrow band is empty.\\
+
+
+\section{Application to superpixels merging~\label{graph:s2}}
+
+We describe in this section an algorithm that allows to perform the clustering of a similarity graph based on the resolution of the Eikonal equation in order to perform the segmentation of color images. A similar idea was proposed in 2014 in~\citep{buyssensa}.
+
+Let $I$ be a color image. We denote by $I(p, q)$ the color of the pixel located at position $(p, q)$ in the image. In what follows, we assume that $I$ is represented as the union of $N$ disjoint superpixels $(\mathcal{S}_i)_{i = 1, ..., N}$:
+\begin{equation}
+I = \cup_{1 \leq i \leq N} \mathcal{S}_i,
+\label{eqn:partition}
+\end{equation}
+with $\mathcal{S}_i \cap \mathcal{S}_j = \emptyset $ if $ i \neq j$.
+
+\paragraph{Region adjacency graph} We can associate to the superpixel partition of $I$ a graph referred to as its region adjacency graph $\mathcal{G}$. This region adjacency graph is a representation of the image $I$ as an undirected graph, whose vertices $(V_i)_{i = 1, ..., N}$ are associated with the superpixels $(\mathcal{S}_i)_{i = 1, ..., N}$. Two vertices $V_i$ and $V_j$ are linked by an edge of the graph if and only if the corresponding superpixels $\mathcal{S}_i$ and $\mathcal{S}_j$ share a common boundary in the image. In the following, we will adopt the notation $\mathcal{G}:= (V, E)$ when referring to the region adjacency graph, where $V$ is the set of all vertices (superpixels) in $\mathcal{G}$ and $E$ the set of all edges.
+
+We can specify a weight for each edge in $E$ by defining a function $w:E \rightarrow [0, 1]$ which associates to the edge $e_{ij}$ joining vertices $v_i$ and $v_j$ a quantity $w_{ij} \in [0, 1]$, interpreted as a dissimilarity measure between superpixels $\mathcal{S}_i$ and $\mathcal{S}_j$. Several approaches have been considered in the literature to compute the dissimilarity weights $w_{ij}$, including the color distance between $\mathcal{S}_i$ and $\mathcal{S}_j$ or the strength of the gradient at the boundary. Here, we will assume that, for each pair $(\mathcal{S}_i, \mathcal{S}_j)$ of adjacent superpixels, we were able to estimate the probability $p_{ij}$ that $\mathcal{S}_i$ and $\mathcal{S}_j$ belong to the same segment of the image. It is clear that the quantity
+\begin{equation}
+  w_{ij} = \exp(-p_{ij}),
+  \label{eqn:dissimilarity}
+\end{equation}
+then defines a dissimilarity measure between vertices $V_i$ and $V_j$ of $\mathcal{G}$.
+
+\paragraph{Graph clustering} According to proposition~\ref{prop:distance2}, it is possible to partition a graph $\mathcal{G}$ into $K \geq 1$ subgraphs by relying on the Eikonal equation. To that end, we start by selecting $K$ vertices $(v_k)_{1 \leq k \leq K}$ of $\mathcal{G}$. Then, solving the Eikonal equation on $\mathcal{G}$ with boundary conditions set to be $t(v_k) = 0, \forall k = 1, ..., K$ allows to compute the distance $w(v, \partial \mathcal{G})$ of the shortest path linking each vertex $v \in V$ to the closest vertex in the subset $\partial \mathcal{G}) := (v_k)_{1 \leq k \leq K}$. Since the graph $\mathcal{G}$ is path-connected, for $k = 1, ..., K$, the subsets
+\begin{equation}
+\mathcal{C}_k = \{v \in V, w(v, v_k) = w(v, \partial \mathcal{G}) \}
+\end{equation}
+constitute a partition of $\mathcal{G}$ into $K$ connected subgraphs. We can use this approach to compute a partition of the region adjacency graph associated to a superpixel segmentation and therefore coarsen the segmentation.
+
+\paragraph{Algorithm} The merging algorithm that we proposed works by iteratively solving the Eikonal equation on the region adjacency graph of the superpixel segmentation $\mathcal{S}$ of $I$ and adapting the boundary conditions. The algorithm start with an initial segmentation $\mathcal{S}^0$ containing $N$ superpixels. Typical values for $N$ are in the order of $500$ to $800$ superpixels. Our objective is to significantly reduce the number of segments in the image to a value around $50-100$. The superpixel merging is conducted as follows:
+\begin{enumerate}
+\item To initialize the algorithm, $K$ vertices $(v_k)_{1 \leq k \leq K}$ are chosen randomly in the region adjacency graph.
+\item The Eikonal equation is solved for the region adjacency graph with boundary conditions $t(v_k) = 0, \forall k = 1, ..., K$. After this step, the graph is clustered into $K$ separated subgraphs $(\mathcal{G}_k)_{k = 1, ..., K}$. For $k = 1, ..., K$, we denote by $V_k$ and $E_k$ the set of the vertices and of the edges of $\mathcal{G}_i$, respectively.
+\item For each subgraph $(\mathcal{G}_k)_{k = 1, ..., K}$, we search for the edge $e_k$ in $E_k$ with maximal weight $w_k$. We denote by $n_{0, k}$ and $n_{1, k}$ the vertices in $V_k$ linked by $e_k$. Then, we select the  subgraph $\mathcal{G}_j$ whose maximal internal weight is the highest and we add the nodes $n_{0, j}$ and $n_{1, j}$ to the boundary conditions. This step allows to refine the previously obtained segmentation.
+\item We solve the Eikonal equation for the region adjacency graph with the updated boundary conditions $t(v_k) = 0, \forall k = 1, ..., K + 2$, where $v_{k + 1} = n_{0, j}$ and $v_{k + 2} = n_{1, j}$.
+\item We iterate between steps 3 and 4 until some stopping criterion is met. 
+\end{enumerate}
+
+Two distinct stopping criteria can be used in the algorithm. A first stopping criterion consists in stopping the algorithm iterations when a specified number of segments are obtained, the advantage of this approach being that it enables to control the number of segments obtained in the final segmentation. However, this approach can potentially yield a segmentation with segments still containing highly dissimilar superpixels. A second stopping criterion consists in specifying a probability threshold $t$ and in iterating between steps 3 and 4 until no subgraph contains weights higher than this threshold. 
+
+
+
+\section{Results and discussion ~\label{graph:s3}}
+
+We present in this section results obtained on the Berkeley Segmentation Dataset (BSDS500) with the proposed merging approach. Starting from a superpixel partition with roughly $500$ superpixels, our objective is to reduce the number of superpixels to around $60-80$ by merging them. The oversegmentation that results from this process contains a ``reasonable'' number of segments and can serve as a solid foundation for implementing a classification algorithm depending on higher-level features to accomplish the segmentation.
+
+\subsection{Experiments}
+
+Our proposed merging method is agnostic to the choice of superpixel generation algorithm. In our experiments, we started from an image partition containing $K = 500$ superpixels computed with the fast marching based algorithm described in Chapter~\ref{chap:superpixels}, and we used this initial partition to construct a region adjacency graph (RAG) on the image. The merging procedure was completed in two steps. The first step allows to reduce the number of superpixels from $N = 500$ to $N = 100-200$. After the first step, the weights of the RAG are updated and a second merging procedure is conducted in order to obtain an oversegmentation with $N = 50-100$ regions. 
+
+\subsubsection{Dissimilarity measure}
+
+The edges of the RAG must carry a dissimilarity measure constructed through Eq.~(\ref{eqn:dissimilarity}) from the probability that the adjacent regions associated with the edge belong to the same segment. To compute the dissimilarity measure, we learned the similarity measure between regions by using a regression algorithm, which takes as input features extracted from the pair of adjacent superpixels and returns a score that can be interpreted as the probability of merging each pair of adjacent regions. These features incorporate in particular various color and texture distances between the adjacent superpixels and information on the gradient strength at the boundary separating the superpixels. We refer the reader interested by additional details on the selected features to the manuscript~\citep{chang2019thesis}.
+
+To train the classifier, we use Berkeley Segmentation Dataset 500 (BSDS500)~\citep{martin2001} in the following manner. For each training image in the BSDS500, we dispose of $K$ distinct manual segmentation. Let $\mathcal{T}^k:= (T^k_i)_{i = 1, ... K_k}$ be the $k-$th segmentation mask in the ground truth, which contains $K_k$ segments. We can associate each superpixel $\mathcal{S}:= (S_i)_{i = 1, ... N}$ to the region $\mathcal{T}^k = (T^k_i)_{i = 1, ... K_k}$ that it intersects the most: 
+\begin{equation}
+A^k_i = \arg \max _{j = 1, ..., K_n} \mathcal{A}(S_i \cap \mathcal{T}^k_j),
+\end{equation}
+where $\mathcal{A}(S_i \cap \mathcal{T}^k_j)$ is the area of the intersection and $A^k_i$ denotes the index of the region associated with $S_i$ in the $k$-th manual segmentation. For a given edge $(S_i, S_j)$ of the RAG, we define the target similarity measure $\hat{w}_{ij}$ to be:
+$$
+\hat{w}_{ij} = \exp \left ( - \dfrac{1}{K} \sum_{k = 1}^{K} 1_{\{A^k_i = A^k_j\}} \right ).
+$$
+
+\begin{figure}[ht]
+  \centering
+  \begin{subfigure}[t]{0.45\textwidth}
+    % \centering
+    \includegraphics[width=\textwidth]{figures/78098_500c.png}
+    \caption{Eikonal graph merging}
+  \end{subfigure}
+  \quad
+  \begin{subfigure}[t]{0.45\textwidth}
+    % \centering
+    \includegraphics[width=\textwidth]{figures/78098_mosaic_500c.png}
+    \caption{Average color}
+  \end{subfigure}
+  \\[0.1cm]
+  \begin{subfigure}[t]{0.45\textwidth}
+    % \centering
+    \includegraphics[width=\textwidth]{figures/78098_ncut_500c.png}
+    \caption{Ncut}
+  \end{subfigure}
+  \quad
+  \begin{subfigure}[t]{0.45\textwidth}
+    % \centering
+    \includegraphics[width=\textwidth]{figures/78098_mosaic_ncut_500c.png}
+    \caption{Average color}
+  \end{subfigure}
+ 
+  \caption[Segmentation results obtained with the Eikonal and normalized cut algorithms.]{Segmentation results obtained with the Eikonal and normalized cut algorithms. The boundary recall are $0.64$ and $0.63$, respectively and the boundary precision are $0.33$ and $0.29$. The final partition comprises $70$ segments~\citep{chang2019thesis}.~\label{fig:eiko_results}}
+\end{figure}
+
+\subsection{Results and discussion}
+
+To evaluate the performance of our algorithm, we compared it to a classical approach for performing graph clustering, the normalized cut algorithm (Ncut)~\citep{shi2000}. In addition to classical metrics including boundary recall and precision, we also report the results in terms of the segmentation covering metrics. Segmentation covering provides a measures of the average matching between a segmentation and a given ground truth. It is defined by
+\begin{equation}
+SC(S, S_g) = \sum_{s_i\in S}\frac{\lvert s_i \rvert}{\lvert \mathcal{P} \rvert}\max_{s_j\in S_g}\frac{\lvert s_i\cap s_j \rvert}{\lvert s_i\cup s_j \rvert}.
+\end{equation}
+In this expression, $S$ and $S_g$ are the segmentation and the ground truth segmentation, respectively. $\mathcal{P}$ is the set of pixels, so that $|\mathcal{P}|$ corresponds to the total number of pixels in the image. The segmentation covering metric computes, for each segment $s_i \in S$, the area of the largest intersection over union with the corresponding ground truth segment $s_j$. The calculation is weighted by the number of pixels within segment $s_i$ and normalized by the total number of pixels in the image. The maximum possible value 1 can be achieved when $S$ is identical with $S_g$.
+
+The results obtained with our merging approach are provided in Tab.~\ref{tab:merging_results}. We display one example of obtained segmentation in Fig.~\ref{fig:eiko_results}. Overall, we can note that the results obtained with the Eikonal equation on graphs are better than the ones obtained with the normalized cut. In particular, the Eikonal based approach brings significant improvement over the normalized cut algorithm with respect to the boundary precision and to the segmentation covering metrics. In our experiment, we opted for the second stopping criterion for the Eikonal algorithm, which consists in specifying a probability threshold $t$ and in iterating between the last two steps of the algorithm until no cluster contains weights higher than $t$. A drawback of this approach is that it makes it difficult to control the number of segments obtained at the end of the procedure. Hence, to facilitate the comparison between the Eikonal and Ncut approaches, for each image, we computed the normalized cut segmentation with the same number of segments as the one yielded by the Eikonal algorithm.
+
+\vspace{2mm}
+\begin{table}[!ht]
+\centering
+\begin{tabular}{l||c|c}
+  \hline
+  & Eikonal & NCut \\
+  \hline
+  \hline
+  Boundary recall & $0.76\pm 0.09$ & $0.74\pm 0.08$ \\  
+  \hline
+  Boundary precision & $0.36\pm 0.12$ & $0.31\pm 0.11$ \\ 
+  \hline 
+  Seg. covering & $0.32\pm 0.12$ & $0.23\pm 0.09$ \\
+  \hline
+  Number of segments & $66\pm 10$ & $63\pm 9$ \\  
+  \hline
+\end{tabular}
+\caption{Results of the Eikonal and of the normalized cut algorithm on the test images of the BSD.~\label{tab:merging_results}}
+\end{table}
+
+It is interesting to discuss in greater detail the stopping criterion used for Eikonal algorithm, in particular the choice of the threshold $t$. This threshold can indeed be fixed in an adaptative manner depending on the set of weights as observed on the adjacency graph. In our experiments, we followed the following procedure to select the threshold value:
+\begin{enumerate}
+\item Sort the edges increasingly according to their weight.
+\item Arbitrarily select a proportion of edges considered to be actual contours, and set the corresponding weight as threshold.
+\end{enumerate}  
+
+Another interesting thing to notice is that in spite of the refinement step, the obtained segmentation depends on the initial choice of germs. Due to the initial random selection of germs, certain areas of the image may become artificially over-segmented. To address this issue and minimize the impact of the initial seed selection, a straightforward post-processing operation can be performed at the conclusion of the algorithm. This operation involves extracting the highest merging probability observed at the boundaries between adjacent regions, thereby establishing a dissimilarity measure between these regions. Subsequently, the pairs of regions are sorted in ascending order based on their dissimilarity values. As the algorithm progresses, pairs of adjacent regions are evaluated, and if their dissimilarity falls below a specified threshold for the refinement step, they are merged together. It is important to note that each region can only be merged once during this process to prevent the creation of adjacency graph regions with edges exceeding the threshold weight. By implementing this post-processing step, the number of clustered regions can be effectively reduced, while the overall quality of the segmentation is only minimally affected. This post-processing was applied in our experiment, which explains why the number of segments obtained with the Eikonal based algorithm and the normalized cut are slightly different in Tab.~\ref{tab:merging_results}.
+
+\section{Conclusion}
+
+In this chapter, we presented a novel algorithm that performs region merging on the superpixel segmentation of an image. This algorithm is based upon a region adjacency graph representation of the superpixel partition. Each edge in the graph corresponds to a pair of adjacent superpixels and carries a weight accounting for the dissimilarity between these superpixels. The algorithm uses a generalization of the Eikonal equation to the framework of graphs to perform the graph clustering, an idea originally introduced by~\citep{buyssensa}. During Kaiwen Chang's PhD thesis, our main contribution was to propose to learn the weights of the graph based on annotated data. We evaluated the performance of our Eikonal-based approach by comparing it to a classical graph clustering algorithm, namely the normalized cut~\citep{shi2000}. Our results demonstrated improvements over the classical algorithm, particularly in terms of segmentation covering and boundary precision metrics.
+
+The initial goal of the algorithm was to process images from experiments in materials science. For these images, it is difficult to obtain annotated training data, and therefore it is crucial to develop segmentation algorithms requiring a low number of data to be trained. So far, our merging algorithm has only been applied to perform the segmentation of natural images taken from the Berkeley Segmentation Dataset. Hence, an obvious short term perspective of the work presented in this chapter would be to evaluate it on images obtained during physics experiments. We expect these images to be more homogeneous in terms of content than natural images, so that they might require a lower amount of training example to be segmented using a supervised approach. 
+
+
+
+
