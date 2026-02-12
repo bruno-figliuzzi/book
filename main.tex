@@ -7,7 +7,14 @@
 \usepackage{subcaption}
 \usepackage{nomencl}
 \usepackage{amsthm}
-\usepackage{natbib}
+\usepackage[authoryear]{natbib}
+\usepackage[
+    colorlinks=true,
+    citecolor=blue,      
+    linkcolor=black, 
+    urlcolor=black,
+    breaklinks=true
+]{hyperref}
 
 \newtheorem{definition}{Definition}[section]
 \newtheorem{theorem}{Theorem}[section]
@@ -21,16 +28,15 @@
 \author{Bruno Figliuzzi}
 \begin{document}
 
-\frontmatter
-\maketitle{}
+\frontmatter\maketitle{}
 \tableofcontents{}
 
 \mainmatter
 \include{random}
 \include{materials}
-%\include{applications}
+\include{applications}
 
-\bibliographystyle{plain}
+\bibliographystyle{plainnat}
 \bibliography{biblio}
 
 

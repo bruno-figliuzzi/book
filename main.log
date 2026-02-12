@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2026.1.31)  11 FEB 2026 16:03
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2026.1.31)  12 FEB 2026 23:15
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -216,51 +216,185 @@ Package: natbib 2010/09/13 8.31b (PWD, AO)
 LaTeX Info: Redefining \cite on input line 694.
 \c@NAT@ctr=\count277
 )
-\c@definition=\count278
-\c@theorem=\count279
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2021-06-07 v7.00m Hypertext links for LaTeX
+
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty
+Package: iftex 2020/03/06 v1.0d TeX engine tests
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+(/usr/share/texlive/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty
+Package: kvsetkeys 2019/12/15 v1.18 Key value parser (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty
+Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty
+Package: letltxmacro 2019/12/03 v1.6 Let assignment for LaTeX macros (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty
+Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+Package: kvoptions 2020-10-07 v3.14 Key value format for package options (HO)
+)
+\@linkdim=\dimen159
+\Hy@linkcounter=\count278
+\Hy@pagecounter=\count279
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2021-06-07 v7.00m Hyperref: PDFDocEncoding definition (HO)
+Now handling font encoding PD1 ...
+... no UTF-8 mapping file for font encoding PD1
+)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref-langpatches.def
+File: hyperref-langpatches.def 2021-06-07 v7.00m Hyperref: patches for babel la
+nguages
+)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty
+Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/etexcmds/etexcmds.sty
+Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
+)
+\Hy@SavedSpaceFactor=\count280
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def
+File: puenc.def 2021-06-07 v7.00m Hyperref: PDF Unicode definition (HO)
+Now handling font encoding PU ...
+... no UTF-8 mapping file for font encoding PU
+)
+Package hyperref Info: Option `colorlinks' set `true' on input line 4073.
+Package hyperref Info: Option `breaklinks' set `true' on input line 4073.
+Package hyperref Info: Hyper figures OFF on input line 4192.
+Package hyperref Info: Link nesting OFF on input line 4197.
+Package hyperref Info: Hyper index ON on input line 4200.
+Package hyperref Info: Plain pages OFF on input line 4207.
+Package hyperref Info: Backreferencing OFF on input line 4212.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4445.
+\c@Hy@tempcnt=\count281
+
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip17
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 4804.
+\XeTeXLinkMargin=\dimen160
+
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty
+Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
+)
+))
+\Fld@menulength=\count282
+\Field@Width=\dimen161
+\Fld@charsize=\dimen162
+Package hyperref Info: Hyper figures OFF on input line 6076.
+Package hyperref Info: Link nesting OFF on input line 6081.
+Package hyperref Info: Hyper index ON on input line 6084.
+Package hyperref Info: backreferencing OFF on input line 6091.
+Package hyperref Info: Link coloring ON on input line 6094.
+Package hyperref Info: Link coloring with OCG OFF on input line 6101.
+Package hyperref Info: PDF/A mode OFF on input line 6106.
+LaTeX Info: Redefining \ref on input line 6146.
+LaTeX Info: Redefining \pageref on input line 6150.
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty
+Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
+package with kernel methods
+)
+\Hy@abspage=\count283
+\c@Item=\count284
+\c@Hfootnote=\count285
+)
+Package hyperref Info: Driver (autodetected): hpdftex.
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+File: hpdftex.def 2021-06-07 v7.00m Hyperref driver for pdfTeX
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty
+Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend pac
+kage
+with kernel methods
+)
+\Fld@listcount=\count286
+\c@bookmark@seq@number=\count287
+
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+Package: rerunfilecheck 2019/12/05 v1.9 Rerun checks for auxiliary files (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
+)
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
+86.
+)
+\Hy@SectionHShift=\skip59
+)
+\c@definition=\count288
+\c@theorem=\count289
 
 (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2022-01-12 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count280
+\l__color_backend_stack_int=\count290
 \l__pdf_internal_box=\box53
 )
-(./main.aux (./random.aux
-
-LaTeX Warning: Label `s1' multiply defined.
-
-) (./materials.aux
-
-LaTeX Warning: Label `def:covariance' multiply defined.
-
-))
+(./main.aux (./random.aux) (./materials.aux) (./applications.aux))
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
- (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count281
-\scratchdimen=\dimen159
+\scratchcounter=\count291
+\scratchdimen=\dimen163
 \scratchbox=\box54
-\nofMPsegments=\count282
-\nofMParguments=\count283
+\nofMPsegments=\count292
+\nofMParguments=\count293
 \everyMPshowfont=\toks32
-\MPscratchCnt=\count284
-\MPscratchDim=\dimen160
-\MPnumerator=\count285
-\makeMPintoPDFobject=\count286
+\MPscratchCnt=\count294
+\MPscratchDim=\dimen164
+\MPnumerator=\count295
+\makeMPintoPDFobject=\count296
 \everyMPtoPDFconversion=\toks33
 ) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -272,14 +406,45 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: hyperref package is loaded.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 25.
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2021/12/07 v1.3c Standard LaTeX Color (DPC)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package color Info: Driver file: pdftex.def on input line 149.
+)
+Package hyperref Info: Link coloring ON on input line 29.
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
+
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty
+Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
+)
+\c@section@level=\count297
+)
+LaTeX Info: Redefining \ref on input line 29.
+LaTeX Info: Redefining \pageref on input line 29.
+LaTeX Info: Redefining \nameref on input line 29.
+
+(./main.out) (./main.out)
+\@outlinefile=\write3
+\openout3 = `main.out'.
+
+LaTeX Font Info:    Trying to load font information for U+msa on input line 31.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 25.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 31.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -291,81 +456,73 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2
 
 ] (./main.toc [3])
-\tf@toc=\write3
-\openout3 = `main.toc'.
+\tf@toc=\write4
+\openout4 = `main.toc'.
 
  [4]
 \openout2 = `random.aux'.
 
  (./random.tex
 Chapter 1.
-
-Underfull \vbox (badness 1975) has occurred while \output is active []
-
- [1
+[1
 
 
 
-]
-[2]
-
-LaTeX Warning: Command \o invalid in math mode on input line 62.
-
-[3]
-Overfull \hbox (12.73793pt too wide) in alignment at lines 87--92
+] [2] [3]
+Overfull \hbox (12.73793pt too wide) in alignment at lines 90--95
  [][][] []
  []
 
 [4]
-<figures/random/material.png, id=39, 401.5pt x 401.5pt>
+<figures/random/material.png, id=340, 401.5pt x 401.5pt>
 File: figures/random/material.png Graphic file (type png)
 <use figures/random/material.png>
-Package pdftex.def Info: figures/random/material.png  used on input line 162.
+Package pdftex.def Info: figures/random/material.png  used on input line 165.
 (pdftex.def)             Requested size: 140.5271pt x 140.5271pt.
 
-Underfull \hbox (badness 1173) in paragraph at lines 163--163
+Underfull \hbox (badness 1173) in paragraph at lines 166--166
 []\OT1/cmr/m/n/10.95 (a) |Seg-mented mi-crostruc-ture sim-u-lated with
  []
 
-<figures/random/erosion.png, id=40, 401.5pt x 401.5pt>
+<figures/random/erosion.png, id=345, 401.5pt x 401.5pt>
 File: figures/random/erosion.png Graphic file (type png)
 <use figures/random/erosion.png>
-Package pdftex.def Info: figures/random/erosion.png  used on input line 171.
+Package pdftex.def Info: figures/random/erosion.png  used on input line 174.
 (pdftex.def)             Requested size: 140.5271pt x 140.5271pt.
-<figures/random/dilation.png, id=41, 401.5pt x 401.5pt>
+<figures/random/dilation.png, id=346, 401.5pt x 401.5pt>
 File: figures/random/dilation.png Graphic file (type png)
 <use figures/random/dilation.png>
-Package pdftex.def Info: figures/random/dilation.png  used on input line 178.
+Package pdftex.def Info: figures/random/dilation.png  used on input line 181.
 (pdftex.def)             Requested size: 140.5271pt x 140.5271pt.
 File: figures/random/erosion.png Graphic file (type png)
 <use figures/random/erosion.png>
-Package pdftex.def Info: figures/random/erosion.png  used on input line 187.
+Package pdftex.def Info: figures/random/erosion.png  used on input line 190.
 (pdftex.def)             Requested size: 140.5271pt x 140.5271pt.
 File: figures/random/dilation.png Graphic file (type png)
 <use figures/random/dilation.png>
-Package pdftex.def Info: figures/random/dilation.png  used on input line 194.
+Package pdftex.def Info: figures/random/dilation.png  used on input line 197.
 (pdftex.def)             Requested size: 140.5271pt x 140.5271pt.
 
-LaTeX Warning: Float too large for page by 29.43399pt on input line 200.
+LaTeX Warning: Float too large for page by 29.43399pt on input line 203.
 
 [5] [6 <./figures/random/material.png (PNG copy)> <./figures/random/erosion.png
  (PNG copy)> <./figures/random/dilation.png (PNG copy)>]
-Underfull \hbox (badness 10000) in paragraph at lines 224--226
+Underfull \hbox (badness 10000) in paragraph at lines 227--229
 
  []
 
 [7] [8] [9]
-Underfull \hbox (badness 10000) in paragraph at lines 307--309
+Underfull \hbox (badness 10000) in paragraph at lines 310--312
 
  []
 
 [10]
-Underfull \hbox (badness 10000) in paragraph at lines 365--367
+Underfull \hbox (badness 10000) in paragraph at lines 368--370
 
  []
 
 [11] [12] [13] [14]
-Overfull \hbox (2.67256pt too wide) in paragraph at lines 466--467
+Overfull \hbox (2.67256pt too wide) in paragraph at lines 469--470
 \OT1/cmr/m/n/12 affine lin-ear sub-space $\OML/cmm/m/it/12 L$ \OT1/cmr/m/n/12 o
 f di-men-sion $\OML/cmm/m/it/12 k$ \OT1/cmr/m/n/12 in $\U/msb/m/n/12 R[]$ \OT1/
 cmr/m/n/12 is a trans-la-tion of a $\OML/cmm/m/it/12 k$\OT1/cmr/m/n/12 -dimensi
@@ -373,39 +530,40 @@ onal
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 488--491
+Underfull \hbox (badness 10000) in paragraph at lines 491--494
 
  []
 
 [15] [16] [17] [18] [19]
-Underfull \hbox (badness 10000) in paragraph at lines 606--608
+Underfull \hbox (badness 10000) in paragraph at lines 609--611
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 623--625
+Underfull \hbox (badness 10000) in paragraph at lines 626--628
 
  []
 
 [20]
-Overfull \hbox (2.67232pt too wide) in paragraph at lines 654--656
+Overfull \hbox (2.67232pt too wide) in paragraph at lines 657--659
 \OT1/cmr/m/n/12 For a sta-tion-ary point pro-cess, the in-ten-sity mea-sure is 
 nec-es-sar-ily translation-
  []
 
 [21] [22] [23]
-Overfull \hbox (1.31314pt too wide) in paragraph at lines 768--769
-[]\OT1/cmr/m/n/12 An im-por-tant con-se-quence of def-i-ni-tion 1.5.4[] is that
- for any fam-ily $\OMS/cmsy/m/n/12 f\OML/cmm/m/it/12 K[]; i \OMS/cmsy/m/n/12 2
+Overfull \hbox (1.31314pt too wide) in paragraph at lines 771--772
+[]\OT1/cmr/m/n/12 An im-por-tant con-se-quence of def-i-ni-tion [][]1.5.4[][] i
+s that for any fam-ily $\OMS/cmsy/m/n/12 f\OML/cmm/m/it/12 K[]; i \OMS/cmsy/m/n
+/12 2
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 771--773
+Underfull \hbox (badness 10000) in paragraph at lines 774--776
 
  []
 
 [24]
-Overfull \hbox (52.94054pt too wide) in paragraph at lines 812--814
+Overfull \hbox (52.94054pt too wide) in paragraph at lines 815--817
 \OT1/cmr/m/n/12 are in-de-pen-dent Pois-son ran-dom vari-ables with re-spec-tiv
 e pa-ram-e-ters $\OML/cmm/m/it/12 ^^R[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 K\OT1/
 cmr/m/n/12 )\OML/cmm/m/it/12 ; [] ; ^^R[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 K\OT
@@ -413,7 +571,7 @@ cmr/m/n/12 )\OML/cmm/m/it/12 ; [] ; ^^R[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 K\OT
  []
 
 [25]
-Overfull \hbox (1.87668pt too wide) detected at line 839
+Overfull \hbox (1.87668pt too wide) detected at line 842
 \OML/cmm/m/it/12 G[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 s\OT1/cmr/m/n/12 ) = [] [
 ]  []\OML/cmm/m/it/12 ^^R[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 K\OT1/cmr/m/n/12 )
 (\OML/cmm/m/it/12 s \OMS/cmsy/m/n/12 ^^@ \OT1/cmr/m/n/12 1)[] = []  [] [] \OML/
@@ -424,495 +582,641 @@ msy/m/n/12 ^^@ \OT1/cmr/m/n/12 1)[]\OML/cmm/m/it/12 ;
  []
 
 [26] [27]
-Underfull \hbox (badness 10000) in paragraph at lines 926--927
+Underfull \hbox (badness 10000) in paragraph at lines 929--930
 
  []
 
 [28]
-Underfull \hbox (badness 10000) in paragraph at lines 936--937
+Underfull \hbox (badness 10000) in paragraph at lines 939--940
 
  []
 
 Missing character: There is no d in font msbm10!
 [29]
-Underfull \hbox (badness 10000) in paragraph at lines 967--969
+Underfull \hbox (badness 10000) in paragraph at lines 970--972
 
  []
 
 [30] [31]
-Overfull \hbox (2.93343pt too wide) in paragraph at lines 1032--1033
-[]\OT1/cmr/m/n/12 Lemma 1.6.1[] guar-an-tees that the num-ber of pri-mary grain
-s in any bounded
+Overfull \hbox (2.93343pt too wide) in paragraph at lines 1035--1036
+[]\OT1/cmr/m/n/12 Lemma [][]1.6.1[][] guar-an-tees that the num-ber of pri-mary
+ grains in any bounded
  []
 
 [32]
-Underfull \hbox (badness 10000) in paragraph at lines 1041--1043
+Underfull \hbox (badness 10000) in paragraph at lines 1044--1046
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1051--1053
+Underfull \hbox (badness 10000) in paragraph at lines 1054--1056
 
  []
 
 [33] [34] [35]
-<figures/random/boolean.png, id=148, 351.56343pt x 344.78813pt>
+<figures/random/boolean.png, id=644, 351.56343pt x 344.78813pt>
 File: figures/random/boolean.png Graphic file (type png)
 <use figures/random/boolean.png>
-Package pdftex.def Info: figures/random/boolean.png  used on input line 1176.
+Package pdftex.def Info: figures/random/boolean.png  used on input line 1179.
 (pdftex.def)             Requested size: 140.62286pt x 137.9128pt.
-
-
-Package natbib Warning: Citation `vtkSim' on page 36 undefined on input line 11
-77.
-
-
-Package natbib Warning: Citation `vtkSim' on page 36 undefined on input line 11
-77.
-
-[36] [37 <./figures/random/boolean.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 1209--1211
+ [36] [37 <./figures/random/boolean.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 1212--1214
 
  []
 
 
-Overfull \hbox (0.77512pt too wide) in paragraph at lines 1224--1226
+Overfull \hbox (0.77512pt too wide) in paragraph at lines 1227--1229
 \OT1/cmr/m/n/12 Hence, when es-ti-mates of the den-si-ties are given, the in-te
 n-si-ties of the Boolean
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1224--1226
+Underfull \hbox (badness 10000) in paragraph at lines 1227--1229
 
  []
 
 [38]
-Underfull \hbox (badness 10000) in paragraph at lines 1240--1241
+Underfull \hbox (badness 10000) in paragraph at lines 1243--1244
 
  []
 
 [39]
-Overfull \hbox (7.07645pt too wide) in paragraph at lines 1271--1273
-\OT1/cmr/m/n/12 From Propo-si-tion 1.6.6[], the mean value char-ac-ter-is-tics 
-of the three-dimensional
+Overfull \hbox (7.07645pt too wide) in paragraph at lines 1274--1276
+\OT1/cmr/m/n/12 From Propo-si-tion [][]1.6.6[][], the mean value char-ac-ter-is
+-tics of the three-dimensional
  []
 
-[40] [41] [42]
-Underfull \hbox (badness 10000) in paragraph at lines 1355--1356
-
- []
-
-<figures/random/polycristal.png, id=173, 306.39468pt x 266.49562pt>
-File: figures/random/polycristal.png Graphic file (type png)
-<use figures/random/polycristal.png>
-Package pdftex.def Info: figures/random/polycristal.png  used on input line 135
-9.
-(pdftex.def)             Requested size: 214.47481pt x 186.54565pt.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[43] [44 <./figures/random/polycristal.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 1393--1394
+[40] [41] [42] [43]
+Underfull \hbox (badness 10000) in paragraph at lines 1388--1389
 
  []
 
-[45] [46] [47]
-<figures/random/WCCO1.png, id=192, 256.96pt x 256.96pt>
-File: figures/random/WCCO1.png Graphic file (type png)
-<use figures/random/WCCO1.png>
-Package pdftex.def Info: figures/random/WCCO1.png  used on input line 1506.
-(pdftex.def)             Requested size: 179.87076pt x 179.87076pt.
-<figures/random/WCCO2.png, id=193, 256.96pt x 256.96pt>
-File: figures/random/WCCO2.png Graphic file (type png)
-<use figures/random/WCCO2.png>
-Package pdftex.def Info: figures/random/WCCO2.png  used on input line 1508.
-(pdftex.def)             Requested size: 179.87076pt x 179.87076pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[48] [49 <./figures/random/WCCO1.png> <./figures/random/WCCO2.png>]
-<figures/random/voronoi.png, id=202, 387.69844pt x 410.2828pt>
+[44] [45] [46] [47]
+<figures/random/voronoi.png, id=827, 387.69844pt x 410.2828pt>
 File: figures/random/voronoi.png Graphic file (type png)
 <use figures/random/voronoi.png>
-Package pdftex.def Info: figures/random/voronoi.png  used on input line 1537.
+Package pdftex.def Info: figures/random/voronoi.png  used on input line 1523.
 (pdftex.def)             Requested size: 174.46268pt x 184.62555pt.
-
-
-Package natbib Warning: Citation `vtkSim' on page 50 undefined on input line 15
-38.
-
-
-Package natbib Warning: Citation `vtkSim' on page 50 undefined on input line 15
-38.
-
-<figures/random/johnson.png, id=203, 386.94562pt x 411.03563pt>
+<figures/random/johnson.png, id=832, 386.94562pt x 411.03563pt>
 File: figures/random/johnson.png Graphic file (type png)
 <use figures/random/johnson.png>
-Package pdftex.def Info: figures/random/johnson.png  used on input line 1544.
+Package pdftex.def Info: figures/random/johnson.png  used on input line 1530.
 (pdftex.def)             Requested size: 174.12392pt x 184.96432pt.
+ [48] [49 <./figures/random/voronoi.png> <./figures/random/johnson.png>]
+Overfull \hbox (16.07378pt too wide) in paragraph at lines 1550--1551
+\OT1/cmr/m/n/12 gen-eral de-scrip-tion of Poisson-Vorono^^?^^P tes-sel-la-tions
+ in $\U/msb/m/n/12 R[]$ \OT1/cmr/m/n/12 can be found in [[][]M^^\ller[][],
+ []
 
-Package natbib Warning: Citation `vtkSim' on page 50 undefined on input line 15
-45.
-
-
-Package natbib Warning: Citation `vtkSim' on page 50 undefined on input line 15
-45.
-
-) [50] [51 <./figures/random/voronoi.png> <./figures/random/johnson.png>]
+) [50]
 \openout2 = `materials.aux'.
 
-
-(./materials.tex [52
+ (./materials.tex
+Chapter 2.
+[51
 
 
 
 
 ]
-Chapter 2.
-[53]
-Overfull \hbox (6.59454pt too wide) has occurred while \output is active
-\OT1/cmr/m/n/12 54 \OT1/cmr/m/sl/12 CHAPTER 2.  MORPHOLOGICAL MODELS IN MATERIA
-LS SCIENCE
+Overfull \hbox (9.20433pt too wide) has occurred while \output is active
+\OT1/cmr/m/n/12 52 \OT1/cmr/m/sl/12 CHAPTER 2.  MORPHOLOGICAL MODELS IN MATERIA
+LS SCIENCE 
  []
 
-[54]
+[52]
+Overfull \hbox (43.22899pt too wide) has occurred while \output is active
+\OT1/cmr/m/sl/12 2.1.  MICROSTRUCTURE MODELLING WITH MORPHOLOGICAL MODELS  \OT1
+/cmr/m/n/12 53
+ []
+
+[53]
+<figures/materials/im3c.png, id=974, 638.385pt x 632.3625pt>
+File: figures/materials/im3c.png Graphic file (type png)
+<use figures/materials/im3c.png>
+Package pdftex.def Info: figures/materials/im3c.png  used on input line 29.
+(pdftex.def)             Requested size: 175.49881pt x 173.83751pt.
+<figures/materials/im4c.png, id=975, 638.385pt x 632.3625pt>
+File: figures/materials/im4c.png Graphic file (type png)
+<use figures/materials/im4c.png>
+Package pdftex.def Info: figures/materials/im4c.png  used on input line 30.
+(pdftex.def)             Requested size: 175.49881pt x 173.83751pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Overfull \hbox (9.20433pt too wide) has occurred while \output is active
+\OT1/cmr/m/n/12 54 \OT1/cmr/m/sl/12 CHAPTER 2.  MORPHOLOGICAL MODELS IN MATERIA
+LS SCIENCE 
+ []
+
+[54 <./figures/materials/im3c.png> <./figures/materials/im4c.png>]
 Overfull \hbox (43.22899pt too wide) has occurred while \output is active
 \OT1/cmr/m/sl/12 2.1.  MICROSTRUCTURE MODELLING WITH MORPHOLOGICAL MODELS  \OT1
 /cmr/m/n/12 55
  []
 
 [55]
-<figures/materials/im3c.png, id=225, 638.385pt x 632.3625pt>
-File: figures/materials/im3c.png Graphic file (type png)
-<use figures/materials/im3c.png>
-Package pdftex.def Info: figures/materials/im3c.png  used on input line 29.
-(pdftex.def)             Requested size: 175.49881pt x 173.83751pt.
-<figures/materials/im4c.png, id=226, 638.385pt x 632.3625pt>
-File: figures/materials/im4c.png Graphic file (type png)
-<use figures/materials/im4c.png>
-Package pdftex.def Info: figures/materials/im4c.png  used on input line 30.
-(pdftex.def)             Requested size: 175.49881pt x 173.83751pt.
-
-Overfull \hbox (6.59454pt too wide) has occurred while \output is active
+Overfull \hbox (9.20433pt too wide) has occurred while \output is active
 \OT1/cmr/m/n/12 56 \OT1/cmr/m/sl/12 CHAPTER 2.  MORPHOLOGICAL MODELS IN MATERIA
-LS SCIENCE
+LS SCIENCE 
  []
 
-[56 <./figures/materials/im3c.png> <./figures/materials/im4c.png>]
+[56]
+<figures/materials/MultiFocus001.png, id=1020, 616.704pt x 462.528pt>
+File: figures/materials/MultiFocus001.png Graphic file (type png)
+<use figures/materials/MultiFocus001.png>
+Package pdftex.def Info: figures/materials/MultiFocus001.png  used on input lin
+e 95.
+(pdftex.def)             Requested size: 175.49881pt x 131.62422pt.
+<figures/materials/MultiFocus0021.png, id=1021, 616.2222pt x 462.0462pt>
+File: figures/materials/MultiFocus0021.png Graphic file (type png)
+<use figures/materials/MultiFocus0021.png>
+Package pdftex.def Info: figures/materials/MultiFocus0021.png  used on input li
+ne 96.
+(pdftex.def)             Requested size: 175.49881pt x 131.58582pt.
+<figures/materials/simulation.png, id=1022, 1002.74625pt x 325.96782pt>
+File: figures/materials/simulation.png Graphic file (type png)
+<use figures/materials/simulation.png>
+Package pdftex.def Info: figures/materials/simulation.png  used on input line 1
+02.
+(pdftex.def)             Requested size: 350.99762pt x 114.10039pt.
+<figures/materials/cov_gr.png, id=1023, 1075.01625pt x 450.18187pt>
+File: figures/materials/cov_gr.png Graphic file (type png)
+<use figures/materials/cov_gr.png>
+Package pdftex.def Info: figures/materials/cov_gr.png  used on input line 108.
+(pdftex.def)             Requested size: 312.00119pt x 130.65244pt.
+
 Overfull \hbox (43.22899pt too wide) has occurred while \output is active
 \OT1/cmr/m/sl/12 2.1.  MICROSTRUCTURE MODELLING WITH MORPHOLOGICAL MODELS  \OT1
 /cmr/m/n/12 57
  []
 
 [57]
-Overfull \hbox (6.59454pt too wide) has occurred while \output is active
+Overfull \hbox (9.20433pt too wide) has occurred while \output is active
 \OT1/cmr/m/n/12 58 \OT1/cmr/m/sl/12 CHAPTER 2.  MORPHOLOGICAL MODELS IN MATERIA
-LS SCIENCE
+LS SCIENCE 
  []
 
-[58]
-<figures/materials/MultiFocus001.png, id=239, 616.704pt x 462.528pt>
-File: figures/materials/MultiFocus001.png Graphic file (type png)
-<use figures/materials/MultiFocus001.png>
-Package pdftex.def Info: figures/materials/MultiFocus001.png  used on input lin
-e 95.
-(pdftex.def)             Requested size: 175.49881pt x 131.62422pt.
-<figures/materials/MultiFocus0021.png, id=240, 616.2222pt x 462.0462pt>
-File: figures/materials/MultiFocus0021.png Graphic file (type png)
-<use figures/materials/MultiFocus0021.png>
-Package pdftex.def Info: figures/materials/MultiFocus0021.png  used on input li
-ne 96.
-(pdftex.def)             Requested size: 175.49881pt x 131.58582pt.
-<figures/materials/simulation.png, id=241, 1002.74625pt x 325.96782pt>
-File: figures/materials/simulation.png Graphic file (type png)
-<use figures/materials/simulation.png>
-Package pdftex.def Info: figures/materials/simulation.png  used on input line 1
-02.
-(pdftex.def)             Requested size: 350.99762pt x 114.10039pt.
-<figures/materials/cov_gr.png, id=242, 1075.01625pt x 450.18187pt>
-File: figures/materials/cov_gr.png Graphic file (type png)
-<use figures/materials/cov_gr.png>
-Package pdftex.def Info: figures/materials/cov_gr.png  used on input line 108.
-(pdftex.def)             Requested size: 312.00119pt x 130.65244pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-
+[58 <./figures/materials/MultiFocus001.png> <./figures/materials/MultiFocus0021
+.png> <./figures/materials/simulation.png> <./figures/materials/cov_gr.png>]
 Overfull \hbox (43.22899pt too wide) has occurred while \output is active
 \OT1/cmr/m/sl/12 2.1.  MICROSTRUCTURE MODELLING WITH MORPHOLOGICAL MODELS  \OT1
 /cmr/m/n/12 59
  []
 
 [59]
-Overfull \hbox (6.59454pt too wide) has occurred while \output is active
+Overfull \hbox (9.20433pt too wide) has occurred while \output is active
 \OT1/cmr/m/n/12 60 \OT1/cmr/m/sl/12 CHAPTER 2.  MORPHOLOGICAL MODELS IN MATERIA
-LS SCIENCE
+LS SCIENCE 
  []
 
-[60 <./figures/materials/MultiFocus001.png> <./figures/materials/MultiFocus0021
-.png> <./figures/materials/simulation.png> <./figures/materials/cov_gr.png>]
-Overfull \hbox (43.22899pt too wide) has occurred while \output is active
-\OT1/cmr/m/sl/12 2.1.  MICROSTRUCTURE MODELLING WITH MORPHOLOGICAL MODELS  \OT1
-/cmr/m/n/12 61
- []
-
-[61]
-Overfull \hbox (6.59454pt too wide) has occurred while \output is active
+[60] [61]
+Overfull \hbox (9.20433pt too wide) has occurred while \output is active
 \OT1/cmr/m/n/12 62 \OT1/cmr/m/sl/12 CHAPTER 2.  MORPHOLOGICAL MODELS IN MATERIA
-LS SCIENCE
+LS SCIENCE 
  []
 
 [62] [63]
-Overfull \hbox (6.59454pt too wide) has occurred while \output is active
+Overfull \hbox (9.20433pt too wide) has occurred while \output is active
 \OT1/cmr/m/n/12 64 \OT1/cmr/m/sl/12 CHAPTER 2.  MORPHOLOGICAL MODELS IN MATERIA
-LS SCIENCE
+LS SCIENCE 
  []
 
-[64] [65]
-Overfull \hbox (6.59454pt too wide) has occurred while \output is active
-\OT1/cmr/m/n/12 66 \OT1/cmr/m/sl/12 CHAPTER 2.  MORPHOLOGICAL MODELS IN MATERIA
-LS SCIENCE
- []
-
-[66]
-<figures/materials/img1.png, id=272, 265.9536pt x 262.3401pt>
+[64]
+<figures/materials/img1.png, id=1114, 265.9536pt x 262.3401pt>
 File: figures/materials/img1.png Graphic file (type png)
 <use figures/materials/img1.png>
-Package pdftex.def Info: figures/materials/img1.png  used on input line 271.
+Package pdftex.def Info: figures/materials/img1.png  used on input line 270.
 (pdftex.def)             Requested size: 159.57338pt x 157.40526pt.
-<figures/materials/img2.png, id=273, 263.0628pt x 262.3401pt>
+<figures/materials/img2.png, id=1115, 263.0628pt x 262.3401pt>
 File: figures/materials/img2.png Graphic file (type png)
 <use figures/materials/img2.png>
-Package pdftex.def Info: figures/materials/img2.png  used on input line 272.
+Package pdftex.def Info: figures/materials/img2.png  used on input line 271.
 (pdftex.def)             Requested size: 157.83888pt x 157.40526pt.
-<figures/materials/cov1.png, id=274, 375.0813pt x 314.3745pt>
+ [65]
+<figures/materials/cov1.png, id=1129, 375.0813pt x 314.3745pt>
 File: figures/materials/cov1.png Graphic file (type png)
 <use figures/materials/cov1.png>
-Package pdftex.def Info: figures/materials/cov1.png  used on input line 293.
+Package pdftex.def Info: figures/materials/cov1.png  used on input line 292.
 (pdftex.def)             Requested size: 155.99762pt x 130.746pt.
-<figures/materials/gr1.png, id=275, 365.6862pt x 314.3745pt>
+<figures/materials/gr1.png, id=1130, 365.6862pt x 314.3745pt>
 File: figures/materials/gr1.png Graphic file (type png)
 <use figures/materials/gr1.png>
-Package pdftex.def Info: figures/materials/gr1.png  used on input line 298.
+Package pdftex.def Info: figures/materials/gr1.png  used on input line 297.
 (pdftex.def)             Requested size: 155.99762pt x 134.11346pt.
-<figures/materials/comp1.png, id=276, 365.6862pt x 314.3745pt>
+<figures/materials/comp1.png, id=1131, 365.6862pt x 314.3745pt>
 File: figures/materials/comp1.png Graphic file (type png)
 <use figures/materials/comp1.png>
-Package pdftex.def Info: figures/materials/comp1.png  used on input line 299.
+Package pdftex.def Info: figures/materials/comp1.png  used on input line 298.
 (pdftex.def)             Requested size: 155.99762pt x 134.11346pt.
- [67 <./figures/materials/img1.png> <./figures/materials/img2.png>]
-<figures/materials/cov2.png, id=282, 389.5353pt x 314.3745pt>
+<figures/materials/cov2.png, id=1132, 389.5353pt x 314.3745pt>
 File: figures/materials/cov2.png Graphic file (type png)
 <use figures/materials/cov2.png>
-Package pdftex.def Info: figures/materials/cov2.png  used on input line 308.
+Package pdftex.def Info: figures/materials/cov2.png  used on input line 307.
 (pdftex.def)             Requested size: 155.99762pt x 125.89627pt.
-<figures/materials/gr2.png, id=283, 365.6862pt x 314.3745pt>
+<figures/materials/gr2.png, id=1133, 365.6862pt x 314.3745pt>
 File: figures/materials/gr2.png Graphic file (type png)
 <use figures/materials/gr2.png>
-Package pdftex.def Info: figures/materials/gr2.png  used on input line 313.
+Package pdftex.def Info: figures/materials/gr2.png  used on input line 312.
 (pdftex.def)             Requested size: 155.99762pt x 134.11346pt.
-<figures/materials/comp2.png, id=284, 365.6862pt x 314.3745pt>
+<figures/materials/comp2.png, id=1134, 365.6862pt x 314.3745pt>
 File: figures/materials/comp2.png Graphic file (type png)
 <use figures/materials/comp2.png>
-Package pdftex.def Info: figures/materials/comp2.png  used on input line 314.
+Package pdftex.def Info: figures/materials/comp2.png  used on input line 313.
 (pdftex.def)             Requested size: 155.99762pt x 134.11346pt.
-<mcmc/scatterplot1.png, id=285, 372.9132pt x 316.5426pt>
+<mcmc/scatterplot1.png, id=1135, 372.9132pt x 316.5426pt>
 File: mcmc/scatterplot1.png Graphic file (type png)
 <use mcmc/scatterplot1.png>
-Package pdftex.def Info: mcmc/scatterplot1.png  used on input line 329.
+Package pdftex.def Info: mcmc/scatterplot1.png  used on input line 328.
 (pdftex.def)             Requested size: 187.19833pt x 158.8988pt.
-<mcmc/scatterplot2.png, id=286, 390.258pt x 316.5426pt>
+<mcmc/scatterplot2.png, id=1136, 390.258pt x 316.5426pt>
 File: mcmc/scatterplot2.png Graphic file (type png)
 <use mcmc/scatterplot2.png>
-Package pdftex.def Info: mcmc/scatterplot2.png  used on input line 330.
+Package pdftex.def Info: mcmc/scatterplot2.png  used on input line 329.
 (pdftex.def)             Requested size: 187.19833pt x 151.83728pt.
 
-Overfull \hbox (4.8223pt too wide) in paragraph at lines 365--366
-[]\OT1/cmr/m/n/12 Fig. 2.8[] dis-plays a scat-ter-plot of the pa-ram-e-ters sam
--pled by the Metropolis-
+Overfull \hbox (9.20433pt too wide) has occurred while \output is active
+\OT1/cmr/m/n/12 66 \OT1/cmr/m/sl/12 CHAPTER 2.  MORPHOLOGICAL MODELS IN MATERIA
+LS SCIENCE 
  []
 
-
-Overfull \hbox (6.59454pt too wide) has occurred while \output is active
+[66 <./figures/materials/img1.png> <./figures/materials/img2.png>] [67 <./figur
+es/materials/cov1.png> <./figures/materials/gr1.png> <./figures/materials/comp1
+.png>]
+Overfull \hbox (9.20433pt too wide) has occurred while \output is active
 \OT1/cmr/m/n/12 68 \OT1/cmr/m/sl/12 CHAPTER 2.  MORPHOLOGICAL MODELS IN MATERIA
-LS SCIENCE
+LS SCIENCE 
  []
 
-[68] [69 <./figures/materials/cov1.png> <./figures/materials/gr1.png> <./figure
-s/materials/comp1.png>]
-Overfull \hbox (6.59454pt too wide) has occurred while \output is active
+[68 <./figures/materials/cov2.png> <./figures/materials/gr2.png> <./figures/mat
+erials/comp2.png>]
+Overfull \hbox (4.8223pt too wide) in paragraph at lines 364--365
+[]\OT1/cmr/m/n/12 Fig. [][]2.8[][] dis-plays a scat-ter-plot of the pa-ram-e-te
+rs sam-pled by the Metropolis-
+ []
+
+[69 <./mcmc/scatterplot1.png> <./mcmc/scatterplot2.png>]
+Overfull \hbox (9.20433pt too wide) has occurred while \output is active
 \OT1/cmr/m/n/12 70 \OT1/cmr/m/sl/12 CHAPTER 2.  MORPHOLOGICAL MODELS IN MATERIA
-LS SCIENCE
+LS SCIENCE 
  []
 
-[70 <./figures/materials/cov2.png> <./figures/materials/gr2.png> <./figures/mat
-erials/comp2.png>] [71 <./mcmc/scatterplot1.png> <./mcmc/scatterplot2.png>]
-<figures/materials/Needles_cov.png, id=308, 375.0813pt x 272.4579pt>
+[70]
+<figures/materials/Needles_cov.png, id=1186, 375.0813pt x 272.4579pt>
 File: figures/materials/Needles_cov.png Graphic file (type png)
 <use figures/materials/Needles_cov.png>
 Package pdftex.def Info: figures/materials/Needles_cov.png  used on input line 
-390.
+389.
 (pdftex.def)             Requested size: 155.99762pt x 113.31319pt.
-<figures/materials/Needles_gr.png, id=309, 367.8543pt x 272.4579pt>
+<figures/materials/Needles_gr.png, id=1187, 367.8543pt x 272.4579pt>
 File: figures/materials/Needles_gr.png Graphic file (type png)
 <use figures/materials/Needles_gr.png>
 Package pdftex.def Info: figures/materials/Needles_gr.png  used on input line 3
-95.
+94.
 (pdftex.def)             Requested size: 155.99762pt x 115.54153pt.
-<figures/materials/Needles_gr_comp.png, id=310, 367.8543pt x 272.4579pt>
+<figures/materials/Needles_gr_comp.png, id=1188, 367.8543pt x 272.4579pt>
 File: figures/materials/Needles_gr_comp.png Graphic file (type png)
 <use figures/materials/Needles_gr_comp.png>
 Package pdftex.def Info: figures/materials/Needles_gr_comp.png  used on input l
-ine 396.
+ine 395.
 (pdftex.def)             Requested size: 155.99762pt x 115.54153pt.
-<figures/materials/microstructure.png, id=311, 510.40688pt x 234.8775pt>
+<figures/materials/microstructure.png, id=1193, 510.40688pt x 234.8775pt>
 File: figures/materials/microstructure.png Graphic file (type png)
 <use figures/materials/microstructure.png>
 Package pdftex.def Info: figures/materials/microstructure.png  used on input li
-ne 405.
+ne 404.
 (pdftex.def)             Requested size: 306.24648pt x 140.92758pt.
-
-Overfull \hbox (6.59454pt too wide) has occurred while \output is active
+ [71]
+Overfull \hbox (9.20433pt too wide) has occurred while \output is active
 \OT1/cmr/m/n/12 72 \OT1/cmr/m/sl/12 CHAPTER 2.  MORPHOLOGICAL MODELS IN MATERIA
-LS SCIENCE
+LS SCIENCE 
  []
 
-[72] [73 <./figures/materials/Needles_cov.png> <./figures/materials/Needles_gr.
-png> <./figures/materials/Needles_gr_comp.png> <./figures/materials/microstruct
-ure.png>]
-Overfull \hbox (6.59454pt too wide) has occurred while \output is active
+[72 <./figures/materials/Needles_cov.png> <./figures/materials/Needles_gr.png> 
+<./figures/materials/Needles_gr_comp.png> <./figures/materials/microstructure.p
+ng>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [73]
+Overfull \hbox (9.20433pt too wide) has occurred while \output is active
 \OT1/cmr/m/n/12 74 \OT1/cmr/m/sl/12 CHAPTER 2.  MORPHOLOGICAL MODELS IN MATERIA
-LS SCIENCE
+LS SCIENCE 
  []
 
 [74] [75]
-Overfull \hbox (6.59454pt too wide) has occurred while \output is active
+Overfull \hbox (9.20433pt too wide) has occurred while \output is active
 \OT1/cmr/m/n/12 76 \OT1/cmr/m/sl/12 CHAPTER 2.  MORPHOLOGICAL MODELS IN MATERIA
-LS SCIENCE
+LS SCIENCE 
  []
 
-[76] [77]
-<figures/materials/Mosaic0.png, id=335, 383.031pt x 364.9635pt>
+[76]
+<figures/materials/Mosaic0.png, id=1270, 383.031pt x 364.9635pt>
 File: figures/materials/Mosaic0.png Graphic file (type png)
 <use figures/materials/Mosaic0.png>
-Package pdftex.def Info: figures/materials/Mosaic0.png  used on input line 507.
+Package pdftex.def Info: figures/materials/Mosaic0.png  used on input line 506.
 
 (pdftex.def)             Requested size: 134.06285pt x 127.73914pt.
-<figures/materials/Mosaic1.png, id=336, 383.031pt x 364.9635pt>
+<figures/materials/Mosaic1.png, id=1271, 383.031pt x 364.9635pt>
 File: figures/materials/Mosaic1.png Graphic file (type png)
 <use figures/materials/Mosaic1.png>
-Package pdftex.def Info: figures/materials/Mosaic1.png  used on input line 508.
+Package pdftex.def Info: figures/materials/Mosaic1.png  used on input line 507.
 
 (pdftex.def)             Requested size: 134.06285pt x 127.73914pt.
-<figures/materials/Field1.png, id=337, 433.62pt x 365.6862pt>
+<figures/materials/Field1.png, id=1272, 433.62pt x 365.6862pt>
 File: figures/materials/Field1.png Graphic file (type png)
 <use figures/materials/Field1.png>
-Package pdftex.def Info: figures/materials/Field1.png  used on input line 509.
+Package pdftex.def Info: figures/materials/Field1.png  used on input line 508.
 (pdftex.def)             Requested size: 151.76927pt x 127.99208pt.
-<figures/materials/Mosaic2.png, id=338, 383.031pt x 364.9635pt>
+<figures/materials/Mosaic2.png, id=1273, 383.031pt x 364.9635pt>
 File: figures/materials/Mosaic2.png Graphic file (type png)
 <use figures/materials/Mosaic2.png>
-Package pdftex.def Info: figures/materials/Mosaic2.png  used on input line 510.
+Package pdftex.def Info: figures/materials/Mosaic2.png  used on input line 509.
 
 (pdftex.def)             Requested size: 134.06285pt x 127.73914pt.
-<figures/materials/Field2.png, id=339, 433.62pt x 365.6862pt>
+<figures/materials/Field2.png, id=1274, 433.62pt x 365.6862pt>
 File: figures/materials/Field2.png Graphic file (type png)
 <use figures/materials/Field2.png>
-Package pdftex.def Info: figures/materials/Field2.png  used on input line 511.
+Package pdftex.def Info: figures/materials/Field2.png  used on input line 510.
 (pdftex.def)             Requested size: 151.76927pt x 127.99208pt.
-<figures/materials/Mosaic3.png, id=340, 383.031pt x 364.9635pt>
+<figures/materials/Mosaic3.png, id=1275, 383.031pt x 364.9635pt>
 File: figures/materials/Mosaic3.png Graphic file (type png)
 <use figures/materials/Mosaic3.png>
-Package pdftex.def Info: figures/materials/Mosaic3.png  used on input line 512.
+Package pdftex.def Info: figures/materials/Mosaic3.png  used on input line 511.
 
 (pdftex.def)             Requested size: 134.06285pt x 127.73914pt.
-<figures/materials/Field3.png, id=341, 433.62pt x 365.6862pt>
+<figures/materials/Field3.png, id=1276, 433.62pt x 365.6862pt>
 File: figures/materials/Field3.png Graphic file (type png)
 <use figures/materials/Field3.png>
-Package pdftex.def Info: figures/materials/Field3.png  used on input line 513.
+Package pdftex.def Info: figures/materials/Field3.png  used on input line 512.
 (pdftex.def)             Requested size: 151.76927pt x 127.99208pt.
 
 
-LaTeX Warning: Float too large for page by 48.71536pt on input line 515.
+LaTeX Warning: Float too large for page by 48.71536pt on input line 514.
 
-
-Overfull \hbox (6.59454pt too wide) has occurred while \output is active
+[77]
+Overfull \hbox (9.20433pt too wide) has occurred while \output is active
 \OT1/cmr/m/n/12 78 \OT1/cmr/m/sl/12 CHAPTER 2.  MORPHOLOGICAL MODELS IN MATERIA
-LS SCIENCE
+LS SCIENCE 
  []
 
-[78] [79 <./figures/materials/Mosaic0.png> <./figures/materials/Mosaic1.png> <.
-/figures/materials/Field1.png> <./figures/materials/Mosaic2.png> <./figures/mat
-erials/Field2.png> <./figures/materials/Mosaic3.png> <./figures/materials/Field
-3.png>]
-Overfull \hbox (2.50703pt too wide) in paragraph at lines 538--539
-[]\OT1/cmr/m/n/12 To il-lus-trate our al-go-rithm, we present in fig-ure 2.11[]
- sim-u-la-tions of Vorono^^?^^P
+[78 <./figures/materials/Mosaic0.png> <./figures/materials/Mosaic1.png> <./figu
+res/materials/Field1.png> <./figures/materials/Mosaic2.png> <./figures/material
+s/Field2.png> <./figures/materials/Mosaic3.png> <./figures/materials/Field3.png
+>]
+Overfull \hbox (2.50703pt too wide) in paragraph at lines 537--538
+[]\OT1/cmr/m/n/12 To il-lus-trate our al-go-rithm, we present in fig-ure [][]2.
+11[][] sim-u-la-tions of Vorono^^?^^P
  []
 
-
-Overfull \hbox (6.59454pt too wide) has occurred while \output is active
+[79])
+Overfull \hbox (9.20433pt too wide) has occurred while \output is active
 \OT1/cmr/m/n/12 80 \OT1/cmr/m/sl/12 CHAPTER 2.  MORPHOLOGICAL MODELS IN MATERIA
-LS SCIENCE
+LS SCIENCE 
  []
 
-[80]) [81] (./main.bbl
-Overfull \hbox (6.59454pt too wide) has occurred while \output is active
-\OT1/cmr/m/n/12 82 \OT1/cmr/m/sl/12 CHAPTER 2.  MORPHOLOGICAL MODELS IN MATERIA
-LS SCIENCE
+[80]
+\openout2 = `applications.aux'.
+
+ (./applications.tex
+Chapter 3.
+
+LaTeX Warning: Reference `chap:superpixels' on page 81 undefined on input line 
+5.
+
+
+LaTeX Warning: Reference `chap:graph' on page 81 undefined on input line 5.
+
+
+LaTeX Warning: Reference `chap:cnn' on page 81 undefined on input line 5.
+
+[81
+
+
+
+
+] [82] [83] [84] [85] [86] [87]
+Overfull \hbox (17.35133pt too wide) in paragraph at lines 119--120
+\OT1/cmr/m/n/12 pare it with sev-eral state-of-the-art su-per-pixel meth-ods, i
+n-clud-ing SLIC [[][]Achanta
  []
 
-[82
 
-
-
-] [83] [84] [85] [86]
-Underfull \hbox (badness 1303) in paragraph at lines 286--291
-[]\OT1/cmr/m/n/12 Haisheng Wang, An-drea Pietrasanta, Do-minique Jeulin, Fran^^
-Xcois
+Overfull \hbox (1.88484pt too wide) in paragraph at lines 121--122
+[]\OT1/cmr/m/n/12 For the quan-ti-ta-tive eval-u-a-tion, we use the Berke-ley S
+eg-men-ta-tion Dataset
  []
 
-)
+[88]
+<figures/applications/grid.png, id=1489, 328.1058pt x 218.9781pt>
+File: figures/applications/grid.png Graphic file (type png)
+<use figures/applications/grid.png>
+Package pdftex.def Info: figures/applications/grid.png  used on input line 131.
 
-Package natbib Warning: There were undefined citations.
+(pdftex.def)             Requested size: 136.50238pt x 91.10475pt.
+<figures/applications/compact.png, id=1490, 328.1058pt x 218.9781pt>
+File: figures/applications/compact.png Graphic file (type png)
+<use figures/applications/compact.png>
+Package pdftex.def Info: figures/applications/compact.png  used on input line 1
+37.
+(pdftex.def)             Requested size: 136.50238pt x 91.10475pt.
+<figures/applications/texture.png, id=1491, 328.1058pt x 218.9781pt>
+File: figures/applications/texture.png Graphic file (type png)
+<use figures/applications/texture.png>
+Package pdftex.def Info: figures/applications/texture.png  used on input line 1
+43.
+(pdftex.def)             Requested size: 136.50238pt x 91.10475pt.
+<figures/applications/slic.png, id=1492, 358.4592pt x 239.2137pt>
+File: figures/applications/slic.png Graphic file (type png)
+<use figures/applications/slic.png>
+Package pdftex.def Info: figures/applications/slic.png  used on input line 148.
 
-[87] (./main.aux (./random.aux) (./materials.aux))
+(pdftex.def)             Requested size: 136.50238pt x 91.09195pt.
+<figures/applications/ergc.png, id=1493, 358.4592pt x 239.2137pt>
+File: figures/applications/ergc.png Graphic file (type png)
+<use figures/applications/ergc.png>
+Package pdftex.def Info: figures/applications/ergc.png  used on input line 154.
 
-LaTeX Warning: There were multiply-defined labels.
+(pdftex.def)             Requested size: 136.50238pt x 91.09195pt.
+<figures/applications/isf.png, id=1494, 328.1058pt x 218.9781pt>
+File: figures/applications/isf.png Graphic file (type png)
+<use figures/applications/isf.png>
+Package pdftex.def Info: figures/applications/isf.png  used on input line 159.
+(pdftex.def)             Requested size: 136.50238pt x 91.10475pt.
+ [89 <./figures/applications/grid.png> <./figures/applications/compact.png> <./
+figures/applications/texture.png> <./figures/applications/slic.png> <./figures/
+applications/ergc.png> <./figures/applications/isf.png>]
+Overfull \hbox (1.34769pt too wide) in paragraph at lines 184--186
+ []\OT1/cmr/bx/n/12 Undersegmentation Er-ror.[] \OT1/cmr/m/n/12 Un-der-seg-men-
+ta-tion er-ror (UE) quan-ti-fies the
+ []
 
+
+Overfull \hbox (7.02664pt too wide) in paragraph at lines 184--186
+\OT1/cmr/m/n/12 ex-tent to which su-per-pix-els over-lap mul-ti-ple ground-trut
+h re-gions. Let $\OMS/cmsy/m/n/12 f\OML/cmm/m/it/12 S[]\OMS/cmsy/m/n/12 g[]$
+ []
+
+[90]
+Overfull \hbox (7.69147pt too wide) in paragraph at lines 214--215
+ []\OT1/cmr/bx/n/12 Contour Den-sity.[] \OT1/cmr/m/n/12 Con-tour den-sity (CD) 
+mea-sures the pro-por-tion of bound-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 220--221
+
+ []
+
+<figures/applications/recall.png, id=1523, 462.528pt x 346.896pt>
+File: figures/applications/recall.png Graphic file (type png)
+<use figures/applications/recall.png>
+Package pdftex.def Info: figures/applications/recall.png  used on input line 22
+5.
+(pdftex.def)             Requested size: 175.49881pt x 131.62599pt.
+<figures/applications/undersegmentation.png, id=1524, 462.528pt x 346.896pt>
+File: figures/applications/undersegmentation.png Graphic file (type png)
+<use figures/applications/undersegmentation.png>
+Package pdftex.def Info: figures/applications/undersegmentation.png  used on in
+put line 230.
+(pdftex.def)             Requested size: 175.49881pt x 131.62599pt.
+<figures/applications/compactness.png, id=1525, 462.528pt x 346.896pt>
+File: figures/applications/compactness.png Graphic file (type png)
+<use figures/applications/compactness.png>
+Package pdftex.def Info: figures/applications/compactness.png  used on input li
+ne 236.
+(pdftex.def)             Requested size: 175.49881pt x 131.62599pt.
+<figures/applications/density.png, id=1526, 462.528pt x 346.896pt>
+File: figures/applications/density.png Graphic file (type png)
+<use figures/applications/density.png>
+Package pdftex.def Info: figures/applications/density.png  used on input line 2
+41.
+(pdftex.def)             Requested size: 175.49881pt x 131.62599pt.
+[91] [92 <./figures/applications/recall.png> <./figures/applications/undersegme
+ntation.png> <./figures/applications/compactness.png> <./figures/applications/d
+ensity.png>]
+
+LaTeX Warning: Reference `chap:superpixels' on page 93 undefined on input line 
+262.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [93]
+[94] [95]
+
+LaTeX Warning: Reference `chap:random' on page 96 undefined on input line 348.
+
+
+LaTeX Warning: Reference `chap:superpixels' on page 96 undefined on input line 
+348.
+
+[96]
+Underfull \hbox (badness 10000) in paragraph at lines 367--368
+
+ []
+
+[97] [98] [99]
+
+LaTeX Warning: Reference `chap:superpixels' on page 100 undefined on input line
+ 415.
+
+[100]
+Overfull \hbox (43.6233pt too wide) in paragraph at lines 421--422
+[]\OT1/cmr/m/n/12 To train the clas-si-fier, we use Berke-ley Seg-men-ta-tion D
+ataset 500 (BSDS500) [[][]Mar-
+ []
+
+
+Overfull \hbox (14.07816pt too wide) in paragraph at lines 421--422
+\OT1/cmr/m/n/12 BSDS500, we dis-pose of $\OML/cmm/m/it/12 K$ \OT1/cmr/m/n/12 di
+s-tinct man-ual seg-men-ta-tion. Let $\OMS/cmsy/m/n/12 T[] \OT1/cmr/m/n/12 := (
+\OML/cmm/m/it/12 T[]\OT1/cmr/m/n/12 )[]$
+ []
+
+<figures/applications/78098_500c.png, id=1658, 482.80376pt x 322.20375pt>
+File: figures/applications/78098_500c.png Graphic file (type png)
+<use figures/applications/78098_500c.png>
+Package pdftex.def Info: figures/applications/78098_500c.png  used on input lin
+e 434.
+(pdftex.def)             Requested size: 175.49881pt x 117.11911pt.
+<figures/applications/78098_mosaic_500c.png, id=1659, 482.80376pt x 322.20375pt
+>
+File: figures/applications/78098_mosaic_500c.png Graphic file (type png)
+<use figures/applications/78098_mosaic_500c.png>
+Package pdftex.def Info: figures/applications/78098_mosaic_500c.png  used on in
+put line 440.
+(pdftex.def)             Requested size: 175.49881pt x 117.11911pt.
+<figures/applications/78098_ncut_500c.png, id=1660, 482.80376pt x 322.20375pt>
+File: figures/applications/78098_ncut_500c.png Graphic file (type png)
+<use figures/applications/78098_ncut_500c.png>
+Package pdftex.def Info: figures/applications/78098_ncut_500c.png  used on inpu
+t line 446.
+(pdftex.def)             Requested size: 175.49881pt x 117.11911pt.
+<figures/applications/78098_mosaic_ncut_500c.png, id=1661, 482.80376pt x 322.20
+375pt>
+File: figures/applications/78098_mosaic_ncut_500c.png Graphic file (type png)
+<use figures/applications/78098_mosaic_ncut_500c.png>
+Package pdftex.def Info: figures/applications/78098_mosaic_ncut_500c.png  used 
+on input line 452.
+(pdftex.def)             Requested size: 175.49881pt x 117.11911pt.
+[101]
+Underfull \vbox (badness 5939) has occurred while \output is active []
+
+ [102 <./figures/applications/78098_500c.png (PNG copy)> <./figures/application
+s/78098_mosaic_500c.png (PNG copy)> <./figures/applications/78098_ncut_500c.png
+ (PNG copy)> <./figures/applications/78098_mosaic_ncut_500c.png (PNG copy)>] [1
+03])
+[104] (./main.bbl [105
+
+
+
+] [106] [107] [108]
+Underfull \hbox (badness 3354) in paragraph at lines 320--325
+[]\OT1/cmr/m/n/12 Va^^?^^Pa Machairas, Matthieu Faes-sel, David C^^Sardenas-Pe~
+na, Th^^Seodore
+ []
+
+[109] [110] [111] [112]) [113] (./main.aux (./random.aux) (./materials.aux)
+(./applications.aux))
+
+LaTeX Warning: There were undefined references.
+
+Package rerunfilecheck Info: File `main.out' has not changed.
+(rerunfilecheck)             Checksum: B9F52695626E9C39106D1593231B6FB3;9637.
  ) 
 Here is how much of TeX's memory you used:
- 6147 strings out of 480104
- 106578 string characters out of 5892285
- 428429 words of memory out of 5000000
- 23997 multiletter control sequences out of 15000+600000
- 480585 words of font info for 70 fonts, out of 8000000 for 9000
+ 13816 strings out of 480104
+ 228057 string characters out of 5892285
+ 539017 words of memory out of 5000000
+ 30943 multiletter control sequences out of 15000+600000
+ 483982 words of font info for 82 fonts, out of 8000000 for 9000
  81 hyphenation exceptions out of 8191
- 110i,16n,106p,1568b,597s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 110i,16n,106p,1584b,628s stack positions out of 5000i,500n,10000p,200000b,80000s
  </home/bfigliuzzi/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm120
 0.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pf
 b></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr
 /share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share
-/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texli
-ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/
-fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/t
-ype1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
-blic/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
-sfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12
-.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><
-/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/sh
-are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/tex
-live/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/t
-exmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/te
-xmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
-Output written on main.pdf (91 pages, 4325011 bytes).
+/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmmib10.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/c
+mr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb>
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></usr/
+share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/
+texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fo
+nts/type1/public/amsfonts/symbols/msbm7.pfb>
+Output written on main.pdf (117 pages, 6271561 bytes).
 PDF statistics:
- 465 PDF objects out of 1000 (max. 8388607)
- 262 compressed objects within 3 object streams
- 0 named destinations out of 1000 (max. 500000)
- 181 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1955 PDF objects out of 2073 (max. 8388607)
+ 1676 compressed objects within 17 object streams
+ 585 named destinations out of 1000 (max. 500000)
+ 660 words of extra memory for PDF output out of 10000 (max. 10000000)
 

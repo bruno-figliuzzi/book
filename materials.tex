@@ -1,4 +1,4 @@
-\chapter{Morphological models in materials science}
+\chapter{Morphological models in materials science \label{chap:materials}}
 
 Most materials encountered in contemporary life and industrial applications are heterogeneous and characterized by complex internal microstructures. These microstructures play a central role in determining their macroscopic physical and mechanical properties~\citep{torquato}. As a result, accurately modeling and reproducing material microstructures is a crucial step toward understanding and predicting material behavior at larger scales.
 
@@ -156,7 +156,6 @@ The covariance of a random set $A$ was defined in Chapter~\ref{chap:models} as t
 C_A(x, x + h) = P(x \in A, x + h \in A),
 \end{equation}
 where $h \in \mathbb{R}^d$.  
-\label{def:covariance}  
 For a stationary random set, the covariance depends only on the displacement $h$:
 \begin{equation}
 C_A(x, x + h) = C_A(h).
@@ -430,7 +429,7 @@ In this section, we presented a Bayesian approach for determining the parameters
 
 \section{Eikonal based tessellations \label{materials:s4}}
 
-We present in this section a research work that establishes a link between the Johnson-Mehl and Vorono\"i tessellation models and the Eikonal equation on a domain. A direct incentive for this study was the development of efficient algorithms for generating the tessellations used to simulate the interstices of the coldspray microstructure considered in section~\ref{materials:s2}. We base the writing of this section on the article~\citep{figliuzzi2019} published in 2019 in Image Analysis \& Stereology and related to this research study. The analogy established between the Vorono\"i tessellation and the Eikonal equation has two direct applications: the generation of images of the tessellation in an efficient manner, and the generation of tessellations with rough boundaries.
+We present in this section a research work that establishes a link between the Johnson-Mehl and Voronoi tessellation models and the Eikonal equation on a domain. A direct incentive for this study was the development of efficient algorithms for generating the tessellations used to simulate the interstices of the coldspray microstructure considered in section~\ref{materials:s2}. We base the writing of this section on the article~\citep{figliuzzi2019} published in 2019 in Image Analysis \& Stereology and related to this research study. The analogy established between the Voronoi tessellation and the Eikonal equation has two direct applications: the generation of images of the tessellation in an efficient manner, and the generation of tessellations with rough boundaries.
 
 \subsection{Eikonal equation}
 
@@ -543,8 +542,8 @@ We note that when $\lambda_v$ is small, it leads to the obtaining of small rough
 
 \subsection{Conclusion}
 
-In this section, we established a direct connection between Johnson-Mehl and Voronoï tessellations and the Eikonal equation, showing that the construction of such tessellations can be reformulated as a wave propagation problem. This interpretation provides both theoretical insight and practical advantages. In particular, solving the Eikonal equation with appropriate initial conditions enables an efficient computation of tessellations through the fast marching algorithm, significantly reducing computational complexity compared to classical voxel-wise evaluation methods.
+In this section, we established a direct connection between Johnson-Mehl and Vorono\"i tessellations and the Eikonal equation, showing that the construction of such tessellations can be reformulated as a wave propagation problem. This interpretation provides both theoretical insight and practical advantages. In particular, solving the Eikonal equation with appropriate initial conditions enables an efficient computation of tessellations through the fast marching algorithm, significantly reducing computational complexity compared to classical voxel-wise evaluation methods.
 
-Beyond computational efficiency, the Eikonal framework also offers increased modeling flexibility. By introducing spatially varying velocity fields, we demonstrated that it is possible to generate tessellations with controlled boundary roughness, extending classical Voronoï and Johnson-Mehl models. The characteristic length of the velocity fluctuations directly governs the amplitude and scale of boundary irregularities, providing a simple and intuitive way to tune geometric complexity.
+Beyond computational efficiency, the Eikonal framework also offers increased modeling flexibility. By introducing spatially varying velocity fields, we demonstrated that it is possible to generate tessellations with controlled boundary roughness, extending classical Vorono\"i and Johnson-Mehl models. The characteristic length of the velocity fluctuations directly governs the amplitude and scale of boundary irregularities, providing a simple and intuitive way to tune geometric complexity.
 
 Overall, the Eikonal-based formulation constitutes a powerful and versatile approach for the simulation of tessellated microstructures, with direct applications to morphological modeling and materials science.

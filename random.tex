@@ -3,8 +3,11 @@
 \section{Introduction \label{models:s1}}
 
 The study of heterogeneous materials, ranging from porous media and composite structures to polycrystalline aggregates, relies heavily on understanding their complex internal microstructures. These microstructures, often characterized by intricate spatial arrangements of phases, grains, or inclusions, play a pivotal role in determining the macroscopic physical properties of materials. However, the sheer complexity and variability of real-world microstructures pose significant challenges for their direct analysis and simulation.
+
 To address these challenges, morphological models provide a robust mathematical framework for describing, analyzing, and simulating the geometry of heterogeneous media. Rooted in stochastic geometry and mathematical morphology, these models offer a powerful toolkit for capturing the essential features of microstructures, such as connectivity, size distribution, and spatial correlations, while accounting for their inherent randomness.
+
 This chapter explores the foundational concepts of morphological models, with a focus on their application to materials science. We begin by introducing the core principles of mathematical morphology, including dilation, erosion, opening, and closing operations, which serve as the building blocks for analyzing geometric structures. We then extend these concepts to a probabilistic framework, where random sets and point processes enable the modeling of microstructures as stochastic realizations. Special attention is given to germ-grain models, such as the Boolean model, and random tessellations, including Voronoi and Johnson-Mehl tessellations, which are widely used to simulate realistic material microstructures.
+
 Beyond theoretical developments, this chapter also addresses practical aspects of morphological modeling, such as parameter estimation and statistical analysis. We discuss methods for inferring model parameters from experimental data, including the use of covariance functions, granulometries, and stereological techniques. These tools are essential for bridging the gap between theoretical models and real-world applications, enabling the generation of synthetic microstructures that faithfully reproduce the geometric characteristics of observed materials.
 
 \section{Basic facts from mathematical morphology}
@@ -28,7 +31,7 @@ E^K(A) = \{x \in E  | K_x \subset A \}.
 \end{definition}
 Dilation and erosion are dual operators with respect to the complement, in the sense that dilating the set $A$ by the structuring element $K$ is equivalent to erode $A^c$ by $K$.
 
-We assume now that $E$ is the euclidean space $\mathbb{R}^d$ of dimension $d$. The vectorial space structure of $\mathbb{R}^d$ allows us to define new operations on $\mathcal{P}(\mathbb{R}^d)$, namely the Minkowski addition and substraction. 
+We assume now that $E$ is the euclidean space $\mathbb{R}^d$ of dimension $d$. The vectorial space structure of $\mathbb{R}^d$ allows us to define new operations on $\mathcal{P}(\mathbb{R}^d)$, namely the Minkowski addition and subtraction. 
 \begin{definition}
 Let $A$ and $B$ be subsets of $\mathbb{R}^d$. The Minkowski addition is defined by
 \begin{equation}
@@ -46,12 +49,12 @@ Similarly, we denote by $\check{B}$ the symetric set of $B \in \mathcal{P}(E)$ d
 \check{B} = \{-x, x \in B\}.
 \end{equation}
 \begin{definition}
-Using these notations, we can define the Minkowski substraction by duality. Let $A$ and $B$ be subsets of $E$. The Minkowski substraction is defined by
+Using these notations, we can define the Minkowski subtraction by duality. Let $A$ and $B$ be subsets of $E$. The Minkowski subtraction is defined by
 \begin{equation}
 A \ominus B = (A^c \oplus B)^c = \cap_{x \in B}A_x.
 \end{equation}
 \end{definition}
-We can also express the classical dilation and erosion operators of mathematical morphology as functions of the Minkowski addition and substraction respectively. 
+We can also express the classical dilation and erosion operators of mathematical morphology as functions of the Minkowski addition and subtraction respectively. 
 \begin{definition}
 Let $A$ and $B$ be subsets of $\mathbb{R}^d$. The erosion of $A$ by $B$ yields the set
 \begin{equation}
@@ -59,7 +62,7 @@ Let $A$ and $B$ be subsets of $\mathbb{R}^d$. The erosion of $A$ by $B$ yields t
 \end{equation}
 Similarly, we can check by duality that the dilation of $A$ by $B$ yields the set
 \begin{equation}
-\{x \in E, B_x \cap A  \neq \o \} = A \oplus \check{B}. 
+\{x \in E, B_x \cap A  \neq \emptyset \} = A \oplus \check{B}. 
 \end{equation}
 \end{definition}
 \begin{proposition}
@@ -160,7 +163,7 @@ The opening and closing operators are widely used in mathematical morphology. Th
     \begin{subfigure}[b]{0.6\textwidth}
         \centering
         \includegraphics[scale=0.35]{figures/random/material.png}
-        \caption{Segmented microstructure simulated with VtkSim~\cite{vtksim}.}
+        \caption{Segmented microstructure simulated with VtkSim~\citep{vtksim}.}
     \end{subfigure}
 
     \vspace{0.5cm}
@@ -210,7 +213,7 @@ A first application of openings and closings related to the description of rando
 \item $\Phi_{\lambda } \circ \Phi_{\mu } = \Phi_{\mu } \circ \Phi_{\lambda } = \Phi _{\max(\mu, \lambda )}$
 \end{itemize}
 \end{definition}
-The axiomatic of granulometries was first formulated by Matheron in~\cite{matheron}. Note that an immediate consequence of the last point of the definition is that $\Phi_{\lambda}$ is necessarily an idempotent operator, in the sense that $\Phi _{\lambda } \circ \Phi _{\lambda } = \Phi _{\lambda }$.
+The axiomatic of granulometries was first formulated in~\citep{matheron}. Note that an immediate consequence of the last point of the definition is that $\Phi_{\lambda}$ is necessarily an idempotent operator, in the sense that $\Phi _{\lambda } \circ \Phi _{\lambda } = \Phi _{\lambda }$.
 
 As stated above, the axiomatic of granulometries remains very general. In practice, we will often consider granulometries relying on a familly of openings. Let $K$ be a convex set. We consider the family $\{K_{\lambda}, \lambda > 0 \}$, where $K_{\lambda } = \lambda K$. The operator
 \begin{equation}
@@ -225,7 +228,7 @@ In a similar manner, we can define a granulometry by closing. To that end, we co
 defined for all closed set $A$ of $\mathcal{F}(E)$. A granulometry by closing describes the size distribution of the elements of $A$ by closing by convex sets.\\
 
 
-\section{Probabilistic approach and Choquet capacity\label{s1}}
+\section{Probabilistic approach and Choquet capacity\label{models:s2}}
 
 Concepts of mathematical morphology prove very convenient to study random sets. In particular, it is of interest to translate some compact set $K$ in an observation window to analyse a random closed set $A$ of $\mathbb{R}^n$. Two elementary events can occur: 
 \begin{itemize}
@@ -236,7 +239,7 @@ The random closed set $A$ is completely characterized by the functional $T(K)$ d
 \begin{equation}
 T(K) = P\{A \cap K \neq \emptyset \} = 1 - P\{K \cap A^c\} = 1 - Q(K)
 \end{equation}
-$T(K)$ is called the Choquet capacity of the random closed set $A$. Note that the Choquet capacity is closely related to dilation and erosion operators. For all compact set $K \subset \mathbb{R}^n$, we have indeed
+$T(K)$ is called the Choquet capacity of the random closed set $A$. Note that the Choquet capacity is closely related to dilation and erosion operators. For all compact set $K \subset \mathbb{R}^d$, we have indeed
 \begin{equation}
 T(K) = P \{K \cap A \neq \emptyset \} = P\{x \in A \oplus \check{K}\}
 \end{equation}
@@ -253,9 +256,9 @@ Q(K) := P\{ K \subset A^c \}.
 $$
 Recall the definition of Minkowski subtraction (erosion) of a set $B$ by a compact set $K$:
 $$
-B \ominus \check{K} := \{ x \in \mathbb{R}^n : x + \check{K} \subset B \}.
+B \ominus \check{K} := \{ x \in \mathbb{R}^d : x + \check{K} \subset B \}.
 $$
-Let us apply this definition with $B = A^c$. Then, for any $x \in \mathbb{R}^n$,
+Let us apply this definition with $B = A^c$. Then, for any $x \in \mathbb{R}^d$,
 $$
 x \in A^c \ominus \check{K} \quad \Longleftrightarrow \quad x + \check{K} \subset A^c.
 $$
@@ -277,7 +280,7 @@ Q(K) = P\{ x \in A^c \ominus \check{K} \}.
 $$
 \end{proof}
 
-The structuring element $K$ can be a single point $\{x\}$ of $\mathbb{R}^n$ or any compact set of $\mathbb{R}^n$. However, we have to insist on the fact that the choice of structuring element is fundamental. Each compact set $K$ indeed brings its own information on the studied set $A$. For instance, if one chooses $K$ to be a single point, the choquet capacity yieds
+The structuring element $K$ can be a single point $\{x\}$ of $\mathbb{R}^d$ or any compact set of $\mathbb{R}^d$. However, we have to insist on the fact that the choice of structuring element is fundamental. Each compact set $K$ indeed brings its own information on the studied set $A$. For instance, if one chooses $K$ to be a single point, the choquet capacity yieds
 \begin{equation}
 T(\{x\}) = P \{\{x\} \cap A \neq \emptyset \} = P\{x \in A \},
 \end{equation}
@@ -289,11 +292,11 @@ T(\{x, x + h\}) = P\{x \in A , x + h \in A \}.
 \subsection{Covariance}
 
 The covariance is a - if not \textit{the} - fundamental tool to describe spatial arrangement in a random closed set.
-\begin{definition}The covariance of a random set $A \subset \mathbb{R}^n$ is the function $C_A$ defined on $\mathbb{R}^n \times \mathbb{R}^n$ by
+\begin{definition}The covariance of a random set $A \subset \mathbb{R}^d$ is the function $C_A$ defined on $\mathbb{R}^d \times \mathbb{R}^d$ by
 \begin{equation}
 C_A(x, x + h) = P\{x \in A, x + h \in A \},
 \end{equation}
-where $h$ is some vector of $\mathbb{R}^n$.
+where $h$ is some vector of $\mathbb{R}^d$.
 \label{def:covariance}
 \end{definition}
 The covariance of the set $A$ at a given point $x$ and for a distance $h$ is the probability that $x$ and $x + h$ both belong to $A$. Note that for a stationary random set, the covariance is a function of the distance $h$ only:
@@ -323,7 +326,7 @@ C_A(h) = \dfrac{1}{(2\pi)^n}\int_{\mathbb{R^n}}|\hat{f}(\xi )|^2\exp (i \xi h) d
 \end{equation}
 \end{proposition}
 \begin{proof}
-Let $A \subset \mathbb{R}^n$ be a random closed set. Define its indicator function
+Let $A \subset \mathbb{R}^d$ be a random closed set. Define its indicator function
 $$
 f(x) := \mathbf{1}_A(x) = 
 \begin{cases}
@@ -337,15 +340,15 @@ C_A(h) = \mathbb{E}[f(x) f(x+h)].
 $$
 Consider the Fourier transform of $f$, denoted by
 $$
-\hat{f}(\xi) = \int_{\mathbb{R}^n} f(x) e^{-i \xi \cdot x} \, dx.
+\hat{f}(\xi) = \int_{\mathbb{R}^d} f(x) e^{-i \xi \cdot x} \, dx.
 $$
 Recall the convolution theorem: for two functions $f$ and $g$,
 $$
-\mathcal{F}[f * g] = \hat{f} \, \hat{g}, \quad \text{and} \quad f * g(x) = \int_{\mathbb{R}^n} f(y) g(x-y) \, dy.
+\mathcal{F}[f * g] = \hat{f} \, \hat{g}, \quad \text{and} \quad f * g(x) = \int_{\mathbb{R}^d} f(y) g(x-y) \, dy.
 $$
 The covariance can be expressed as a convolution:
 $$
-C_A(h) = \int_{\mathbb{R}^n} f(x) f(x+h) \, dx = (f * f^\dagger)(h),
+C_A(h) = \int_{\mathbb{R}^d} f(x) f(x+h) \, dx = (f * f^\dagger)(h),
 $$
 where $f^\dagger(x) := f(-x)$ is the reflection of $f$. Applying the Fourier transform, we have
 $$
@@ -353,7 +356,7 @@ $$
 $$
 where the overline denotes complex conjugation. Finally, applying the inverse Fourier transform gives
 $$
-C_A(h) = \frac{1}{(2\pi)^n} \int_{\mathbb{R}^n} |\hat{f}(\xi)|^2 e^{i \xi \cdot h} \, d\xi.
+C_A(h) = \frac{1}{(2\pi)^n} \int_{\mathbb{R}^d} |\hat{f}(\xi)|^2 e^{i \xi \cdot h} \, d\xi.
 $$
 
 \end{proof}
@@ -407,7 +410,7 @@ For small $\Delta h$, the difference
 $$
 V(A \cap A_{h \mathbf{u}}) - V(A \cap A_{(h+\Delta h) \mathbf{u}})
 $$
-corresponds to the volume of the ``boundary layer`` of thickness $\Delta h$ where $A$ and $A_{h\mathbf{u}}$ stop overlapping. By classical results in geometric measure theory (Steiner formula and Crofton formula, see section~\ref{s1.4}), this volume is approximately
+corresponds to the volume of the ``boundary layer`` of thickness $\Delta h$ where $A$ and $A_{h\mathbf{u}}$ stop overlapping. By classical results in geometric measure theory (Steiner formula and Crofton formula, see section~\ref{models:s4}), this volume is approximately
 $$
 \Delta h \cdot \nu_{d-1}\big( (A \cap A_{h\mathbf{u}})|_{\mathbf{u}^{\perp}} \big) + o(\Delta h),
 $$
@@ -436,7 +439,7 @@ where $S(A)$ is the surface area of the set $A$ in $\mathbb{R}^3$. Similarly, wh
 \end{equation}
 where $\mathcal{P}(A)$ is the length of the perimeter of $A$ in $\mathbb{R}^2$.
 
-\section{Measurements on random sets \label{s1.4}}
+\section{Measurements on random sets \label{models:s4}}
 
 Starting from a material image, it is possible to measure a very large number of parameters. It is, however, essential that these parameters be meaningful with respect to the physics and the geometry of the material. Two families of parameters are usually considered, namely \textit{metric} and \textit{topological} parameters. Intuitively, if we consider inclusions embedded in a matrix, one may be interested in the volume fraction of inclusions. This parameter is metric, in the sense that it is obtained directly through measurement. Conversely, one may also be interested in the number of included particles. This parameter is topological, as it is obtained by counting.
 
@@ -596,7 +599,7 @@ In the practically important case $d=3$, many classical stereological relations 
 We present in this section the general theory of random point processes. A  random point process $\mathcal{P}$ is a collection of random points. Point processes can be considered as the basic ingredients of stochastic geometry. A particular role is played by Poisson point processes in the $d$-dimensional space $\mathbb{R}^d$. In section~\ref{point:s1}, we introduce a general framework for the study of point processes. We study more specifically Poisson point processes in section~\ref{point:s2}. Marked point processes are then discussed in section~\ref{point:s3}. 
 
 \subsection{General theory  \label{point:s1}}
-Let us first introduce a general framework for the study of point processes on locally compact topological spaces. The results of this section are technical and we will only state the most relevant ones, often without proof. We refer the reader to the reference textbooks of Weil and Schneider~\cite{schneider} and Stoyan \textit{et al.}~\cite{stoyan} for a more extensive presentation.
+Let us first introduce a general framework for the study of point processes on locally compact topological spaces. The results of this section are technical and we will only state the most relevant ones, often without proof. We refer the reader to the reference textbooks~\citep{schneider} and~\citep{stoyan} for a more extensive presentation.
 
 \subsubsection{Random point processes as counting measures}
 
@@ -612,7 +615,7 @@ A class of measures of particular interest for the study of point processes is p
 A counting measure on $E$ is a measure $\eta $ in $M(E)$ such that for all borelian set $A$ in $\mathcal{B}(A)$, $\eta(A) \in \mathbb{N} \cup \{\infty \}$.  We denote by $N(E)$ the set of all counting measures on $E$.
 \end{definition}
 
-It can be shown that $N(E)$ is a measurable subset of $(M(E), \mathcal{M})$~\cite{schneider}. We denote by $\mathcal{N}$ the corresponding $\sigma$-algebra. A fundamental example of counting measure is given by locally finite sums of Dirac measures:
+It can be shown that $N(E)$ is a measurable subset of $(M(E), \mathcal{M})$~\citep{schneider}. We denote by $\mathcal{N}$ the corresponding $\sigma$-algebra. A fundamental example of counting measure is given by locally finite sums of Dirac measures:
 \begin{equation}
 \eta = \sum_{k = 1}^{n}\delta_{x_k}.
 \end{equation}
@@ -913,7 +916,7 @@ The second step of the simulation consists in generating points uniformly distri
 
 \subsubsection{Cox-Poisson point processes}
 
-\begin{definition} Let $\theta $ be a locally random finite measure on $\mathbb{R}^n$. A Cox-Poisson point process on $\mathbb{R}^n$ is a point process such that the number $N(K)$ of points contained in any compact $K$ of $\mathbb{R}^n$ is a Poisson random variable with parameter $\theta (K)$:
+\begin{definition} Let $\theta $ be a locally random finite measure on $\mathbb{R}^d$. A Cox-Poisson point process on $\mathbb{R}^d$ is a point process such that the number $N(K)$ of points contained in any compact $K$ of $\mathbb{R}^d$ is a Poisson random variable with parameter $\theta (K)$:
 \begin{equation}
 P\{N(K) = k \} = p_k(K) = \dfrac{\theta (K)^k}{k!}\exp (-\theta (K)),
 \end{equation}
@@ -925,11 +928,11 @@ where the intensity $\theta $ is the random variable defined by
 
 Cox-Poisson point processes are an extension of Poisson point processes in the sense that for these processes, the intensity $\theta $ is a random variable.\\
 
-A fundamental example of Cox point processes are Poisson point processes restricted to some random closed set. Let $A$ be a random closed set of $\mathbb{R}^n$, an $\lambda > 0$. The measure
+A fundamental example of Cox point processes are Poisson point processes restricted to some random closed set. Let $A$ be a random closed set of $\mathbb{R}^d$, an $\lambda > 0$. The measure
 \begin{equation}
 \theta(K) = \int_K \theta 1_{A}(x) dx ,
 \end{equation}
-where $1_A$ is the indicative function of the set $A$ defines a Cox-Poisson point process. This Cox-Poisson point process can be seen as the restriction of a stationary Poisson point process of intensity $\theta $ to the random closed set $A$. Such point processes are often used in stochastic geometry to construct multiscale models. We refer the reader interested by these models to the paper of Jeulin~\cite{jeulin}.
+where $1_A$ is the indicative function of the set $A$ defines a Cox-Poisson point process. This Cox-Poisson point process can be seen as the restriction of a stationary Poisson point process of intensity $\theta $ to the random closed set $A$. Such point processes are often used in stochastic geometry to construct multiscale models. We refer the reader interested by these models to the book~\citep{jeulin}.
 
 \subsubsection{Hard-core point processes}
 
@@ -961,7 +964,7 @@ Intuitively, $\theta(B \times L)$ is the mean number of points in $B$ that have 
 \end{equation}
 for any non-negative function $f$.
 
-It can be shown (see for instance~\cite{schneider}) that the intensity of a marked point process can be decomposed in the following manner
+It can be shown (see for instance~\citep{schneider}) that the intensity of a marked point process can be decomposed in the following manner
 \begin{equation}
 d\Theta(x, m) = d\theta (x) dM_x(m),
 \end{equation}
@@ -1004,7 +1007,7 @@ A Boolean model is said to be stationary if the intensity of its germ process is
 \subsubsection{First properties}
 
 \begin{lemma}
-Let $K$ be a compact set of $\mathbb{R}^n$ and $A$ a Boolean model with primary grain $A'$ and with intensity $\theta$. The number $N(K)$ of primary grains hit by $K$ follows a Poisson distribution of parameter $\mathbb{E}\{\theta(\check{A}\oplus K) \}$:
+Let $K$ be a compact set of $\mathbb{R}^d$ and $A$ a Boolean model with primary grain $A'$ and with intensity $\theta$. The number $N(K)$ of primary grains hit by $K$ follows a Poisson distribution of parameter $\mathbb{E}\{\theta(\check{A}\oplus K) \}$:
 \begin{equation}
 P\{N = n\} = \dfrac{\mathbb{E}\{\theta(\check{A'}\oplus K)\}^n}{n!}\exp (-\mathbb{E}\{\theta(\check{A'}\oplus K) \}
 \label{eqn:poisson}
@@ -1174,7 +1177,7 @@ Overall, using implicit functions to perform the simulation allows us to build c
 \begin{figure}
 \centering
 \includegraphics[scale=0.4]{figures/random/boolean.png}
-\caption{3D Realization of a Boolean model of spheres with constant radius $R$ and intensity $\theta $, realized with the software vtkSim~\cite{vtkSim}. The parameters of the model are $\theta = 5 \times 10 ^{-2}$ and $R = 1 $. }
+\caption{3D Realization of a Boolean model of spheres with constant radius $R$ and intensity $\theta $, realized with the software vtkSim~\citep{vtksim}. The parameters of the model are $\theta = 5 \times 10 ^{-2}$ and $R = 1 $. }
 \end{figure}
 
 \subsection{Statistical analysis for the Boolean model}
@@ -1183,7 +1186,7 @@ In this section, we discuss statistical analysis for the Boolean model. For simp
 
 \subsubsection{Method of densities}
 
-The method of densities (or intensities) was developed by Weil in 1984~\cite{weil1984} and Santal\'o~\cite{santalo} to recover the parameters of a Boolean from a given dataset. The main idea of the method is stated in proposition~\ref{prop:densities} below.
+The method of densities (or intensities) was developed by Weil in 1984~\citep{weil1984} and Santal\'o~\citep{santalo} to recover the parameters of a Boolean from a given dataset. The main idea of the method is stated in proposition~\ref{prop:densities} below.
 
 \begin{proposition}
 Let $A$ be some random closed set in $\mathbb{R}^d$. The density of the $k^{th}$ intrinsic volume in $\mathbb{R}^d$ can be estimated from the dataset by relation
@@ -1209,20 +1212,20 @@ N_V & = & v_0, \\
 \end{eqnarray}
 where $S_V, M_V$ and $N_V$ are the surface area, the specific mean curvature and the specific connectivity number, respectively.\\
 
-For models with convex grains, it is possible to relate the mean values of the intrinsic volumes of the typical grain to measurements conducted on the global dataset through Miles' formulae~\cite{miles1976}. For $d = 2$, Miles' formulae yield
+For models with convex grains, it is possible to relate the mean values of the intrinsic volumes of the typical grain to measurements conducted on the global dataset through Miles' formulae~\citep{miles1976}. For $d = 2$, Miles' formulae yield
 \begin{eqnarray}
 A_A  & = & p = 1 - \exp(-\theta \bar{A}), \\
-L_A  & = &\theta (1 - p) \bar{S} = \theta \exp(-\theta \bar{V},\\
+L_A  & = &\theta (1 - p) \bar{S} = \theta \exp(-\theta \bar{V})\bar{S},\\
 N_A & = & \theta(1 - p) \bigg(1 - \dfrac{\theta \bar{L}^2}{4 \pi} \bigg).
 \end{eqnarray}
 For $d = 3$, Miles' formulae yield
 \begin{eqnarray}
 V_V  & = & p = 1 - \exp(-\theta \bar{V}), \\
-S_V  & = &\theta (1 - p) \bar{S} = \theta \exp(-\theta \bar{V},\\
+S_V  & = &\theta (1 - p) \bar{S} = \theta \exp(-\theta \bar{V})\bar{S},\\
 M_V  & = &\theta (1 - p) \bar{S} \bigg(\bar{M} - \dfrac{\pi ^2 \theta \bar{S}^2}{32} \bigg),\\
 N_V & = & \theta(1 - p) \bigg(1 - \dfrac{\theta \bar{M} \bar{S}}{4 \pi} +  \dfrac{\pi \theta ^2 \bar{S}^3}{384} \bigg).
 \end{eqnarray}
-Hence, when estimates of the densities are given, the intensities of the Boolean model can easily be found. We refer the reader interested by a proof of Miles' formulae to the original paper of Miles~\cite{miles1976} and to the book of Schneider and Weil~\cite{schneider}. \\
+Hence, when estimates of the densities are given, the intensities of the Boolean model can easily be found. We refer the reader interested by a proof of Miles' formulae to the original paper~\citep{miles1976} and to the book~\citep{schneider}. \\
 
 We can illustrate the methodology for a Boolean model of disks with unknown constant radius $R$ and intensity $\theta $. We suppose that we dispose of a dataset, from which we can estimate a fraction area $A_A$ and a perimeter $L_A$. The area of the typical grain is constant and yields $\bar{A} = \pi R^2$. Similarly, the perimeter of the typical grain yields $\bar{L} = 2\pi R$. Therefore, Miles' formulae yield
 \begin{eqnarray}
@@ -1233,7 +1236,7 @@ We can easily solve to find $R$ and $\theta $.
 
 \subsubsection{Minimum contrast method}
 
-The minimum contrast is another statistical method which can be employed to perform parameter identification for germ-grain models. It consists in trying to determine the parameters that minimize the distance between some characteristic function measured on the dataset and the corresponding function obtained either from its theoretical expression or from random realization of the model. For Boolean models, covariance is classicaly used in this purpose, often in combination with granulometry curves. Usually, the graim-germ models are not traceable analytically, and we have to rely on numerical methods to perform the optimization. Nelder-Mead and Levenberg-Marcquart algorithms are often used in this purpose~\cite{jean}. ADD REF TO CHAP 2 HERE.
+The minimum contrast is another statistical method which can be employed to perform parameter identification for germ-grain models. It consists in trying to determine the parameters that minimize the distance between some characteristic function measured on the dataset and the corresponding function obtained either from its theoretical expression or from random realization of the model. For Boolean models, covariance is classicaly used in this purpose, often in combination with granulometry curves. Usually, the graim-germ models are not traceable analytically, and we have to rely on numerical methods to perform the optimization. Nelder-Mead and Levenberg-Marcquart algorithms are often used in this purpose~\citep{jean}. We discuss in chapter~\ref{chap:materials} an approach for selecting the parameters of the models based on a Bayesian approach.
 
 \subsubsection{Stereological mean-value formulae}
 
@@ -1325,19 +1328,19 @@ Hence, the parameters $\theta$ and $R$ of the three-dimensional Boolean model of
 
 \subsection{Notes}
 
-The Boolean model is an archetypal model of stochastic geometry. Reference textbooks on this topic include Matheron~\cite{matheron}, Serra~\cite{serra1982}, Stoyan, Kendall and Mecke~\cite{stoyan} and Baccelli and Blaszczyszyn~\cite{baccelli}. We also refer the reader to the lecture notes of Jeulin~\cite{jeulin}. For an extensive presentation, we refer the reader to the book of Schneider and Weil~\cite{schneider}.
+The Boolean model is an archetypal model of stochastic geometry. Reference textbooks on this topic include~\citep{matheron},~\citep{serra1982},~\citep{stoyan} and~\citep{baccelli}. We also refer the reader to the lecture notes~\citep{jeulin}. For an extensive presentation, we refer the reader to the book~\citep{schneider}.
  
-Regarding statistical analysis for the Boolean model, we refer the reader to the papers of Weil~\cite{weil1984} and Molchanov~\cite{molchanov1995}. Miles' formulae were derived by Miles in 1976~\cite{miles1976}. An introduction can be found in the book of Stoyan, Kendall and Mecke~\cite{stoyan}. This topic is discussed more thoroughly in the book of Schneider and Weil~\cite{schneider}.
+Regarding statistical analysis for the Boolean model, we refer the reader to the papers\citep{weil1984} and~\citep{molchanov1995}. Miles' formulae were derived by Miles in 1976~\citep{miles1976}. An introduction can be found in the book~\citep{stoyan}. This topic is discussed more thoroughly in the book~\citep{schneider}.
 
-Another topic of interest regarding the Boolean model is percolation. This topic has been studied extensively over the years. We refer the reader interested by this the percolation proerties of the Boolean model to the papers of Hall~\cite{hall} and Jeulin and Moreaud~\cite{moreaud}, and to the book of Torquato~\cite{torquato}.
+Another topic of interest regarding the Boolean model is percolation. This topic has been studied extensively over the years. We refer the reader interested by this the percolation properties of the Boolean model to the papers~\citep{hall, moreaud, figliuzzi2016}, and to the book~\citep{torquato}.
 
-In materials engineering, the Boolean model has been employed to simulate a wide range of microstructures. Various examples of the application of the Boolean model in materials science are described in the paper~\cite{hermann} of Hermann. In 1992, Quenec'h \textit{et al.} used the Boolean model to study the growth of WC grains in WC-Co cermets~\cite{quenec}. In 2001, Jeulin et \textit{al.} relied on Poisson polyhedra to simulate the microsctructure of needle-shaped gypsum crystal grains~\cite{jeulin1}. In 2003, Capasso studied the application of the Boolean model to the description of crystallisation in metals and polymers. More recently, Jean et \textit{al.} simulated the microstructure of rubbers by considering a multiscale Cox-Boolean model~\cite{jean}. Using a random walk based model, Altendorf and Jeulin developed a stochastic model for simulating 3D fiber structures~\cite{altendorf}. Pereyga \textit{et al.} relied on a Boolean model of random cylinders to model a random fibrous network~\cite{peyrega}.
+In materials engineering, the Boolean model has been employed to simulate a wide range of microstructures. Various examples of the application of the Boolean model in materials science are described in the paper~\citep{hermann}. In 1992, Quenec'h \textit{et al.} used the Boolean model to study the growth of WC grains in WC-Co cermets~\citep{quenec}. In 2001, Jeulin et \textit{al.} relied on Poisson polyhedra to simulate the microsctructure of needle-shaped gypsum crystal grains~\citep{jeulin1}. In 2003, Capasso studied the application of the Boolean model to the description of crystallisation in metals and polymers. More recently, Jean et \textit{al.} simulated the microstructure of rubbers by considering a multiscale Cox-Boolean model~\citep{jean}. Using a random walk based model, Altendorf and Jeulin developed a stochastic model for simulating 3D fiber structures~\citep{altendorf}. Pereyga \textit{et al.} relied on a Boolean model of random cylinders to model a random fibrous network~\citep{peyrega}.
 
 \section{Random Tessellations}
 
-A \textit{tessellation} or \textit{mosaic} is a division of the $d-$dimensional Euclidean space $\mathbb{R}^d$ into polyhedra. Such geometrical patterns can be observed in many natural situations, as shown in figure~\ref{fig:polycristal}. Hence, random tessellation models have been widely used in physics, materials science and chemistry.
+A \textit{tessellation} or \textit{mosaic} is a division of the $d-$dimensional Euclidean space $\mathbb{R}^d$ into polyhedra. Such geometrical patterns can be observed in many natural situations. Hence, random tessellation models have been widely used in physics, materials science and chemistry.
 
-\subsection{General introduction \label{s1}}
+\subsection{General introduction \label{tesselation:ss1}}
 
 \begin{definition} A tessellation in $\mathbb{R}^d$ is a countable system $\mathcal{T}$ of subsets satisfying the following conditions:
 \begin{itemize}
@@ -1352,16 +1355,8 @@ A \textit{tessellation} or \textit{mosaic} is a division of the $d-$dimensional 
 We denote by $\mathbb{T}$ the set of all tessellations. 
 \label{def:mosaic}
 \end{definition}
-The faces of a cell $\mathcal{C}$ of the tessellation are the intersections of $\mathcal{C}$ with its supporting hyperplanes. A $k-$face is a face of dimension $k$. Among all possible $k-$faces, the $0-$faces, or vertices, and the $1-$faces, or edges, are of particular interest. The $d-1$ dimensional faces of a $d-$dimensional polytope will be referred to as its facets.\\
+The faces of a cell $\mathcal{C}$ of the tessellation are the intersections of $\mathcal{C}$ with its supporting hyperplanes. A $k-$face is a face of dimension $k$. Among all possible $k-$faces, the $0-$faces, or vertices, and the $1-$faces, or edges, are of particular interest. The $d-1$ dimensional faces of a $d-$dimensional polytope will be referred to as its facets.
 
-\begin{figure}[h]
-\begin{center}
-\includegraphics[scale=0.7]{figures/random/polycristal.png}
-\caption{Steel polycristal microstructure \label{fig:polycristal}}
-\end{center}
-\end{figure}
- 
- 
 \begin{proposition}
 The cells of a tessellation $\mathcal{T}$ are convex polytopes.
 \end{proposition}
@@ -1420,7 +1415,7 @@ In addition, if the tessellation $\mathcal{T}$ is normal, then we have
 n_{02} = 3, \quad n_{20} = 6.
 \end{equation}
 \end{proposition}
-These relation are derived by considering the topological configuration of random mosaics. Some results are particularly obvious. For instance, it is clear that the number of neighbor vertices for a given edge is $n_{10} = 2$. Note that similar relations can be obtained in higher dimensions. We refer the reader to the book of Schneider and Weil~\cite{schneider} for a more extensive presentation of the theory and to the book of Stoyan, Kendall and Mecke~\cite{stoyan} for the case $d = 3$. 
+These relation are derived by considering the topological configuration of random mosaics. Some results are particularly obvious. For instance, it is clear that the number of neighbor vertices for a given edge is $n_{10} = 2$. Note that similar relations can be obtained in higher dimensions. We refer the reader to the book~\citep{schneider} for a more extensive presentation of the theory and to the book~\citep{stoyan} for the case $d = 3$. 
 
 \subsection{Poisson tessellation models}
 
@@ -1501,15 +1496,6 @@ The first moments of Poisson polygon can easily be calculated with proposition, 
 \bar{\mathcal{L}} & = & \dfrac{4}{\rho }.
 \end{eqnarray}
 
-\begin{figure}[h]
-\begin{center}
-\includegraphics[scale=0.7]{figures/random/WCCO1.png}
-\quad 
-\includegraphics[scale=0.7]{figures/random/WCCO2.png}
-\caption{Simulations of WC-Co cermets microstructures using Poisson polygons. This figure is taken from the study~\cite{quenec} of Quenec'h \textit{et al.} \label{fig:wcco}}
-\end{center}
-\end{figure}
-
 \subsection{Poisson-Vorono\"i tessellations}
 
 We present in this section the Poisson-Vorono\"i tessellation model. This model has been studied extensively and is a classical model in stochastic geometry. 
@@ -1535,14 +1521,14 @@ These relations can be generalized for $d > 2$.
 \begin{figure}[p]
 \begin{center}
 \includegraphics[scale=0.45]{figures/random/voronoi.png}
-\caption{Vorono\"i tessellation in $\mathbb{R}^3$. The simulation has been obtained with the software VtkSim~\cite{vtkSim}. The center of the Vorono\"i cells are represented in grey.}
+\caption{Vorono\"i tessellation in $\mathbb{R}^3$. The simulation has been obtained with the software VtkSim~\citep{vtksim}. The center of the Vorono\"i cells are represented in grey.}
 \end{center}
 \end{figure}
 
 \begin{figure}[p]
 \begin{center}
 \includegraphics[scale=0.45]{figures/random/johnson.png}
-\caption{Vorono\"i tessellation in $\mathbb{R}^3$. The simulation has been obtained with the software VtkSim~\cite{vtkSim}. The center of the tessellation cells are represented in grey. The first germs are represented with larger radii.  }
+\caption{Vorono\"i tessellation in $\mathbb{R}^3$. The simulation has been obtained with the software VtkSim~\citep{vtksim}. The center of the tessellation cells are represented in grey. The first germs are represented with larger radii.  }
 \end{center}
 \end{figure}
 
@@ -1557,11 +1543,11 @@ Note that when all times are set to zero, we recover the classical Poisson-Voron
 
 \subsubsection{Notes}
 
-Random tessellations constitute an active topic in stochastic geometry. Reference textbooks on this topic include Matheron~\cite{matheron}, Stoyan, Kendall and Mecke~\cite{stoyan}. For an extensive presentation, we refer the reader to the book of Schneider and Weil~\cite{schneider}, where a proof is given for almost all results. The mean-value relationships given in section~\ref{s1} are mostly due to the studies of Mecke~\cite{mecke1980} and M\o ller~\cite{moller1989}.
+Random tessellations constitute an active topic in stochastic geometry. Reference textbooks on this topic include~\citep{matheron},~\citep{stoyan}. For an extensive presentation, we refer the reader to the book~\citep{schneider}, where a proof is given for almost all results. The mean-value relationships given in section~\ref{tesselation:ss1} are mostly due to the studies~\citep{mecke1980} and~\citep{moller1989}.
 
-Poisson hyperplanes tessellations and Poisson polyhedra have been extensively studied by Matheron~\cite{matheron}, Serra~\cite{serra1982} and Miles~\cite{miles1972b}. We also refer the reader to the paper~\cite{mecke1995} of Mecke.
+Poisson hyperplanes tessellations and Poisson polyhedra have been extensively studied in~\citep{matheron}, ~\citep{serra1982} and Miles~\citep{miles1972b}. We also refer the reader to the paper~\citep{mecke1995}.
 
-The Vorono\"i tessellation is a classical model in stochastic geometry. A general description of Poisson-Vorono\"i tessellations in $\mathbb{R}^d$ can be found in M\o ller~\cite{moller1989, moller1994}. The Johnson-Mehl tessellation model was introduced by Johnson and Mehl to describe crystallization processes~\cite{johnson, avrami, gilbert}. Their model can be seen as a variation of the Vorono\"i model. The paper~\cite{moller1992} of M\o ller provides a unified exposition of Random Johnson-Mehl tessellations.
+The Vorono\"i tessellation is a classical model in stochastic geometry. A general description of Poisson-Vorono\"i tessellations in $\mathbb{R}^d$ can be found in~\citep{moller1989, moller1994}. The Johnson-Mehl tessellation model was introduced by Johnson and Mehl to describe crystallization processes~\citep{johnson, avrami, gilbert}. Their model can be seen as a variation of the Vorono\"i model. The paper~\citep{moller1992} provides a unified exposition of Random Johnson-Mehl tessellations.
 
  
 

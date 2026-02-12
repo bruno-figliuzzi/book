@@ -1,305 +1,543 @@
-\begin{thebibliography}{10}
+\begin{thebibliography}{84}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 
-\bibitem{altendorf}
+\bibitem[Achanta and Susstrunk(2017)]{achanta2017}
+Radhakrishna Achanta and Sabine Susstrunk.
+\newblock Superpixels and {Polygons} {Using} {Simple} {Non}-iterative
+  {Clustering}.
+\newblock In \emph{2017 {IEEE} {Conference} on {Computer} {Vision} and
+  {Pattern} {Recognition} ({CVPR})}, pages 4895--4904, Honolulu, HI, July 2017.
+  IEEE.
+\newblock ISBN 978-1-5386-0457-1.
+
+\bibitem[Achanta et~al.(2012)Achanta, Shaji, Smith, Lucchi, Fua, and
+  S{\"u}sstrunk]{achanta2012}
+Radhakrishna Achanta, Appu Shaji, Kevin Smith, Aurelien Lucchi, Pascal Fua, and
+  Sabine S{\"u}sstrunk.
+\newblock Slic superpixels compared to state-of-the-art superpixel methods.
+\newblock \emph{IEEE transactions on pattern analysis and machine
+  intelligence}, 34\penalty0 (11):\penalty0 2274--2282, 2012.
+
+\bibitem[Altendorf and Jeulin(2011)]{altendorf}
 H.~Altendorf and D.~Jeulin.
 \newblock Random-walk-based stochastic modeling of three-dimensional fiber
   systems.
-\newblock {\em Physical Review E}, 83(4):041804, 2011.
+\newblock \emph{Physical Review E}, 83\penalty0 (4):\penalty0 041804, 2011.
 
-\bibitem{jeandin2008}
+\bibitem[Amsellem et~al.(2008)Amsellem, Madi, Borit, Jeulin, Guipont, Jeandin,
+  Boller, and Pauchet]{jeandin2008}
 O.~Amsellem, K.~Madi, F.~Borit, D.~Jeulin, V.~Guipont, M.~Jeandin, E.~Boller,
   and F.~Pauchet.
 \newblock Two-dimensional (2d) and three-dimensional (3d) analyses of
   plasma-sprayed alumina microstructures for finite-element simulation of
   young's modulus.
-\newblock {\em Journal of Materials Science}, 43(12):4091--4098, 2008.
+\newblock \emph{Journal of Materials Science}, 43\penalty0 (12):\penalty0
+  4091--4098, 2008.
 
-\bibitem{andrieu2003}
+\bibitem[Andrieu et~al.(2003)Andrieu, De~Freitas, Doucet, and
+  Jordan]{andrieu2003}
 Christophe Andrieu, Nando De~Freitas, Arnaud Doucet, and Michael~I Jordan.
 \newblock An introduction to mcmc for machine learning.
-\newblock {\em Machine learning}, 50:5--43, 2003.
+\newblock \emph{Machine learning}, 50:\penalty0 5--43, 2003.
 
-\bibitem{avrami}
+\bibitem[Arbelaez et~al.(2011)Arbelaez, Maire, Fowlkes, and Malik]{arbelaez}
+Pablo Arbelaez, Michael Maire, Charless Fowlkes, and Jitendra Malik.
+\newblock Contour detection and hierarchical image segmentation.
+\newblock \emph{IEEE Trans. Pattern Anal. Mach. Intell.}, 33\penalty0
+  (5):\penalty0 898--916, May 2011.
+
+\bibitem[Avrami(1939)]{avrami}
 M.~Avrami.
 \newblock Kinetics of phase change. {I}. general theory.
-\newblock {\em The Journal of Chemical Physics}, 7(12):1103--1112, 1939.
+\newblock \emph{The Journal of Chemical Physics}, 7\penalty0 (12):\penalty0
+  1103--1112, 1939.
 
-\bibitem{baccelli}
+\bibitem[Baccelli and Blaszczyszyn(2009)]{baccelli}
 F.~Baccelli and B.~Blaszczyszyn.
-\newblock {\em Stochastic Geometry and Wireless Networks: Volume 1: THEORY},
+\newblock \emph{Stochastic Geometry and Wireless Networks: Volume 1: THEORY},
   volume~1.
 \newblock Now Publishers Inc, 2009.
 
-\bibitem{guipont2008}
+\bibitem[Beauvais et~al.(2008)Beauvais, Guipont, Jeandin, Jeulin, Robisson, and
+  Saenger]{guipont2008}
 S.~Beauvais, V.~Guipont, M.~Jeandin, D.~Jeulin, A.~Robisson, and R.~Saenger.
 \newblock Study of the porosity in plasma-sprayed alumina through an innovative
   three-dimensional simulation of the coating buildup.
-\newblock {\em Metallurgical and Materials Transactions A}, 39(11):2711--2724,
-  2008.
+\newblock \emph{Metallurgical and Materials Transactions A}, 39\penalty0
+  (11):\penalty0 2711--2724, 2008.
 
-\bibitem{bortolussi2018}
+\bibitem[Beucher and Lantu{\'e}joul(1979)]{beucher}
+S.~Beucher and Ch. Lantu{\'e}joul.
+\newblock Use of watersheds in contour detection.
+\newblock In \emph{International workshop on image processing, real-time edge
+  and motion detection}, 1979.
+
+\bibitem[Beucher and Meyer(1992)]{beucher1992}
+Serge Beucher and Fernand Meyer.
+\newblock The morphological approach to segmentation: the watershed
+  transformation.
+\newblock \emph{Optical Engineering-New York-Marcel Dekker Incorporated-},
+  34:\penalty0 433--433, 1992.
+
+\bibitem[Bortolussi et~al.(2018)Bortolussi, Figliuzzi, Willot, Faessel, and
+  Jeandin]{bortolussi2018}
 Vincent Bortolussi, Bruno Figliuzzi, Fran{\c{c}}ois Willot, Matthieu Faessel,
   and Michel Jeandin.
 \newblock Morphological modeling of cold spray coatings.
-\newblock {\em Image Analysis \& Stereology}, 37(2):145--158, 2018.
+\newblock \emph{Image Analysis \& Stereology}, 37\penalty0 (2):\penalty0
+  145--158, 2018.
 
-\bibitem{bortolussi2020}
+\bibitem[Bortolussi et~al.(2020)Bortolussi, Figliuzzi, Willot, Faessel, and
+  Jeandin]{bortolussi2020}
 Vincent Bortolussi, Bruno Figliuzzi, Fran{\c{c}}ois Willot, Matthieu Faessel,
   and Michel Jeandin.
 \newblock Electrical conductivity of metal--polymer cold spray composite
   coatings onto carbon fiber-reinforced polymer.
-\newblock {\em Journal of Thermal Spray Technology}, 29:642--656, 2020.
+\newblock \emph{Journal of Thermal Spray Technology}, 29:\penalty0 642--656,
+  2020.
 
-\bibitem{capasso}
+\bibitem[Buyssens et~al.(2014{\natexlab{a}})Buyssens, Gardin, and
+  Ruan]{buyssensc}
+Pierre Buyssens, Isabelle Gardin, and Su~Ruan.
+\newblock Eikonal based region growing for superpixels generation:
+  {Application} to semi-supervised real time organ segmentation in {CT} images.
+\newblock \emph{IRBM}, 35\penalty0 (1):\penalty0 20--26, December
+  2014{\natexlab{a}}.
+
+\bibitem[Buyssens et~al.(2014{\natexlab{b}})Buyssens, Gardin, Ruan, and
+  Elmoataz]{buyssensb}
+Pierre Buyssens, Isabelle Gardin, Su~Ruan, and Abderrahim Elmoataz.
+\newblock Eikonal-based region growing for efficient clustering.
+\newblock \emph{Image and Vision Computing}, 32\penalty0 (12):\penalty0
+  1045--1054, December 2014{\natexlab{b}}.
+\newblock ISSN 0262-8856.
+
+\bibitem[Buyssens et~al.(2014{\natexlab{c}})Buyssens, Toutain, Elmoataz, and
+  L\'ezoray]{buyssensa}
+Pierre Buyssens, Matthieu Toutain, Abderrahim Elmoataz, and Olivier L\'ezoray.
+\newblock Eikonal-based vertices growing and iterative seeding for efficient
+  graph-based segmentation.
+\newblock In \emph{{IEEE} {International} {Conference} on {Image} {Processing}
+  ({ICIP} 2014)}, page 5 pp., Paris, France, October 2014{\natexlab{c}}.
+
+\bibitem[Capasso(2003)]{capasso}
 V.~Capasso.
-\newblock {\em Mathematical Modelling for Polymer Processing: Polymerization,
+\newblock \emph{Mathematical Modelling for Polymer Processing: Polymerization,
   Crystallization, Manufacturing}, volume~2.
 \newblock Springer, 2003.
 
-\bibitem{stoyan}
+\bibitem[Cettour-Janet et~al.(2019)Cettour-Janet, Cazorla, Machairas, Delannoy,
+  Bednarek, Rousseau, Decenci\`ere, and Passat]{cettour2019}
+Pierre Cettour-Janet, Cl\'ement Cazorla, Va\"ia Machairas, Quentin Delannoy,
+  Nathalie Bednarek, Fran\c c~ois Rousseau, Etienne Decenci\`ere, and Nicolas
+  Passat.
+\newblock Watervoxels.
+\newblock \emph{Image Processing On Line IPOL}, 9:\penalty0 317--328, 2019.
+
+\bibitem[Chang(2019)]{chang2019thesis}
+Kaiwen Chang.
+\newblock \emph{Machine learning for image segmentation}.
+\newblock PhD thesis, Universit{\'e} Paris sciences et lettres, 2019.
+
+\bibitem[Chang and Figliuzzi(2019)]{chang2019fast}
+Kaiwen Chang and Bruno Figliuzzi.
+\newblock Fast marching based superpixels generation.
+\newblock In \emph{Mathematical Morphology and Its Applications to Signal and
+  Image Processing: 14th International Symposium, ISMM 2019, Saarbr{\"u}cken,
+  Germany, July 8-10, 2019, Proceedings 14}, pages 350--361. Springer, 2019.
+
+\bibitem[Chang and Figliuzzi(2020)]{chang2020fast}
+Kaiwen Chang and Bruno Figliuzzi.
+\newblock Fast marching based superpixels.
+\newblock \emph{Mathematical Morphology-Theory and Applications}, 4\penalty0
+  (1):\penalty0 127--142, 2020.
+
+\bibitem[Chiu et~al.(2013)Chiu, Stoyan, Kendall, and Mecke]{stoyan}
 S.~N. Chiu, D.~Stoyan, W.~S. Kendall, and J.~Mecke.
-\newblock {\em Stochastic geometry and its applications}.
+\newblock \emph{Stochastic geometry and its applications}.
 \newblock John Wiley \& Sons, 2013.
 
-\bibitem{dejnozkova2003}
+\bibitem[Comaniciu and Meer(2002)]{comaniciu2002}
+Dorin Comaniciu and Peter Meer.
+\newblock Mean shift: A robust approach toward feature space analysis.
+\newblock \emph{IEEE Transactions on pattern analysis and machine
+  intelligence}, 24\penalty0 (5):\penalty0 603--619, 2002.
+
+\bibitem[Dejnozkov{\'a} and Dokl{\'a}dal(2003)]{dejnozkova2003}
 Eva Dejnozkov{\'a} and Petr Dokl{\'a}dal.
 \newblock A parallel algorithm for solving the eikonal equation.
-\newblock In {\em 2003 IEEE International Conference on Acoustics, Speech, and
+\newblock In \emph{2003 IEEE International Conference on Acoustics, Speech, and
   Signal Processing, 2003. Proceedings.(ICASSP'03).}, volume~3, pages III--325.
   IEEE, 2003.
 
-\bibitem{delloro2014}
+\bibitem[Delloro et~al.(2014)Delloro, Faessel, Proudhon, Jeulin, Jeandin,
+  Meillot, and Bianchi]{delloro2014}
 F.~Delloro, M.~Faessel, H.~Proudhon, D.~Jeulin, M.~Jeandin, E.~Meillot, and
   L.~Bianchi.
 \newblock A morphological approach to the modeling of the cold spray process.
-\newblock In {\em ITSC 2014}, pages 221--226. DVS, 2014.
+\newblock In \emph{ITSC 2014}, pages 221--226. DVS, 2014.
 
-\bibitem{vtksim}
-M.~Faessel.
-\newblock Vtksim software.
+\bibitem[Faessel and Jeulin(2011)]{vtksim}
+Matthieu Faessel and Dominique Jeulin.
+\newblock 3d multiscale vectorial simulations of random models.
+\newblock In \emph{International Congress of Stereology}, 2011.
 
-\bibitem{figliuzzi2019}
+\bibitem[Felzenszwalb and Huttenlocher(2004)]{felzenswalb}
+Pedro~F Felzenszwalb and Daniel~P Huttenlocher.
+\newblock Efficient graph-based image segmentation.
+\newblock \emph{International journal of computer vision}, 59\penalty0
+  (2):\penalty0 167--181, 2004.
+
+\bibitem[Figliuzzi(2019)]{figliuzzi2019}
 Bruno Figliuzzi.
 \newblock Eikonal-based models of random tessellations.
-\newblock {\em Image Analysis \& Stereology}, 38(1):15--23, 2019.
+\newblock \emph{Image Analysis \& Stereology}, 38\penalty0 (1):\penalty0
+  15--23, 2019.
 
-\bibitem{figliuzzi2016}
+\bibitem[Figliuzzi et~al.(2016)Figliuzzi, Chan, Buie, and Moran]{figliuzzi2016}
 Bruno Figliuzzi, WHR Chan, CR~Buie, and JL~Moran.
 \newblock Nonlinear electrophoresis in the presence of dielectric decrement.
-\newblock {\em Physical Review E}, 94(2):023115, 2016.
+\newblock \emph{Physical Review E}, 94\penalty0 (2):\penalty0 023115, 2016.
 
-\bibitem{figliuzzi2021}
+\bibitem[Figliuzzi et~al.(2017)Figliuzzi, Chang, and
+  Faessel]{figliuzzi2017hierarchical}
+Bruno Figliuzzi, Kaiwen Chang, and Matthieu Faessel.
+\newblock Hierarchical segmentation based upon multi-resolution approximations
+  and the watershed transform.
+\newblock In \emph{International Symposium on Mathematical Morphology and Its
+  Applications to Signal and Image Processing}, pages 185--195. Springer, 2017.
+
+\bibitem[Figliuzzi et~al.(2021)Figliuzzi, Montaux-Lambert, Willot, Naudin,
+  Dupuis, Querleux, and Huguet]{figliuzzi2021}
 Bruno Figliuzzi, Antoine Montaux-Lambert, Fran{\c{c}}ois Willot, Gr{\'e}goire
   Naudin, Pierre Dupuis, Bernard Querleux, and Etienne Huguet.
 \newblock A bayesian approach to morphological models characterization.
-\newblock {\em Image Analysis \& Stereology}, 40(3):171--180, 2021.
+\newblock \emph{Image Analysis \& Stereology}, 40\penalty0 (3):\penalty0
+  171--180, 2021.
 
-\bibitem{gilbert}
+\bibitem[Fulkerson et~al.(2009)Fulkerson, Vedaldi, and Soatto]{fulkerson}
+Brian Fulkerson, Andrea Vedaldi, and Stefano Soatto.
+\newblock Class segmentation and object localization with superpixel
+  neighborhoods.
+\newblock In \emph{Computer Vision, 2009 IEEE 12th International Conference
+  on}, pages 670--677. IEEE, 2009.
+
+\bibitem[Gilbert(1962)]{gilbert}
 E.~N. Gilbert.
 \newblock Random subdivisions of space into crystals.
-\newblock {\em The Annals of mathematical statistics}, pages 958--972, 1962.
+\newblock \emph{The Annals of mathematical statistics}, pages 958--972, 1962.
 
-\bibitem{hall}
+\bibitem[Giraud et~al.(2019)Giraud, Ta, Papadakis, and
+  Berthoumieu]{giraud_texture-aware_2019}
+R{\'e}mi Giraud, Vinh-Thong Ta, Nicolas Papadakis, and Yannick Berthoumieu.
+\newblock Texture-aware superpixel segmentation.
+\newblock In \emph{2019 IEEE International Conference on Image Processing
+  (ICIP)}, pages 1465--1469. IEEE, 2019.
+
+\bibitem[Hall(1988)]{hall}
 P.~Hall.
-\newblock {\em Introduction to the theory of coverage processes}, volume 188.
+\newblock \emph{Introduction to the theory of coverage processes}, volume 188.
 \newblock Wiley New York, 1988.
 
-\bibitem{hermann}
+\bibitem[Hermann(1991)]{hermann}
 H~Hermann.
 \newblock Stochastic models of heterogeneous materials.
-\newblock In {\em Materials science forum}. Trans Tech Publications, 1991.
+\newblock In \emph{Materials science forum}. Trans Tech Publications, 1991.
 
-\bibitem{jean}
+\bibitem[Jain and Farrokhnia(1991)]{jain}
+Anil~K Jain and Farshid Farrokhnia.
+\newblock Unsupervised texture segmentation using gabor filters.
+\newblock \emph{Pattern recognition}, 24\penalty0 (12):\penalty0 1167--1186,
+  1991.
+
+\bibitem[Jean et~al.(2011)Jean, Jeulin, Forest, Cantournet, and N'Guyen]{jean}
 A.~Jean, D.~Jeulin, S.~Forest, S.~Cantournet, and F.~N'Guyen.
 \newblock A multiscale microstructure model of carbon black distribution in
   rubber.
-\newblock {\em Journal of microscopy}, 241(3):243--260, 2011.
+\newblock \emph{Journal of microscopy}, 241\penalty0 (3):\penalty0 243--260,
+  2011.
 
-\bibitem{jeulin}
-D.~Jeulin.
-\newblock {\em Models of random structures}.
-\newblock Lecture notes.
-
-\bibitem{jeulin2012}
+\bibitem[Jeulin(2012)]{jeulin2012}
 D.~Jeulin.
 \newblock Morphology and effective properties of multi-scale random sets: A
   review.
-\newblock {\em Comptes Rendus M{\'e}canique}, 340(4):219--229, 2012.
+\newblock \emph{Comptes Rendus M{\'e}canique}, 340\penalty0 (4):\penalty0
+  219--229, 2012.
 
-\bibitem{jeulin1}
-D.~Jeulin, P.~Monnaie, and F.~P{\'e}ronnet.
-\newblock Gypsum morphological analysis and modeling.
-\newblock {\em Cement and Concrete Composites}, 23(2):299--311, 2001.
-
-\bibitem{moreaud}
+\bibitem[Jeulin and Moreaud(2006)]{moreaud}
 D.~Jeulin and M.~Moreaud.
 \newblock Percolation of multi-scale fiber aggregates.
-\newblock In {\em S4G, 6th International Conference Stereology, Spatial
+\newblock In \emph{S4G, 6th International Conference Stereology, Spatial
   Statistics and Stochastic Geometry. Prague}, pages 26--29, 2006.
 
-\bibitem{jeulin2021}
-Dominique Jeulin.
-\newblock {\em Morphological models of random structures}.
-\newblock Springer, 2021.
+\bibitem[Jeulin et~al.(2001)Jeulin, Monnaie, and P{\'e}ronnet]{jeulin1}
+D.~Jeulin, P.~Monnaie, and F.~P{\'e}ronnet.
+\newblock Gypsum morphological analysis and modeling.
+\newblock \emph{Cement and Concrete Composites}, 23\penalty0 (2):\penalty0
+  299--311, 2001.
 
-\bibitem{johnson}
+\bibitem[Jeulin(2021{\natexlab{a}})]{jeulin}
+Dominique Jeulin.
+\newblock \emph{Morphological models of random structures}, volume 447.
+\newblock Springer, 2021{\natexlab{a}}.
+
+\bibitem[Jeulin(2021{\natexlab{b}})]{jeulin2021}
+Dominique Jeulin.
+\newblock \emph{Morphological models of random structures}.
+\newblock Springer, 2021{\natexlab{b}}.
+
+\bibitem[Johnson and Mehl(1939)]{johnson}
 W.~A. Johnson and R.~F. Mehl.
 \newblock Reaction kinetics in processes of nucleation and growth.
-\newblock {\em Trans. Aime}, 135(8):396--415, 1939.
+\newblock \emph{Trans. Aime}, 135\penalty0 (8):\penalty0 396--415, 1939.
 
-\bibitem{liebscher2013}
+\bibitem[Levinshtein et~al.(2009)Levinshtein, Stere, Kutulakos, Fleet,
+  Dickinson, and Siddiqi]{levinshtein}
+Alex Levinshtein, Adrian Stere, Kiriakos~N Kutulakos, David~J Fleet, Sven~J
+  Dickinson, and Kaleem Siddiqi.
+\newblock Turbopixels: Fast superpixels using geometric flows.
+\newblock \emph{IEEE transactions on pattern analysis and machine
+  intelligence}, 31\penalty0 (12):\penalty0 2290--2297, 2009.
+
+\bibitem[Li and Chen(2015)]{li2015}
+Zhengqin Li and Jiansheng Chen.
+\newblock Superpixel segmentation using {Linear} {Spectral} {Clustering}.
+\newblock In \emph{2015 {IEEE} {Conference} on {Computer} {Vision} and
+  {Pattern} {Recognition} ({CVPR})}, pages 1356--1363, June 2015.
+
+\bibitem[Liebscher and Redenbach(2013)]{liebscher2013}
 Andr{\'e} Liebscher and Claudia Redenbach.
 \newblock Statistical analysis of the local strut thickness of open cell foams.
-\newblock {\em Image Analysis \& Stereology}, 32(1):1--12, 2013.
+\newblock \emph{Image Analysis \& Stereology}, 32\penalty0 (1):\penalty0 1--12,
+  2013.
 
-\bibitem{malladi1995}
+\bibitem[Machairas et~al.(2015)Machairas, Faessel, C{\'a}rdenas-Pe{\~n}a,
+  Chabardes, Walter, and Decenci{\`e}re]{machairas}
+Va{\"\i}a Machairas, Matthieu Faessel, David C{\'a}rdenas-Pe{\~n}a,
+  Th{\'e}odore Chabardes, Thomas Walter, and Etienne Decenci{\`e}re.
+\newblock Waterpixels.
+\newblock \emph{IEEE Transactions on Image Processing}, 24\penalty0
+  (11):\penalty0 3707--3716, 2015.
+
+\bibitem[Malik et~al.(2001)Malik, Belongie, Leung, and Shi]{malik2001}
+Jitendra Malik, Serge Belongie, Thomas Leung, and Jianbo Shi.
+\newblock Contour and texture analysis for image segmentation.
+\newblock \emph{International journal of computer vision}, 43\penalty0
+  (1):\penalty0 7--27, 2001.
+
+\bibitem[Malladi et~al.(1995)Malladi, Sethian, and Vemuri]{malladi1995}
 Ravi Malladi, James~A Sethian, and Baba~C Vemuri.
 \newblock Shape modeling with front propagation: A level set approach.
-\newblock {\em IEEE transactions on pattern analysis and machine intelligence},
-  17(2):158--175, 1995.
+\newblock \emph{IEEE transactions on pattern analysis and machine
+  intelligence}, 17\penalty0 (2):\penalty0 158--175, 1995.
 
-\bibitem{matheron}
+\bibitem[Martin et~al.(2001)Martin, Fowlkes, Tal, and Malik]{martin2001}
+David Martin, Charless Fowlkes, Doron Tal, and Jitendra Malik.
+\newblock A database of human segmented natural images and its application to
+  evaluating segmentation algorithms and measuring ecological statistics.
+\newblock In \emph{Proceedings Eighth IEEE International Conference on Computer
+  Vision. ICCV 2001}, volume~2, pages 416--423. IEEE, 2001.
+
+\bibitem[Matheron(1975)]{matheron}
 G.~Matheron.
-\newblock {\em Random sets and integral geometry}, volume~1.
+\newblock \emph{Random sets and integral geometry}, volume~1.
 \newblock Wiley New York, 1975.
 
-\bibitem{mecke1980}
+\bibitem[Mecke(1980)]{mecke1980}
 J.~Mecke.
 \newblock Palm methods for stationary random mosaics.
-\newblock {\em Combinatorial principles in stochastic geometry}, pages
+\newblock \emph{Combinatorial principles in stochastic geometry}, pages
   124--132, 1980.
 
-\bibitem{mecke1995}
+\bibitem[Mecke(1995)]{mecke1995}
 J.~Mecke.
 \newblock Inequalities for the anisotropic poisson polytope.
-\newblock {\em Advances in applied probability}, pages 56--62, 1995.
+\newblock \emph{Advances in applied probability}, pages 56--62, 1995.
 
-\bibitem{miles1972b}
+\bibitem[Meyer and Beucher(1990)]{meyer1990}
+Fernand Meyer and Serge Beucher.
+\newblock Morphological segmentation.
+\newblock \emph{Journal of visual communication and image representation},
+  1\penalty0 (1):\penalty0 21--46, 1990.
+
+\bibitem[Miles(1972)]{miles1972b}
 R.~E. Miles.
 \newblock The random division of space.
-\newblock {\em Advances in applied probability}, pages 243--266, 1972.
+\newblock \emph{Advances in applied probability}, pages 243--266, 1972.
 
-\bibitem{miles1976}
+\bibitem[Miles(1976)]{miles1976}
 R.~E. Miles.
 \newblock Estimating aggregate and overall characteristics from thick sections
   by transmission microscopy.
-\newblock {\em Journal of Microscopy}, 107(3):227--233, 1976.
+\newblock \emph{Journal of Microscopy}, 107\penalty0 (3):\penalty0 227--233,
+  1976.
 
-\bibitem{molchanov1995}
+\bibitem[Molchanov(1995)]{molchanov1995}
 I.~S. Molchanov.
 \newblock Statistics of the boolean model: from the estimation of means to the
   estimation of distributions.
-\newblock {\em Advances in applied probability}, pages 63--86, 1995.
+\newblock \emph{Advances in applied probability}, pages 63--86, 1995.
 
-\bibitem{moller1989}
+\bibitem[M{\o}ller(1989)]{moller1989}
 J.~M{\o}ller.
 \newblock Random tessellations in $\mathbb{R}^d$.
-\newblock {\em Advances in Applied Probability}, pages 37--73, 1989.
+\newblock \emph{Advances in Applied Probability}, pages 37--73, 1989.
 
-\bibitem{moller1992}
+\bibitem[M{\o}ller(1992)]{moller1992}
 J.~M{\o}ller.
 \newblock Random johnson-mehl tessellations.
-\newblock {\em Advances in applied probability}, pages 814--844, 1992.
+\newblock \emph{Advances in applied probability}, pages 814--844, 1992.
 
-\bibitem{moller1994}
+\bibitem[M{\o}ller(1994)]{moller1994}
 Jesper M{\o}ller.
-\newblock {\em Lectures on random Voronoi tessellations}.
+\newblock \emph{Lectures on random Voronoi tessellations}.
 \newblock Springer, 1994.
 
-\bibitem{moreaud2012}
+\bibitem[Moreaud et~al.(2012)Moreaud, Jeulin, Morard, and Revel]{moreaud2012}
 Maxime Moreaud, Dominique Jeulin, Vincent Morard, and Renaud Revel.
 \newblock Tem image analysis and modelling: application to boehmite
   nanoparticles.
-\newblock {\em Journal of microscopy}, 245(2):186--199, 2012.
+\newblock \emph{Journal of microscopy}, 245\penalty0 (2):\penalty0 186--199,
+  2012.
 
-\bibitem{ohser}
+\bibitem[Ohser and Schladitz(2009)]{ohser}
 Joachim Ohser and Katja Schladitz.
-\newblock {\em 3D images of materials structures: processing and analysis}.
+\newblock \emph{3D images of materials structures: processing and analysis}.
 \newblock John Wiley \& Sons, 2009.
 
-\bibitem{peyrega}
+\bibitem[Peyrega et~al.(2011)Peyrega, Jeulin, Delis{\'e}e, and
+  Malvestio]{peyrega}
 Ch. Peyrega, D.~Jeulin, Ch. Delis{\'e}e, and J.~Malvestio.
 \newblock 3d morphological modelling of a random fibrous network.
-\newblock {\em Image Analysis \& Stereology}, 28(3):129--141, 2011.
+\newblock \emph{Image Analysis \& Stereology}, 28\penalty0 (3):\penalty0
+  129--141, 2011.
 
-\bibitem{quenec}
+\bibitem[Quenech et~al.(1992)Quenech, Coster, Chermant, and Jeulin]{quenec}
 J.-L. Quenech, M.~Coster, J.-L. Chermant, and D.~Jeulin.
 \newblock Study of the liquid-phase sintering process by probabilistic models:
   {A}pplication to the coarsening of {WC-Co} cermets.
-\newblock {\em Journal of Microscopy}, 168(1):3--14, 1992.
+\newblock \emph{Journal of Microscopy}, 168\penalty0 (1):\penalty0 3--14, 1992.
 
-\bibitem{redenbach2009}
+\bibitem[Redenbach(2009)]{redenbach2009}
 Claudia Redenbach.
 \newblock Microstructure models for cellular materials.
-\newblock {\em Computational Materials Science}, 44(4):1397--1407, 2009.
+\newblock \emph{Computational Materials Science}, 44\penalty0 (4):\penalty0
+  1397--1407, 2009.
 
-\bibitem{redenbach2011}
+\bibitem[Redenbach and Vecchio(2011)]{redenbach2011}
 Claudia Redenbach and Irene Vecchio.
 \newblock Statistical analysis and stochastic modelling of fibre composites.
-\newblock {\em Composites Science and Technology}, 71(2):107--112, 2011.
+\newblock \emph{Composites Science and Technology}, 71\penalty0 (2):\penalty0
+  107--112, 2011.
 
-\bibitem{robert}
+\bibitem[Robert et~al.(1999)Robert, Casella, and Casella]{robert}
 Christian~P Robert, George Casella, and George Casella.
-\newblock {\em Monte Carlo statistical methods}, volume~2.
+\newblock \emph{Monte Carlo statistical methods}, volume~2.
 \newblock Springer, 1999.
 
-\bibitem{santalo}
+\bibitem[Santal{\'o}()]{santalo}
 L.~A. Santal{\'o}.
 \newblock Integral geometry and geometric probability. 1976.
 
-\bibitem{schneider}
+\bibitem[Schick et~al.(2012)Schick, Fischer, and Stiefelhagen]{schick}
+Alexander Schick, Mika Fischer, and Rainer Stiefelhagen.
+\newblock Measuring and evaluating the compactness of superpixels.
+\newblock In \emph{Proceedings of the 21st international conference on pattern
+  recognition (ICPR2012)}, pages 930--934. IEEE, 2012.
+
+\bibitem[Schneider and Weil(2008)]{schneider}
 R.~Schneider and W.~Weil.
-\newblock {\em Stochastic and integral geometry}.
+\newblock \emph{Stochastic and integral geometry}.
 \newblock Springer, 2008.
 
-\bibitem{serra1982}
+\bibitem[Serra(1982)]{serra1982}
 J.~Serra.
-\newblock {\em Image analysis and mathematical morphology}.
+\newblock \emph{Image analysis and mathematical morphology}.
 \newblock Academic press, 1982.
 
-\bibitem{sethian1996}
+\bibitem[Sethian(1996)]{sethian1996}
 James~A Sethian.
 \newblock A fast marching level set method for monotonically advancing fronts.
-\newblock {\em Proceedings of the National Academy of Sciences},
-  93(4):1591--1595, 1996.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 93\penalty0
+  (4):\penalty0 1591--1595, 1996.
 
-\bibitem{sethian1999}
+\bibitem[Sethian(1999)]{sethian1999}
 James~A Sethian.
 \newblock Fast marching methods.
-\newblock {\em SIAM review}, 41(2):199--235, 1999.
+\newblock \emph{SIAM review}, 41\penalty0 (2):\penalty0 199--235, 1999.
 
-\bibitem{torquato}
+\bibitem[Shi and Malik(2000)]{shi2000}
+Jianbo Shi and Jitendra Malik.
+\newblock Normalized cuts and image segmentation.
+\newblock \emph{IEEE Transactions on pattern analysis and machine
+  intelligence}, 22\penalty0 (8):\penalty0 888--905, 2000.
+
+\bibitem[Stutz et~al.(2018)Stutz, Hermans, and Leibe]{stutz}
+David Stutz, Alexander Hermans, and Bastian Leibe.
+\newblock Superpixels: An evaluation of the state-of-the-art.
+\newblock \emph{Computer Vision and Image Understanding}, 166:\penalty0 1--27,
+  2018.
+
+\bibitem[Torquato(2002)]{torquato}
 S.~Torquato.
-\newblock {\em Random heterogeneous materials: microstructure and macroscopic
+\newblock \emph{Random heterogeneous materials: microstructure and macroscopic
   properties}, volume~16.
 \newblock Springer, 2002.
 
-\bibitem{wang2018}
-Haisheng Wang, Dominique Jeulin, Fran{\c{c}}ois Willot, Lo{\"\i}c Sorbier, and
-  Maxime Moreaud.
-\newblock Modelling of the microstructure of mesoporous alumina constrained by
-  morphological simulation of nitrogen porosimetry.
-\newblock {\em Colloids and Surfaces A: Physicochemical and Engineering
-  Aspects}, 553:378--396, 2018.
+\bibitem[Vargas-Mu{\~n}oz et~al.(2019)Vargas-Mu{\~n}oz, Chowdhury, Alexandre,
+  Galv{\~a}o, Miranda, and Falc{\~a}o]{vargas2019}
+John~E Vargas-Mu{\~n}oz, Ananda~S Chowdhury, Eduardo~B Alexandre, Felipe~L
+  Galv{\~a}o, Paulo A~Vechiatto Miranda, and Alexandre~X Falc{\~a}o.
+\newblock An iterative spanning forest framework for superpixel segmentation.
+\newblock \emph{IEEE Transactions on Image Processing}, 28\penalty0
+  (7):\penalty0 3477--3489, 2019.
 
-\bibitem{wang2015}
+\bibitem[Vincent and Soille(1991)]{vincent1991}
+Luc Vincent and Pierre Soille.
+\newblock Watersheds in digital spaces: an efficient algorithm based on
+  immersion simulations.
+\newblock \emph{IEEE Transactions on Pattern Analysis \& Machine Intelligence},
+  13\penalty0 (06):\penalty0 583--598, 1991.
+
+\bibitem[Wang et~al.(2015)Wang, Pietrasanta, Jeulin, Willot, Faessel, Sorbier,
+  and Moreaud]{wang2015}
 Haisheng Wang, Andrea Pietrasanta, Dominique Jeulin, Fran{\c{c}}ois Willot,
   Matthieu Faessel, Lo{\"\i}c Sorbier, and Maxime Moreaud.
 \newblock Modelling mesoporous alumina microstructure with 3d random models of
   platelets.
-\newblock {\em Journal of microscopy}, 260(3):287--301, 2015.
+\newblock \emph{Journal of microscopy}, 260\penalty0 (3):\penalty0 287--301,
+  2015.
 
-\bibitem{wang2017}
+\bibitem[Wang et~al.(2017)Wang, Willot, Moreaud, Rivallan, Sorbier, and
+  Jeulin]{wang2017}
 Haisheng Wang, Fran{\c{c}}ois Willot, Maxime Moreaud, Micka{\"e}l Rivallan,
   Lo{\"\i}c Sorbier, and Dominique Jeulin.
 \newblock Numerical simulation of hindered diffusion in $\gamma$-alumina
   catalyst supports.
-\newblock {\em Oil \& Gas Science and Technology--Revue d'IFP Energies
-  nouvelles}, 72(2):8, 2017.
+\newblock \emph{Oil \& Gas Science and Technology--Revue d'IFP Energies
+  nouvelles}, 72\penalty0 (2):\penalty0 8, 2017.
 
-\bibitem{weil1984}
+\bibitem[Wang et~al.(2018)Wang, Jeulin, Willot, Sorbier, and Moreaud]{wang2018}
+Haisheng Wang, Dominique Jeulin, Fran{\c{c}}ois Willot, Lo{\"\i}c Sorbier, and
+  Maxime Moreaud.
+\newblock Modelling of the microstructure of mesoporous alumina constrained by
+  morphological simulation of nitrogen porosimetry.
+\newblock \emph{Colloids and Surfaces A: Physicochemical and Engineering
+  Aspects}, 553:\penalty0 378--396, 2018.
+
+\bibitem[Weil and Wieacker(1984)]{weil1984}
 W.~Weil and J.~A. Wieacker.
 \newblock Densities for stationary random sets and point processes.
-\newblock {\em Advances in applied probability}, pages 324--346, 1984.
+\newblock \emph{Advances in applied probability}, pages 324--346, 1984.
+
+\bibitem[Zitnick and Kang(2007)]{zitnick}
+C~Lawrence Zitnick and Sing~Bing Kang.
+\newblock Stereo for image-based rendering using image over-segmentation.
+\newblock \emph{International Journal of Computer Vision}, 75\penalty0
+  (1):\penalty0 49--65, 2007.
 
 \end{thebibliography}

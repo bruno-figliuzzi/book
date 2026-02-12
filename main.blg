@@ -2,166 +2,135 @@ This is BibTeX, Version 0.99d (TeX Live 2022/dev/Debian)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: main.aux
 A level-1 auxiliary file: random.aux
-Case mismatch error between cite keys vtkSim and vtksim
----line 69 of file random.aux
- : \citation{vtkSim
- :                 }
-I'm skipping whatever remains of this command
-Case mismatch error between cite keys vtkSim and vtksim
----line 70 of file random.aux
- : \citation{vtkSim
- :                 }
-I'm skipping whatever remains of this command
-Case mismatch error between cite keys vtkSim and vtksim
----line 128 of file random.aux
- : \citation{vtkSim
- :                 }
-I'm skipping whatever remains of this command
-Case mismatch error between cite keys vtkSim and vtksim
----line 129 of file random.aux
- : \citation{vtkSim
- :                 }
-I'm skipping whatever remains of this command
-Case mismatch error between cite keys vtkSim and vtksim
----line 130 of file random.aux
- : \citation{vtkSim
- :                 }
-I'm skipping whatever remains of this command
-Case mismatch error between cite keys vtkSim and vtksim
----line 131 of file random.aux
- : \citation{vtkSim
- :                 }
-I'm skipping whatever remains of this command
 A level-1 auxiliary file: materials.aux
-The style file: plain.bst
+A level-1 auxiliary file: applications.aux
+The style file: plainnat.bst
 Database file #1: biblio.bib
-Repeated entry---line 411 of file biblio.bib
+Repeated entry---line 413 of file biblio.bib
  : @book{jeulin
  :             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 418 of file biblio.bib
+Repeated entry---line 420 of file biblio.bib
  : @article{jeulin1
  :                 ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 446 of file biblio.bib
+Repeated entry---line 448 of file biblio.bib
  : @article{altendorf
  :                   ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 468 of file biblio.bib
+Repeated entry---line 470 of file biblio.bib
  : @article{avrami
  :                ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 490 of file biblio.bib
+Repeated entry---line 492 of file biblio.bib
  : @book{capasso
  :              ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 508 of file biblio.bib
+Repeated entry---line 510 of file biblio.bib
  : @article{figliuzzi2016
  :                       ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 550 of file biblio.bib
+Repeated entry---line 552 of file biblio.bib
  : @article{gilbert
  :                 ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 559 of file biblio.bib
+Repeated entry---line 561 of file biblio.bib
  : @article{jean
  :              ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 589 of file biblio.bib
+Repeated entry---line 591 of file biblio.bib
  : @article{johnson
  :                 ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 640 of file biblio.bib
+Repeated entry---line 642 of file biblio.bib
  : @book{matheron
  :               ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 649 of file biblio.bib
+Repeated entry---line 651 of file biblio.bib
  : @article{miles1972b
  :                    ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 658 of file biblio.bib
+Repeated entry---line 660 of file biblio.bib
  : @article{moller1989
  :                    ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 670 of file biblio.bib
+Repeated entry---line 672 of file biblio.bib
  : @article{moller1992
  :                    ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 682 of file biblio.bib
+Repeated entry---line 684 of file biblio.bib
  : @book{moller1994
  :                 ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 689 of file biblio.bib
+Repeated entry---line 691 of file biblio.bib
  : @inproceedings{moreaud
  :                       ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 728 of file biblio.bib
+Repeated entry---line 730 of file biblio.bib
  : @article{peyrega
  :                 ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 772 of file biblio.bib
+Repeated entry---line 774 of file biblio.bib
  : @book{schneider
  :                ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 779 of file biblio.bib
+Repeated entry---line 781 of file biblio.bib
  : @book{serra1982
  :                ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 793 of file biblio.bib
+Repeated entry---line 795 of file biblio.bib
  : @book{stoyan
  :             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 801 of file biblio.bib
+Repeated entry---line 803 of file biblio.bib
  : @book{torquato
  :               ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 810 of file biblio.bib
+Repeated entry---line 812 of file biblio.bib
  : @misc{vtksim
  :             ,
 I'm skipping whatever remains of this entry
 Warning--I didn't find a database entry for ""
-Warning--empty journal in vtksim
-Warning--empty year in vtksim
-Warning--empty year in jeulin
-You've used 54 entries,
-            2118 wiz_defined-function locations,
-            804 strings with 11710 characters,
-and the built_in function-call counts, 18440 in all, are:
-= -- 1827
-> -- 832
-< -- 18
-+ -- 339
-- -- 278
-* -- 1293
-:= -- 3040
-add.period$ -- 163
-call.type$ -- 54
-change.case$ -- 288
-chr.to.int$ -- 0
-cite$ -- 57
-duplicate$ -- 705
-empty$ -- 1438
-format.name$ -- 278
-if$ -- 3839
-int.to.chr$ -- 0
-int.to.str$ -- 54
-missing$ -- 66
-newline$ -- 271
-num.names$ -- 108
-pop$ -- 315
+Warning--empty year in santalo
+You've used 84 entries,
+            2773 wiz_defined-function locations,
+            1068 strings with 18433 characters,
+and the built_in function-call counts, 41925 in all, are:
+= -- 3800
+> -- 2344
+< -- 78
++ -- 801
+- -- 714
+* -- 3380
+:= -- 6296
+add.period$ -- 263
+call.type$ -- 84
+change.case$ -- 476
+chr.to.int$ -- 81
+cite$ -- 169
+duplicate$ -- 1931
+empty$ -- 3433
+format.name$ -- 846
+if$ -- 8881
+int.to.chr$ -- 4
+int.to.str$ -- 1
+missing$ -- 95
+newline$ -- 429
+num.names$ -- 336
+pop$ -- 991
 preamble$ -- 1
-purify$ -- 247
+purify$ -- 406
 quote$ -- 0
-skip$ -- 499
+skip$ -- 1507
 stack$ -- 0
-substring$ -- 1233
-swap$ -- 155
-text.length$ -- 18
+substring$ -- 1889
+swap$ -- 297
+text.length$ -- 29
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 190
-warning$ -- 3
-while$ -- 192
-width$ -- 56
-write$ -- 583
-(There were 27 error messages)
+type$ -- 859
+warning$ -- 1
+while$ -- 399
+width$ -- 0
+write$ -- 1104
+(There were 21 error messages)

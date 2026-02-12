@@ -1,71 +1,103 @@
-\contentsline {chapter}{\numberline {1}Morphological models }{1}{}%
-\contentsline {section}{\numberline {1.1}Introduction }{1}{}%
-\contentsline {section}{\numberline {1.2}Basic facts from mathematical morphology}{2}{}%
-\contentsline {subsection}{\numberline {1.2.1}Dilation and erosion}{2}{}%
-\contentsline {subsection}{\numberline {1.2.2}Opening and closing}{5}{}%
-\contentsline {subsection}{\numberline {1.2.3}Granulometry}{7}{}%
-\contentsline {section}{\numberline {1.3}Probabilistic approach and Choquet capacity}{8}{}%
-\contentsline {subsection}{\numberline {1.3.1}Covariance}{9}{}%
-\contentsline {section}{\numberline {1.4}Measurements on random sets }{14}{}%
-\contentsline {subsection}{\numberline {1.4.1}Minkowski functionals and intrinsic volumes }{15}{}%
-\contentsline {subsection}{\numberline {1.4.2}Steiner formulae }{17}{}%
-\contentsline {subsection}{\numberline {1.4.3}Stereology and Crofton formulae }{18}{}%
-\contentsline {section}{\numberline {1.5}Point processes }{19}{}%
-\contentsline {subsection}{\numberline {1.5.1}General theory }{19}{}%
-\contentsline {subsubsection}{Random point processes as counting measures}{19}{}%
-\contentsline {subsubsection}{Intensity measure}{21}{}%
-\contentsline {subsection}{\numberline {1.5.2}Poisson point process\nobreakspace {}}{23}{}%
-\contentsline {subsubsection}{Definition and characterization}{23}{}%
-\contentsline {subsubsection}{Simulation of a stationary Poisson point process}{27}{}%
-\contentsline {subsubsection}{Cox-Poisson point processes}{28}{}%
-\contentsline {subsubsection}{Hard-core point processes}{29}{}%
-\contentsline {subsection}{\numberline {1.5.3}Marked point processes \nobreakspace {}}{29}{}%
-\contentsline {paragraph}{Example}{31}{}%
-\contentsline {section}{\numberline {1.6}Germ-grain processes }{31}{}%
-\contentsline {subsection}{\numberline {1.6.1}Definition and first properties}{31}{}%
-\contentsline {subsubsection}{First properties}{32}{}%
-\contentsline {subsubsection}{Examples}{34}{}%
-\contentsline {subsection}{\numberline {1.6.2}Practical implementation}{36}{}%
-\contentsline {subsection}{\numberline {1.6.3}Statistical analysis for the Boolean model}{37}{}%
-\contentsline {subsubsection}{Method of densities}{37}{}%
-\contentsline {subsubsection}{Minimum contrast method}{39}{}%
-\contentsline {subsubsection}{Stereological mean-value formulae}{39}{}%
-\contentsline {paragraph}{Example}{40}{}%
-\contentsline {subsection}{\numberline {1.6.4}Notes}{42}{}%
-\contentsline {section}{\numberline {1.7}Random Tessellations}{42}{}%
-\contentsline {subsection}{\numberline {1.7.1}General introduction }{43}{}%
-\contentsline {subsubsection}{General study }{44}{}%
-\contentsline {subsubsection}{Random tessellation in the plane}{45}{}%
-\contentsline {subsection}{\numberline {1.7.2}Poisson tessellation models}{46}{}%
-\contentsline {subsubsection}{Poisson hyperplanes}{46}{}%
-\contentsline {paragraph}{Remark}{47}{}%
-\contentsline {subsubsection}{Poisson lines tessellations}{47}{}%
-\contentsline {subsection}{\numberline {1.7.3}Poisson-Vorono\"i tessellations}{48}{}%
-\contentsline {subsubsection}{Definition}{49}{}%
-\contentsline {subsubsection}{Johnson-Mehl Tessellations}{50}{}%
-\contentsline {subsubsection}{Notes}{50}{}%
-\contentsline {chapter}{\numberline {2}Morphological models in materials science}{53}{}%
-\contentsline {section}{\numberline {2.1}Microstructure modelling with morphological models }{54}{}%
-\contentsline {subsection}{\numberline {2.1.1}Context}{54}{}%
-\contentsline {subsection}{\numberline {2.1.2}Experimental data}{55}{}%
-\contentsline {subsection}{\numberline {2.1.3}Morphological model}{56}{}%
-\contentsline {paragraph}{Aggregates simulation}{57}{}%
-\contentsline {paragraph}{Interstices implantation}{58}{}%
-\contentsline {subsection}{\numberline {2.1.4}Results and discussions}{59}{}%
-\contentsline {subsection}{\numberline {2.1.5}Conclusion}{61}{}%
-\contentsline {section}{\numberline {2.2}Parameters estimation in morphological models }{62}{}%
-\contentsline {subsection}{\numberline {2.2.1}Problem statement}{63}{}%
-\contentsline {subsection}{\numberline {2.2.2}Bayesian formulation}{64}{}%
-\contentsline {subsection}{\numberline {2.2.3}Sampling from the posterior distribution}{65}{}%
-\contentsline {subsection}{\numberline {2.2.4}Numerical experiments}{66}{}%
-\contentsline {subsubsection}{Experiments on synthesized random sets}{66}{}%
-\contentsline {paragraph}{Results and discussion}{68}{}%
-\contentsline {subsubsection}{Experiments on experimental materials}{72}{}%
-\contentsline {subsection}{\numberline {2.2.5}Conclusion}{74}{}%
-\contentsline {section}{\numberline {2.3}Eikonal based tessellations }{75}{}%
-\contentsline {subsection}{\numberline {2.3.1}Eikonal equation}{75}{}%
-\contentsline {subsection}{\numberline {2.3.2}Fast marching algorithm}{76}{}%
-\contentsline {subsection}{\numberline {2.3.3}Applications}{78}{}%
-\contentsline {subsubsection}{Generation of images from vectorial simulations}{78}{}%
-\contentsline {subsubsection}{Tessellation with rough boundaries}{78}{}%
-\contentsline {subsection}{\numberline {2.3.4}Conclusion}{81}{}%
+\contentsline {chapter}{\numberline {1}Morphological models }{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Introduction }{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Basic facts from mathematical morphology}{2}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Dilation and erosion}{2}{subsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.2.2}Opening and closing}{5}{subsection.1.2.2}%
+\contentsline {subsection}{\numberline {1.2.3}Granulometry}{7}{subsection.1.2.3}%
+\contentsline {section}{\numberline {1.3}Probabilistic approach and Choquet capacity}{8}{section.1.3}%
+\contentsline {subsection}{\numberline {1.3.1}Covariance}{9}{subsection.1.3.1}%
+\contentsline {section}{\numberline {1.4}Measurements on random sets }{14}{section.1.4}%
+\contentsline {subsection}{\numberline {1.4.1}Minkowski functionals and intrinsic volumes }{15}{subsection.1.4.1}%
+\contentsline {subsection}{\numberline {1.4.2}Steiner formulae }{17}{subsection.1.4.2}%
+\contentsline {subsection}{\numberline {1.4.3}Stereology and Crofton formulae }{18}{subsection.1.4.3}%
+\contentsline {section}{\numberline {1.5}Point processes }{19}{section.1.5}%
+\contentsline {subsection}{\numberline {1.5.1}General theory }{19}{subsection.1.5.1}%
+\contentsline {subsubsection}{Random point processes as counting measures}{19}{section*.3}%
+\contentsline {subsubsection}{Intensity measure}{21}{section*.4}%
+\contentsline {subsection}{\numberline {1.5.2}Poisson point process\nobreakspace {}}{23}{subsection.1.5.2}%
+\contentsline {subsubsection}{Definition and characterization}{23}{section*.5}%
+\contentsline {subsubsection}{Simulation of a stationary Poisson point process}{27}{section*.6}%
+\contentsline {subsubsection}{Cox-Poisson point processes}{28}{section*.7}%
+\contentsline {subsubsection}{Hard-core point processes}{29}{section*.8}%
+\contentsline {subsection}{\numberline {1.5.3}Marked point processes \nobreakspace {}}{29}{subsection.1.5.3}%
+\contentsline {paragraph}{Example}{31}{section*.9}%
+\contentsline {section}{\numberline {1.6}Germ-grain processes }{31}{section.1.6}%
+\contentsline {subsection}{\numberline {1.6.1}Definition and first properties}{31}{subsection.1.6.1}%
+\contentsline {subsubsection}{First properties}{32}{section*.10}%
+\contentsline {subsubsection}{Examples}{34}{section*.11}%
+\contentsline {subsection}{\numberline {1.6.2}Practical implementation}{36}{subsection.1.6.2}%
+\contentsline {subsection}{\numberline {1.6.3}Statistical analysis for the Boolean model}{37}{subsection.1.6.3}%
+\contentsline {subsubsection}{Method of densities}{37}{section*.13}%
+\contentsline {subsubsection}{Minimum contrast method}{39}{section*.14}%
+\contentsline {subsubsection}{Stereological mean-value formulae}{39}{section*.15}%
+\contentsline {paragraph}{Example}{40}{section*.16}%
+\contentsline {subsection}{\numberline {1.6.4}Notes}{42}{subsection.1.6.4}%
+\contentsline {section}{\numberline {1.7}Random Tessellations}{42}{section.1.7}%
+\contentsline {subsection}{\numberline {1.7.1}General introduction }{43}{subsection.1.7.1}%
+\contentsline {subsubsection}{General study }{44}{section*.17}%
+\contentsline {subsubsection}{Random tessellation in the plane}{45}{section*.18}%
+\contentsline {subsection}{\numberline {1.7.2}Poisson tessellation models}{46}{subsection.1.7.2}%
+\contentsline {subsubsection}{Poisson hyperplanes}{46}{section*.19}%
+\contentsline {paragraph}{Remark}{46}{section*.20}%
+\contentsline {subsubsection}{Poisson lines tessellations}{47}{section*.21}%
+\contentsline {subsection}{\numberline {1.7.3}Poisson-Vorono\"i tessellations}{48}{subsection.1.7.3}%
+\contentsline {subsubsection}{Definition}{48}{section*.22}%
+\contentsline {subsubsection}{Johnson-Mehl Tessellations}{50}{section*.25}%
+\contentsline {subsubsection}{Notes}{50}{section*.26}%
+\contentsline {chapter}{\numberline {2}Morphological models in materials science }{51}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Microstructure modelling with morphological models }{52}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Context}{52}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}Experimental data}{53}{subsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.1.3}Morphological model}{55}{subsection.2.1.3}%
+\contentsline {paragraph}{Aggregates simulation}{55}{section*.28}%
+\contentsline {paragraph}{Interstices implantation}{57}{section*.29}%
+\contentsline {subsection}{\numberline {2.1.4}Results and discussions}{57}{subsection.2.1.4}%
+\contentsline {subsection}{\numberline {2.1.5}Conclusion}{59}{subsection.2.1.5}%
+\contentsline {section}{\numberline {2.2}Parameters estimation in morphological models }{60}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Problem statement}{61}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Bayesian formulation}{62}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Sampling from the posterior distribution}{63}{subsection.2.2.3}%
+\contentsline {subsection}{\numberline {2.2.4}Numerical experiments}{65}{subsection.2.2.4}%
+\contentsline {subsubsection}{Experiments on synthesized random sets}{65}{section*.34}%
+\contentsline {paragraph}{Results and discussion}{66}{figure.caption.39}%
+\contentsline {subsubsection}{Experiments on experimental materials}{70}{section*.42}%
+\contentsline {subsection}{\numberline {2.2.5}Conclusion}{73}{subsection.2.2.5}%
+\contentsline {section}{\numberline {2.3}Eikonal based tessellations }{74}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Eikonal equation}{74}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Fast marching algorithm}{75}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Applications}{76}{subsection.2.3.3}%
+\contentsline {subsubsection}{Generation of images from vectorial simulations}{77}{section*.46}%
+\contentsline {subsubsection}{Tessellation with rough boundaries}{77}{section*.48}%
+\contentsline {subsection}{\numberline {2.3.4}Conclusion}{80}{subsection.2.3.4}%
+\contentsline {chapter}{\numberline {3}Image segmentation}{81}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Eikonal-based superpixels}{82}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Algorithm}{83}{subsection.3.1.1}%
+\contentsline {subsubsection}{The Eikonal equation on a bounded domain}{83}{section*.49}%
+\contentsline {subsubsection}{Region growing}{84}{section*.50}%
+\contentsline {subsubsection}{Local velocity model}{85}{section*.51}%
+\contentsline {subsubsection}{Refinement}{86}{section*.52}%
+\contentsline {subsubsection}{Comparison with other algorithms}{87}{section*.53}%
+\contentsline {subsection}{\numberline {3.1.2}Experiments and discussion}{88}{subsection.3.1.2}%
+\contentsline {subsubsection}{Experiments on the BSD500 dataset}{90}{section*.55}%
+\contentsline {paragraph}{Boundary Recall.}{90}{section*.56}%
+\contentsline {paragraph}{Undersegmentation Error.}{90}{section*.57}%
+\contentsline {paragraph}{Compactness.}{90}{section*.58}%
+\contentsline {paragraph}{Contour Density.}{91}{section*.59}%
+\contentsline {subsection}{\numberline {3.1.3}Conclusion}{93}{subsection.3.1.3}%
+\contentsline {section}{\numberline {3.2}Eikonal-based region merging}{94}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Eikonal equation on an undirected graph\nobreakspace {}}{94}{subsection.3.2.1}%
+\contentsline {subsubsection}{Eikonal equation}{94}{section*.61}%
+\contentsline {subsubsection}{Eikonal equation and shortest path distance between two vertices}{96}{section*.62}%
+\contentsline {subsubsection}{Fast marching algorithm on graphs}{96}{section*.63}%
+\contentsline {paragraph}{Initialization}{97}{section*.64}%
+\contentsline {paragraph}{Iteration}{97}{section*.65}%
+\contentsline {paragraph}{Stopping condition}{97}{section*.66}%
+\contentsline {subsection}{\numberline {3.2.2}Application to superpixels merging\nobreakspace {}}{98}{subsection.3.2.2}%
+\contentsline {paragraph}{Region adjacency graph}{98}{section*.67}%
+\contentsline {paragraph}{Graph clustering}{98}{section*.68}%
+\contentsline {paragraph}{Algorithm}{99}{section*.69}%
+\contentsline {subsection}{\numberline {3.2.3}Results and discussion \nobreakspace {}}{100}{subsection.3.2.3}%
+\contentsline {subsubsection}{Experiments}{100}{section*.70}%
+\contentsline {paragraph}{Dissimilarity measure}{100}{section*.71}%
+\contentsline {subsubsection}{Results and discussion}{101}{section*.73}%
+\contentsline {subsection}{\numberline {3.2.4}Conclusion}{104}{subsection.3.2.4}%
